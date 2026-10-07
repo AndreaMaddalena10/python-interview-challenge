@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Python Interview Challenge</title>
+
+
+    <!-- =========================
+         OUR CSS
+    ========================== -->
+
+    <link
+        rel="stylesheet"
+        href="../assets/style.css"
+    >
+
+
+    <!-- =========================
+         CODEMIRROR CSS
+    ========================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css"
+    >
+
+
+    <!-- =========================
+         PYODIDE
+    ========================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"
+    ></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="app-header">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                &gt;_
+            </div>
+
+
+            <div class="brand-text">
+
+                <strong>
+                    Python Interview Challenge
+                </strong>
+
+                <span>
+                    Interactive Practice
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="pythonStatus"
+            class="python-status loading"
+        >
+
+            <span class="status-dot"></span>
+
+            Loading Python...
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="exercise-shell">
+
+
+        <!-- =================================================
+             EXERCISE DESCRIPTION
+        ================================================== -->
+
+        <section class="exercise-card">
+
+
+            <div class="metadata">
+
+                <span
+                    id="chapterMeta"
+                    class="meta-item"
+                >
+                    Chapter —
+                </span>
+
+
+                <span class="meta-separator">
+                    •
+                </span>
+
+
+                <span
+                    id="exerciseMeta"
+                    class="meta-item"
+                >
+                    Exercise —
+                </span>
+
+
+                <span class="meta-separator">
+                    •
+                </span>
+
+
+                <span
+                    id="difficultyBadge"
+                    class="difficulty-badge"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <h1 id="exerciseTitle">
+                Loading exercise...
+            </h1>
+
+
+            <div
+                id="exerciseDescription"
+                class="exercise-description"
+            ></div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             WORKSPACE
+        ================================================== -->
+
+        <section class="workspace">
+
+
+            <!-- =============================================
+                 CODE PANEL
+            ============================================== -->
+
+            <article class="panel editor-panel">
+
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-title">
+                            Code
+                        </span>
+
+                        <span class="language-badge">
+                            Python 3
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <textarea
+                    id="code"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                ></textarea>
+
+
+                <div class="controls">
+
+                    <button
+                        id="runButton"
+                        class="button button-secondary"
+                        disabled
+                    >
+                        ▶ Run Code
+                    </button>
+
+
+                    <button
+                        id="checkButton"
+                        class="button button-primary"
+                        disabled
+                    >
+                        ✓ Check Solution
+                    </button>
+
+
+                    <button
+                        id="resetButton"
+                        class="button button-ghost"
+                    >
+                        ↺ Reset
+                    </button>
+
+                </div>
+
+
+            </article>
+
+
+
+            <!-- =============================================
+                 OUTPUT PANEL
+            ============================================== -->
+
+            <aside class="panel output-panel">
+
+
+                <div class="panel-header">
+
+                    <span class="panel-title">
+                        Output
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="output"
+                    class="output-box"
+                >
+                    Run your code to see the output.
+                </div>
+
+
+                <div
+                    id="checker"
+                    class="checker-box"
+                ></div>
+
+
+            </aside>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        Python Interview Challenge
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         CODEMIRROR JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"
+    ></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"
+    ></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"
+    ></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.min.js"
+    ></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"
+    ></script>
+
+
+
+    <!-- =====================================================
+         EXERCISES
+    ====================================================== -->
+
+    <script src="exercises.js"></script>
+
+
+
+    <!-- =====================================================
+         SHARED APPLICATION
+    ====================================================== -->
+
+    <script src="../assets/app.js"></script>
+
+
+</body>
+
+</html>

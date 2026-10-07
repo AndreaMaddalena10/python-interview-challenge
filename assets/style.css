@@ -1,0 +1,954 @@
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+:root {
+
+    --background: #f4f6f9;
+
+    --surface: #ffffff;
+
+    --surface-soft: #f8fafc;
+
+    --border: #e2e8f0;
+
+    --text-main: #172033;
+
+    --text-secondary: #64748b;
+
+    --primary: #2563eb;
+
+    --primary-hover: #1d4ed8;
+
+    --editor-bg: #111827;
+
+    --success-bg: #ecfdf3;
+
+    --success-border: #86efac;
+
+    --success-text: #166534;
+
+    --error-bg: #fef2f2;
+
+    --error-border: #fca5a5;
+
+    --error-text: #991b1b;
+
+    --neutral-bg: #eff6ff;
+
+    --neutral-border: #bfdbfe;
+
+    --neutral-text: #1e40af;
+
+    --radius-large: 16px;
+
+    --radius-medium: 10px;
+
+    --shadow:
+        0 10px 35px
+        rgba(15, 23, 42, 0.07);
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+
+body {
+
+    margin: 0;
+
+    background: var(--background);
+
+    color: var(--text-main);
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
+
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.app-header {
+
+    height: 72px;
+
+    padding: 0 28px;
+
+    background: var(--surface);
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.brand-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--editor-bg);
+
+    color: white;
+
+    font-family: monospace;
+
+    font-weight: 700;
+
+    font-size: 17px;
+}
+
+
+.brand-text {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.brand-text strong {
+
+    font-size: 15px;
+}
+
+
+.brand-text span {
+
+    margin-top: 2px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+
+
+/* =====================================================
+   PYTHON STATUS
+===================================================== */
+
+.python-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 7px 11px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    background: var(--surface-soft);
+
+    color: var(--text-secondary);
+}
+
+
+.status-dot {
+
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #f59e0b;
+}
+
+
+.python-status.ready {
+
+    color: var(--success-text);
+
+    background: var(--success-bg);
+}
+
+
+.python-status.ready .status-dot {
+
+    background: #22c55e;
+}
+
+
+.python-status.error {
+
+    color: var(--error-text);
+
+    background: var(--error-bg);
+}
+
+
+.python-status.error .status-dot {
+
+    background: #ef4444;
+}
+
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.exercise-shell {
+
+    width: calc(100% - 32px);
+
+    margin: 36px auto 60px;
+}
+
+
+.layout-compact .exercise-shell {
+
+    max-width: 900px;
+}
+
+
+.layout-standard .exercise-shell {
+
+    max-width: 1080px;
+}
+
+
+.layout-large .exercise-shell {
+
+    max-width: 1280px;
+}
+
+
+.layout-macro .exercise-shell {
+
+    max-width: 1450px;
+}
+
+
+
+/* =====================================================
+   EXERCISE CARD
+===================================================== */
+
+.exercise-card {
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-large);
+
+    padding: 30px 34px;
+
+    box-shadow: var(--shadow);
+
+    margin-bottom: 22px;
+}
+
+
+.metadata {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.meta-separator {
+
+    opacity: 0.5;
+}
+
+
+.difficulty-badge {
+
+    padding: 4px 8px;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+}
+
+
+.difficulty-easy {
+
+    background: #ecfdf3;
+
+    color: #15803d;
+}
+
+
+.difficulty-medium {
+
+    background: #fff7ed;
+
+    color: #c2410c;
+}
+
+
+.difficulty-hard {
+
+    background: #fef2f2;
+
+    color: #b91c1c;
+}
+
+
+.exercise-card h1 {
+
+    margin: 0 0 18px;
+
+    font-size: 30px;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.02em;
+}
+
+
+.exercise-description {
+
+    color: #475569;
+
+    line-height: 1.7;
+
+    font-size: 15px;
+}
+
+
+.exercise-description p {
+
+    margin: 10px 0;
+}
+
+
+.exercise-description code {
+
+    padding: 2px 6px;
+
+    border-radius: 5px;
+
+    background: #f1f5f9;
+
+    color: #0f172a;
+
+    font-family: monospace;
+}
+
+
+.exercise-description pre {
+
+    overflow-x: auto;
+
+    padding: 13px 15px;
+
+    background: #f8fafc;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    font-family: monospace;
+}
+
+
+
+/* =====================================================
+   WORKSPACE
+===================================================== */
+
+.workspace {
+
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 22px;
+}
+
+
+.layout-large .workspace,
+.layout-macro .workspace {
+
+    grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(330px, 0.75fr);
+
+    align-items: stretch;
+}
+
+
+
+/* =====================================================
+   PANELS
+===================================================== */
+
+.panel {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-large);
+
+    box-shadow: var(--shadow);
+}
+
+
+.panel-header {
+
+    min-height: 52px;
+
+    padding: 0 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.panel-title {
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+}
+
+
+.language-badge {
+
+    margin-left: 9px;
+
+    padding: 4px 7px;
+
+    border-radius: 6px;
+
+    background: #f1f5f9;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+}
+
+
+
+/* =====================================================
+   CODEMIRROR EDITOR
+===================================================== */
+
+.editor-panel {
+
+    overflow: hidden;
+}
+
+
+.CodeMirror {
+
+    width: 100%;
+
+    background: var(--editor-bg);
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 15px;
+
+    line-height: 1.65;
+}
+
+
+.CodeMirror-scroll {
+
+    min-height: inherit;
+}
+
+
+.CodeMirror-gutters {
+
+    border-right: 1px solid #263244;
+}
+
+
+.CodeMirror-linenumber {
+
+    padding: 0 10px 0 6px;
+}
+
+
+.layout-compact .CodeMirror {
+
+    height: 280px;
+}
+
+
+.layout-standard .CodeMirror {
+
+    height: 360px;
+}
+
+
+.layout-large .CodeMirror {
+
+    height: 500px;
+}
+
+
+.layout-macro .CodeMirror {
+
+    height: 680px;
+}
+
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.controls {
+
+    padding: 15px 18px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+.button {
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 10px 15px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: 650;
+
+    transition:
+        background 0.15s ease,
+        transform 0.05s ease;
+}
+
+
+.button:active:not(:disabled) {
+
+    transform: translateY(1px);
+}
+
+
+.button:disabled {
+
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+.button-primary {
+
+    background: var(--primary);
+
+    color: white;
+}
+
+
+.button-primary:hover:not(:disabled) {
+
+    background: var(--primary-hover);
+}
+
+
+.button-secondary {
+
+    background: #e2e8f0;
+
+    color: #1e293b;
+}
+
+
+.button-secondary:hover:not(:disabled) {
+
+    background: #cbd5e1;
+}
+
+
+.button-ghost {
+
+    margin-left: auto;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+}
+
+
+.button-ghost:hover {
+
+    background: #f1f5f9;
+}
+
+
+
+/* =====================================================
+   OUTPUT
+===================================================== */
+
+.output-panel {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.output-box {
+
+    padding: 18px;
+
+    min-height: 110px;
+
+    overflow: auto;
+
+    background: #f8fafc;
+
+    color: #334155;
+
+    font-family: monospace;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+}
+
+
+.layout-large .output-box {
+
+    min-height: 190px;
+
+    max-height: 350px;
+}
+
+
+.layout-macro .output-box {
+
+    min-height: 300px;
+
+    max-height: 500px;
+}
+
+
+
+/* =====================================================
+   CHECKER
+===================================================== */
+
+.checker-box {
+
+    display: none;
+
+    margin: 15px;
+
+    padding: 15px;
+
+    border: 1px solid transparent;
+
+    border-radius: var(--radius-medium);
+
+    white-space: pre-wrap;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+}
+
+
+.checker-box.success,
+.checker-box.error,
+.checker-box.neutral {
+
+    display: block;
+}
+
+
+.checker-box.success {
+
+    background: var(--success-bg);
+
+    border-color: var(--success-border);
+
+    color: var(--success-text);
+}
+
+
+.checker-box.error {
+
+    background: var(--error-bg);
+
+    border-color: var(--error-border);
+
+    color: var(--error-text);
+}
+
+
+.checker-box.neutral {
+
+    background: var(--neutral-bg);
+
+    border-color: var(--neutral-border);
+
+    color: var(--neutral-text);
+}
+
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+
+    padding: 24px;
+
+    text-align: center;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .layout-large .workspace,
+    .layout-macro .workspace {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .layout-large .CodeMirror {
+
+        height: 440px;
+    }
+
+
+    .layout-macro .CodeMirror {
+
+        height: 520px;
+    }
+
+}
+
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .app-header {
+
+        height: auto;
+
+        min-height: 68px;
+
+        padding: 12px 15px;
+    }
+
+
+    .brand-text span {
+
+        display: none;
+    }
+
+
+    .python-status {
+
+        padding: 6px 8px;
+
+        font-size: 11px;
+    }
+
+
+    .exercise-shell {
+
+        width: calc(100% - 20px);
+
+        margin-top: 18px;
+    }
+
+
+    .exercise-card {
+
+        padding: 22px 18px;
+
+        border-radius: 12px;
+    }
+
+
+    .exercise-card h1 {
+
+        font-size: 24px;
+    }
+
+
+    .panel {
+
+        border-radius: 12px;
+    }
+
+
+    .CodeMirror {
+
+        font-size: 14px;
+    }
+
+
+    .layout-compact .CodeMirror,
+    .layout-standard .CodeMirror {
+
+        height: 340px;
+    }
+
+
+    .layout-large .CodeMirror {
+
+        height: 420px;
+    }
+
+
+    .layout-macro .CodeMirror {
+
+        height: 480px;
+    }
+
+
+    .controls {
+
+        display: grid;
+
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+
+    .button {
+
+        width: 100%;
+    }
+
+
+    .button-ghost {
+
+        margin-left: 0;
+    }
+
+}
+
+
+
+@media (max-width: 420px) {
+
+    .controls {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .brand-text strong {
+
+        font-size: 13px;
+    }
+
+}
