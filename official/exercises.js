@@ -1402,6 +1402,444 @@ except Exception as error:
     )
 `
 
+    },
+
+
+
+        /* =====================================================
+       CHALLENGE 007
+       First Non-Repeating Character
+    ===================================================== */
+
+    7: {
+
+        chapter: 4,
+
+        number: "007",
+
+        difficulty: "Easy",
+
+        layout: "standard",
+
+        title:
+            "First Non-Repeating Character",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>first_unique_character(text)</code>.
+            </p>
+
+            <p>
+                Return the first character that appears
+                exactly once in the string.
+            </p>
+
+            <p>
+                If every character appears more than once,
+                return <code>None</code>.
+            </p>
+
+            <p>
+                The comparison is
+                <strong>case-sensitive</strong>.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>first_unique_character("swiss") → "w"</pre>
+
+            <p>
+                Lowercase and uppercase characters are
+                considered different.
+            </p>
+
+            <p>
+                Your implementation does not need to match
+                a predefined solution. Only the required
+                behavior matters.
+            </p>
+        `,
+
+
+        starterCode:
+`def first_unique_character(text):
+    pass
+
+
+print(first_unique_character("swiss"))`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "first_unique_character"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called first_unique_character()."
+        )
+
+
+    else:
+
+        success(
+            "Function first_unique_character() found"
+        )
+
+
+        tests = [
+
+            (
+                "",
+                None
+            ),
+
+            (
+                "a",
+                "a"
+            ),
+
+            (
+                "aabbcc",
+                None
+            ),
+
+            (
+                "swiss",
+                "w"
+            ),
+
+            (
+                "Python",
+                "P"
+            ),
+
+            (
+                "aAbA",
+                "a"
+            ),
+
+            (
+                "aabbcddee",
+                "c"
+            ),
+
+            (
+                "1122334",
+                "4"
+            ),
+
+            (
+                "xxyyZzz",
+                "Z"
+            )
+
+        ]
+
+
+        tests_ok = True
+
+
+        for value, expected in tests:
+
+            obtained = function(
+                value
+            )
+
+
+            if obtained != expected:
+
+                fail(
+                    f"Input: {repr(value)}\\n"
+                    f"Expected: {repr(expected)}\\n"
+                    f"Obtained: {repr(obtained)}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+        if tests_ok:
+
+            success(
+                "The first non-repeating character is identified correctly"
+            )
+
+            success(
+                "Case-sensitive comparisons are handled correctly"
+            )
+
+            success(
+                "Inputs without unique characters return None"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+
+    /* =====================================================
+       CHALLENGE 008
+       Normalize a Username
+    ===================================================== */
+
+    8: {
+
+        chapter: 4,
+
+        number: "008",
+
+        difficulty: "Easy",
+
+        layout: "standard",
+
+        title:
+            "Normalize a Username",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>normalize_username(name)</code>.
+            </p>
+
+            <p>
+                The function must:
+            </p>
+
+            <ul>
+                <li>
+                    remove whitespace from the beginning
+                    and end;
+                </li>
+
+                <li>
+                    convert the string to lowercase;
+                </li>
+
+                <li>
+                    replace every internal regular space
+                    <code>" "</code> with an underscore;
+                </li>
+
+                <li>
+                    return the resulting string.
+                </li>
+            </ul>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>normalize_username("   John Smith   ") → "john_smith"</pre>
+
+            <p>
+                Multiple internal spaces must be replaced
+                individually.
+            </p>
+
+            <p>
+                For example:
+            </p>
+
+            <pre>normalize_username("John  Smith") → "john__smith"</pre>
+
+            <p>
+                You do not need to collapse repeated spaces
+                or normalize internal tabs.
+            </p>
+
+            <p>
+                The platform evaluates the returned behavior,
+                not whether your source code matches a
+                predefined solution.
+            </p>
+        `,
+
+
+        starterCode:
+`def normalize_username(name):
+    pass
+
+
+print(normalize_username("   John Smith   "))`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "normalize_username"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called normalize_username()."
+        )
+
+
+    else:
+
+        success(
+            "Function normalize_username() found"
+        )
+
+
+        tests = [
+
+            (
+                "John Smith",
+                "john_smith"
+            ),
+
+            (
+                "   John Smith   ",
+                "john_smith"
+            ),
+
+            (
+                "PYTHON DEV",
+                "python_dev"
+            ),
+
+            (
+                "Alice",
+                "alice"
+            ),
+
+            (
+                "   BOB   ",
+                "bob"
+            ),
+
+            (
+                "John  Smith",
+                "john__smith"
+            ),
+
+            (
+                "",
+                ""
+            ),
+
+            (
+                "   ",
+                ""
+            ),
+
+            (
+                "\\tPython Dev\\n",
+                "python_dev"
+            ),
+
+            (
+                "Python\\tDev",
+                "python\\tdev"
+            )
+
+        ]
+
+
+        tests_ok = True
+
+
+        for value, expected in tests:
+
+            obtained = function(
+                value
+            )
+
+
+            if not isinstance(
+                obtained,
+                str
+            ):
+
+                fail(
+                    "The function must return a string.\\n"
+                    f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if obtained != expected:
+
+                fail(
+                    f"Input: {repr(value)}\\n"
+                    f"Expected: {repr(expected)}\\n"
+                    f"Obtained: {repr(obtained)}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+        if tests_ok:
+
+            success(
+                "Leading and trailing whitespace is removed correctly"
+            )
+
+            success(
+                "Text is converted to lowercase correctly"
+            )
+
+            success(
+                "Regular internal spaces are replaced with underscores"
+            )
+
+            success(
+                "Repeated internal spaces are preserved as repeated underscores"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
     }
 
 
