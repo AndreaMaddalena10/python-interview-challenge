@@ -981,6 +981,427 @@ except Exception as error:
     )
 `
 
+    },
+
+
+        /* =====================================================
+       CHALLENGE 005
+       Find the First Duplicate
+    ===================================================== */
+
+    5: {
+
+        chapter: 3,
+
+        number: "005",
+
+        difficulty: "Easy",
+
+        layout: "standard",
+
+        title:
+            "Find the First Duplicate",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>first_duplicate(items)</code>.
+            </p>
+
+            <p>
+                Return the first value that appears for a
+                second time while reading the input from
+                left to right.
+            </p>
+
+            <p>
+                If there are no duplicates, return
+                <code>None</code>.
+            </p>
+
+            <p>
+                You may assume that every element inside
+                <code>items</code> is <strong>hashable</strong>.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>first_duplicate([1, 2, 3, 2, 1]) → 2</pre>
+
+            <p>
+                The value <code>2</code> is returned because
+                its second occurrence appears before the
+                second occurrence of <code>1</code>.
+            </p>
+
+            <p>
+                Your implementation does not need to match
+                a predefined solution. Only the required
+                behavior matters.
+            </p>
+        `,
+
+
+        starterCode:
+`def first_duplicate(items):
+    pass
+
+
+print(first_duplicate([1, 2, 3, 2, 1]))`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "first_duplicate"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called first_duplicate()."
+        )
+
+
+    else:
+
+        success(
+            "Function first_duplicate() found"
+        )
+
+
+        tests = [
+
+            (
+                [],
+                None
+            ),
+
+            (
+                [1],
+                None
+            ),
+
+            (
+                [1, 2, 3],
+                None
+            ),
+
+            (
+                [1, 2, 3, 2, 1],
+                2
+            ),
+
+            (
+                ["a", "b", "a"],
+                "a"
+            ),
+
+            (
+                ["python", "java", "python"],
+                "python"
+            ),
+
+            (
+                [5, 5, 6, 6],
+                5
+            ),
+
+            (
+                [1, 2, 1, 2],
+                1
+            ),
+
+            (
+                [3, 1, 2, 3, 2, 1],
+                3
+            ),
+
+            (
+                [(1, 2), (3, 4), (1, 2)],
+                (1, 2)
+            )
+
+        ]
+
+
+        tests_ok = True
+
+
+        for value, expected in tests:
+
+            obtained = function(
+                value.copy()
+            )
+
+
+            if obtained != expected:
+
+                fail(
+                    f"Input: {value}\\n"
+                    f"Expected: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+        if tests_ok:
+
+            success(
+                "The first duplicate is identified correctly"
+            )
+
+            success(
+                "Inputs without duplicates return None"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+
+    /* =====================================================
+       CHALLENGE 006
+       Square Only the Even Numbers
+    ===================================================== */
+
+    6: {
+
+        chapter: 3,
+
+        number: "006",
+
+        difficulty: "Easy",
+
+        layout: "standard",
+
+        title:
+            "Square Only the Even Numbers",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>square_evens(numbers)</code>.
+            </p>
+
+            <p>
+                Return a <strong>new list</strong> containing
+                the square of every even number in the
+                original iterable.
+            </p>
+
+            <p>
+                Preserve the original order.
+            </p>
+
+            <p>
+                The original input must not be modified.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>square_evens([1, 2, 3, 4, 5, 6]) → [4, 16, 36]</pre>
+
+            <p>
+                <strong>Bonus:</strong>
+                try solving the problem once with a normal
+                <code>for</code> loop and once with a list
+                comprehension.
+            </p>
+
+            <p>
+                Both implementations can be correct.
+                The platform evaluates behavior, not whether
+                your source code matches a specific solution.
+            </p>
+        `,
+
+
+        starterCode:
+`def square_evens(numbers):
+    pass
+
+
+print(square_evens([1, 2, 3, 4, 5, 6]))`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "square_evens"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called square_evens()."
+        )
+
+
+    else:
+
+        success(
+            "Function square_evens() found"
+        )
+
+
+        tests = [
+
+            (
+                [],
+                []
+            ),
+
+            (
+                [1, 3, 5],
+                []
+            ),
+
+            (
+                [2],
+                [4]
+            ),
+
+            (
+                [1, 2, 3, 4],
+                [4, 16]
+            ),
+
+            (
+                [1, 2, 3, 4, 5, 6],
+                [4, 16, 36]
+            ),
+
+            (
+                [-2, -1, 0, 2],
+                [4, 0, 4]
+            ),
+
+            (
+                [8, 3, 6, 5, 2],
+                [64, 36, 4]
+            )
+
+        ]
+
+
+        tests_ok = True
+
+
+        for value, expected in tests:
+
+            original_input = value.copy()
+
+            obtained = function(
+                value
+            )
+
+
+            if not isinstance(
+                obtained,
+                list
+            ):
+
+                fail(
+                    "The function must return a list.\\n"
+                    f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if obtained != expected:
+
+                fail(
+                    f"Input: {original_input}\\n"
+                    f"Expected: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if value != original_input:
+
+                fail(
+                    "The original input must not be modified.\\n"
+                    f"Before: {original_input}\\n"
+                    f"After: {value}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+        if tests_ok:
+
+            success(
+                "Only even numbers are selected"
+            )
+
+            success(
+                "Even numbers are squared correctly"
+            )
+
+            success(
+                "The original order is preserved"
+            )
+
+            success(
+                "The original input is not modified"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
     }
 
 
