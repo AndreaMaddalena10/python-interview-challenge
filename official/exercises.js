@@ -1840,6 +1840,761 @@ except Exception as error:
     )
 `
 
+    },
+
+
+        /* =====================================================
+       CHALLENGE 009
+       Build a Bank Account
+    ===================================================== */
+
+    9: {
+
+        chapter: 5,
+
+        number: "009",
+
+        difficulty: "Easy",
+
+        layout: "standard",
+
+        title:
+            "Build a Bank Account",
+
+
+        description: `
+            <p>
+                Create a class
+                <code>BankAccount</code>.
+            </p>
+
+            <p>
+                The constructor must accept an initial
+                balance.
+            </p>
+
+            <pre>account = BankAccount(100)</pre>
+
+            <p>
+                You may assume that:
+            </p>
+
+            <ul>
+                <li>the initial balance is non-negative;</li>
+                <li>deposit amounts are positive;</li>
+                <li>withdrawal amounts are positive;</li>
+                <li>input validation is not required.</li>
+            </ul>
+
+            <p>
+                Your class must provide three methods.
+            </p>
+
+            <p>
+                <code>deposit(amount)</code> adds the amount
+                to the current balance.
+            </p>
+
+            <p>
+                <code>withdraw(amount)</code> subtracts the
+                amount only when sufficient funds are
+                available.
+            </p>
+
+            <p>
+                It must return <code>True</code> when the
+                withdrawal succeeds and <code>False</code>
+                when the balance is insufficient.
+            </p>
+
+            <p>
+                If a withdrawal fails, the balance must
+                remain unchanged.
+            </p>
+
+            <p>
+                <code>get_balance()</code> returns the
+                current balance.
+            </p>
+
+            <p>
+                The internal attribute used to store the
+                balance does not need to have a specific
+                name.
+            </p>
+        `,
+
+
+        starterCode:
+`class BankAccount:
+    pass
+
+
+account = BankAccount(100)
+account.deposit(50)
+
+print(account.get_balance())`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    BankAccount = namespace.get(
+        "BankAccount"
+    )
+
+
+    if not isinstance(BankAccount, type):
+
+        fail(
+            "You must define a class called BankAccount."
+        )
+
+
+    else:
+
+        success(
+            "Class BankAccount found"
+        )
+
+
+        tests_ok = True
+
+
+        try:
+
+            account = BankAccount(100)
+
+        except Exception as error:
+
+            fail(
+                "BankAccount(100) could not be created.\\n"
+                + str(error)
+            )
+
+            tests_ok = False
+
+
+        if tests_ok:
+
+            required_methods = [
+                "deposit",
+                "withdraw",
+                "get_balance"
+            ]
+
+
+            for method_name in required_methods:
+
+                method = getattr(
+                    account,
+                    method_name,
+                    None
+                )
+
+
+                if not callable(method):
+
+                    fail(
+                        f"You must define a method called {method_name}()."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+        if tests_ok:
+
+            if account.get_balance() != 100:
+
+                fail(
+                    "The initial balance was not stored correctly.\\n"
+                    "Expected: 100\\n"
+                    f"Obtained: {account.get_balance()}"
+                )
+
+                tests_ok = False
+
+
+        if tests_ok:
+
+            account.deposit(50)
+
+            if account.get_balance() != 150:
+
+                fail(
+                    "deposit() did not update the balance correctly.\\n"
+                    "Expected: 150\\n"
+                    f"Obtained: {account.get_balance()}"
+                )
+
+                tests_ok = False
+
+
+        if tests_ok:
+
+            result = account.withdraw(40)
+
+            if result is not True:
+
+                fail(
+                    "A successful withdrawal must return True."
+                )
+
+                tests_ok = False
+
+            elif account.get_balance() != 110:
+
+                fail(
+                    "The balance after a successful withdrawal is incorrect.\\n"
+                    "Expected: 110\\n"
+                    f"Obtained: {account.get_balance()}"
+                )
+
+                tests_ok = False
+
+
+        if tests_ok:
+
+            balance_before = account.get_balance()
+
+            result = account.withdraw(200)
+
+            if result is not False:
+
+                fail(
+                    "A withdrawal with insufficient funds must return False."
+                )
+
+                tests_ok = False
+
+            elif account.get_balance() != balance_before:
+
+                fail(
+                    "The balance must remain unchanged when a withdrawal fails."
+                )
+
+                tests_ok = False
+
+
+        if tests_ok:
+
+            account2 = BankAccount(50)
+
+            account2.deposit(25)
+
+            if account2.get_balance() != 75:
+
+                fail(
+                    "A second BankAccount instance does not behave correctly."
+                )
+
+                tests_ok = False
+
+            elif account.get_balance() != 110:
+
+                fail(
+                    "Different BankAccount instances must maintain independent balances."
+                )
+
+                tests_ok = False
+
+
+        if tests_ok:
+
+            account3 = BankAccount(30)
+
+            result = account3.withdraw(30)
+
+            if result is not True:
+
+                fail(
+                    "Withdrawing the exact available balance should succeed."
+                )
+
+                tests_ok = False
+
+            elif account3.get_balance() != 0:
+
+                fail(
+                    "Withdrawing the exact balance should leave 0."
+                )
+
+                tests_ok = False
+
+
+        if tests_ok:
+
+            account4 = BankAccount(10.5)
+
+            account4.deposit(4.5)
+
+            if account4.get_balance() != 15.0:
+
+                fail(
+                    "The class should also work with numeric decimal balances."
+                )
+
+                tests_ok = False
+
+
+        if tests_ok:
+
+            success(
+                "Initial balance is handled correctly"
+            )
+
+            success(
+                "Deposits update the account correctly"
+            )
+
+            success(
+                "Withdrawals behave correctly"
+            )
+
+            success(
+                "Failed withdrawals leave the balance unchanged"
+            )
+
+            success(
+                "Different accounts maintain independent state"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+
+    /* =====================================================
+       CHALLENGE 010
+       Employee and Developer
+    ===================================================== */
+
+    10: {
+
+        chapter: 5,
+
+        number: "010",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Employee and Developer",
+
+
+        description: `
+            <p>
+                Create two classes:
+            </p>
+
+            <pre>class Employee:
+    pass
+
+class Developer(Employee):
+    pass</pre>
+
+            <p>
+                <strong>Employee</strong> must accept
+                <code>name</code> and <code>salary</code>
+                in its constructor and store both values.
+            </p>
+
+            <p>
+                It must provide a method
+                <code>describe()</code>.
+            </p>
+
+            <pre>Employee("Alex", 30000).describe()
+→ "Alex earns 30000"</pre>
+
+            <p>
+                <strong>Developer</strong> must inherit from
+                <code>Employee</code>.
+            </p>
+
+            <p>
+                Its constructor must additionally accept
+                <code>language</code>.
+            </p>
+
+            <p>
+                Developer should reuse the parent class
+                initialization for <code>name</code> and
+                <code>salary</code>, then store its own
+                <code>language</code>.
+            </p>
+
+            <p>
+                Override <code>describe()</code> so that:
+            </p>
+
+            <pre>Developer("Sam", 40000, "Python").describe()
+→ "Sam earns 40000 and codes in Python"</pre>
+        `,
+
+
+        starterCode:
+`class Employee:
+    pass
+
+
+class Developer(Employee):
+    pass
+
+
+developer = Developer("Sam", 40000, "Python")
+print(developer.describe())`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    Employee = namespace.get(
+        "Employee"
+    )
+
+    Developer = namespace.get(
+        "Developer"
+    )
+
+
+    tests_ok = True
+
+
+    if not isinstance(Employee, type):
+
+        fail(
+            "You must define a class called Employee."
+        )
+
+        tests_ok = False
+
+
+    if tests_ok and not isinstance(Developer, type):
+
+        fail(
+            "You must define a class called Developer."
+        )
+
+        tests_ok = False
+
+
+    if tests_ok:
+
+        success(
+            "Classes Employee and Developer found"
+        )
+
+
+    if tests_ok and not issubclass(
+        Developer,
+        Employee
+    ):
+
+        fail(
+            "Developer must inherit from Employee."
+        )
+
+        tests_ok = False
+
+
+    if tests_ok:
+
+        try:
+
+            employee = Employee(
+                "Alex",
+                30000
+            )
+
+        except Exception as error:
+
+            fail(
+                "Employee('Alex', 30000) could not be created.\\n"
+                + str(error)
+            )
+
+            tests_ok = False
+
+
+    if tests_ok:
+
+        if getattr(
+            employee,
+            "name",
+            None
+        ) != "Alex":
+
+            fail(
+                "Employee must store the name attribute."
+            )
+
+            tests_ok = False
+
+        elif getattr(
+            employee,
+            "salary",
+            None
+        ) != 30000:
+
+            fail(
+                "Employee must store the salary attribute."
+            )
+
+            tests_ok = False
+
+
+    if tests_ok:
+
+        describe = getattr(
+            employee,
+            "describe",
+            None
+        )
+
+        if not callable(describe):
+
+            fail(
+                "Employee must define describe()."
+            )
+
+            tests_ok = False
+
+        elif describe() != "Alex earns 30000":
+
+            fail(
+                "Employee.describe() returned an incorrect result.\\n"
+                'Expected: "Alex earns 30000"\\n'
+                f"Obtained: {repr(describe())}"
+            )
+
+            tests_ok = False
+
+
+    if tests_ok:
+
+        try:
+
+            developer = Developer(
+                "Sam",
+                40000,
+                "Python"
+            )
+
+        except Exception as error:
+
+            fail(
+                "Developer('Sam', 40000, 'Python') could not be created.\\n"
+                + str(error)
+            )
+
+            tests_ok = False
+
+
+    if tests_ok:
+
+        if getattr(
+            developer,
+            "name",
+            None
+        ) != "Sam":
+
+            fail(
+                "Developer must correctly initialize name."
+            )
+
+            tests_ok = False
+
+        elif getattr(
+            developer,
+            "salary",
+            None
+        ) != 40000:
+
+            fail(
+                "Developer must correctly initialize salary."
+            )
+
+            tests_ok = False
+
+        elif getattr(
+            developer,
+            "language",
+            None
+        ) != "Python":
+
+            fail(
+                "Developer must store the language attribute."
+            )
+
+            tests_ok = False
+
+
+    if tests_ok:
+
+        describe = getattr(
+            developer,
+            "describe",
+            None
+        )
+
+        if not callable(describe):
+
+            fail(
+                "Developer must provide describe()."
+            )
+
+            tests_ok = False
+
+        elif describe() != "Sam earns 40000 and codes in Python":
+
+            fail(
+                "Developer.describe() returned an incorrect result.\\n"
+                'Expected: "Sam earns 40000 and codes in Python"\\n'
+                f"Obtained: {repr(describe())}"
+            )
+
+            tests_ok = False
+
+
+    if tests_ok:
+
+        employee2 = Employee(
+            "Maya",
+            52000
+        )
+
+        developer2 = Developer(
+            "Luca",
+            61000,
+            "JavaScript"
+        )
+
+
+        if employee2.describe() != "Maya earns 52000":
+
+            fail(
+                "Employee.describe() does not work correctly with different values."
+            )
+
+            tests_ok = False
+
+        elif developer2.describe() != "Luca earns 61000 and codes in JavaScript":
+
+            fail(
+                "Developer.describe() does not work correctly with different values."
+            )
+
+            tests_ok = False
+
+
+    if tests_ok:
+
+        parent_init_called = {
+            "value": False
+        }
+
+        original_init = Employee.__init__
+
+
+        def tracked_init(
+            self,
+            name,
+            salary
+        ):
+
+            parent_init_called["value"] = True
+
+            original_init(
+                self,
+                name,
+                salary
+            )
+
+
+        Employee.__init__ = tracked_init
+
+
+        try:
+
+            Developer(
+                "Test",
+                1,
+                "Python"
+            )
+
+        finally:
+
+            Employee.__init__ = original_init
+
+
+        if not parent_init_called["value"]:
+
+            fail(
+                "Developer should reuse Employee's initialization for name and salary."
+            )
+
+            tests_ok = False
+
+
+    if tests_ok:
+
+        success(
+            "Developer correctly inherits from Employee"
+        )
+
+        success(
+            "Employee attributes are initialized correctly"
+        )
+
+        success(
+            "Developer reuses the parent initialization"
+        )
+
+        success(
+            "Developer stores its own language attribute"
+        )
+
+        success(
+            "describe() is overridden correctly"
+        )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
     }
 
 
