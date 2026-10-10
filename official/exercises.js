@@ -2595,6 +2595,741 @@ except Exception as error:
     )
 `
 
+    },
+
+
+
+
+        /* =====================================================
+       CHALLENGE 011
+       Read Valid Integers From a File
+    ===================================================== */
+
+    11: {
+
+        chapter: 6,
+
+        number: "011",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Read Valid Integers From a File",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>read_valid_integers(filename)</code>.
+            </p>
+
+            <p>
+                The file contains one value per line.
+            </p>
+
+            <p>
+                Your function must:
+            </p>
+
+            <ul>
+                <li>
+                    open the file in text mode using UTF-8;
+                </li>
+
+                <li>
+                    process the file line by line;
+                </li>
+
+                <li>
+                    remove surrounding whitespace from each line;
+                </li>
+
+                <li>
+                    attempt to convert each line to an integer;
+                </li>
+
+                <li>
+                    ignore lines that cannot be converted;
+                </li>
+
+                <li>
+                    return a list containing only valid integers;
+                </li>
+
+                <li>
+                    return an empty list if the file does not exist;
+                </li>
+
+                <li>
+                    not modify the file.
+                </li>
+            </ul>
+
+            <p>
+                Example file:
+            </p>
+
+            <pre>10
+Python
+25
+3.5
+-7</pre>
+
+            <p>
+                Then:
+            </p>
+
+            <pre>read_valid_integers("numbers.txt")
+→ [10, 25, -7]</pre>
+
+            <p>
+                For this challenge, you only need to handle
+                <code>FileNotFoundError</code> and
+                <code>ValueError</code>.
+            </p>
+
+            <p>
+                Other file-system errors are outside the
+                required behavior.
+            </p>
+        `,
+
+
+        starterCode:
+`def read_valid_integers(filename):
+    pass
+
+
+# Example file used when you press Run
+with open(
+    "__example_numbers.txt",
+    "w",
+    encoding="utf-8"
+) as file:
+    file.write(
+        "10\\nPython\\n25\\n3.5\\n-7\\n"
+    )
+
+
+print(
+    read_valid_integers(
+        "__example_numbers.txt"
+    )
+)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "read_valid_integers"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called read_valid_integers()."
+        )
+
+
+    else:
+
+        success(
+            "Function read_valid_integers() found"
+        )
+
+
+        import os
+
+
+        test_files = [
+
+            (
+                "__challenge_011_a.txt",
+                "1\\n2\\n3\\n",
+                [1, 2, 3]
+            ),
+
+            (
+                "__challenge_011_b.txt",
+                "10\\nPython\\n-2\\n4.5\\n",
+                [10, -2]
+            ),
+
+            (
+                "__challenge_011_c.txt",
+                "   7   \\n\\n+5\\n0\\ncaffè\\n003\\n",
+                [7, 5, 0, 3]
+            ),
+
+            (
+                "__challenge_011_d.txt",
+                "-10\\n  20\\nhello\\n30   \\n",
+                [-10, 20, 30]
+            ),
+
+            (
+                "__challenge_011_e.txt",
+                "",
+                []
+            ),
+
+            (
+                "__challenge_011_f.txt",
+                "42",
+                [42]
+            ),
+
+            (
+                "__challenge_011_g.txt",
+                "1 2\\n3.0\\n-0\\n+12\\n",
+                [0, 12]
+            )
+
+        ]
+
+
+        missing_file = (
+            "__challenge_011_missing.txt"
+        )
+
+
+        tests_ok = True
+
+
+        try:
+
+            # Make sure the missing-file test really starts
+            # with a file that does not exist.
+            if os.path.exists(
+                missing_file
+            ):
+
+                os.remove(
+                    missing_file
+                )
+
+
+            for (
+                filename,
+                content,
+                expected
+            ) in test_files:
+
+
+                # Create the temporary test file.
+                with open(
+                    filename,
+                    "w",
+                    encoding="utf-8"
+                ) as test_file:
+
+                    test_file.write(
+                        content
+                    )
+
+
+                # Save its exact original content.
+                with open(
+                    filename,
+                    "r",
+                    encoding="utf-8"
+                ) as test_file:
+
+                    original_content = (
+                        test_file.read()
+                    )
+
+
+                # Run the user's function.
+                obtained = function(
+                    filename
+                )
+
+
+                # The function must return a list.
+                if not isinstance(
+                    obtained,
+                    list
+                ):
+
+                    fail(
+                        "The function must return a list.\\n"
+                        f"Returned type: {type(obtained).__name__}"
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                # Every returned value must actually be an int.
+                if any(
+                    type(item) is not int
+                    for item in obtained
+                ):
+
+                    fail(
+                        "The returned list must contain only integers.\\n"
+                        f"Obtained: {obtained}"
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                # Check the returned values and their order.
+                if obtained != expected:
+
+                    fail(
+                        f"File content: {repr(content)}\\n"
+                        f"Expected: {expected}\\n"
+                        f"Obtained: {obtained}"
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                # The original file must still exist.
+                if not os.path.exists(
+                    filename
+                ):
+
+                    fail(
+                        "The function must not delete the original file."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                # Read the file again after the function call.
+                with open(
+                    filename,
+                    "r",
+                    encoding="utf-8"
+                ) as test_file:
+
+                    content_after = (
+                        test_file.read()
+                    )
+
+
+                # Its content must be exactly unchanged.
+                if (
+                    content_after
+                    != original_content
+                ):
+
+                    fail(
+                        "The original file must not be modified.\\n"
+                        f"Before: {repr(original_content)}\\n"
+                        f"After: {repr(content_after)}"
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+            # Missing-file behavior.
+            if tests_ok:
+
+                obtained = function(
+                    missing_file
+                )
+
+
+                if not isinstance(
+                    obtained,
+                    list
+                ):
+
+                    fail(
+                        "A missing file must return an empty list."
+                    )
+
+                    tests_ok = False
+
+
+                elif obtained != []:
+
+                    fail(
+                        "A missing file must return an empty list.\\n"
+                        f"Obtained: {obtained}"
+                    )
+
+                    tests_ok = False
+
+
+                elif os.path.exists(
+                    missing_file
+                ):
+
+                    fail(
+                        "The function must not create a file when the requested file does not exist."
+                    )
+
+                    tests_ok = False
+
+
+        finally:
+
+            # Remove every temporary file created
+            # by the checker.
+            for (
+                filename,
+                _,
+                _
+            ) in test_files:
+
+                if os.path.exists(
+                    filename
+                ):
+
+                    os.remove(
+                        filename
+                    )
+
+
+            if os.path.exists(
+                missing_file
+            ):
+
+                os.remove(
+                    missing_file
+                )
+
+
+        if tests_ok:
+
+            success(
+                "Valid integer lines are converted correctly"
+            )
+
+            success(
+                "Invalid lines are ignored correctly"
+            )
+
+            success(
+                "Negative, signed and zero values are handled correctly"
+            )
+
+            success(
+                "Surrounding whitespace is handled correctly"
+            )
+
+            success(
+                "Empty files are handled correctly"
+            )
+
+            success(
+                "Missing files return an empty list"
+            )
+
+            success(
+                "The original file remains unchanged"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+ 
+
+
+
+    /* =====================================================
+       CHALLENGE 012
+       Parse Valid Numbers
+    ===================================================== */
+
+    12: {
+
+        chapter: 6,
+
+        number: "012",
+
+        difficulty: "Easy",
+
+        layout: "standard",
+
+        title:
+            "Parse Valid Numbers",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>parse_numbers(values)</code>.
+            </p>
+
+            <p>
+                The function receives a list of strings.
+            </p>
+
+            <p>
+                Try to convert every item to an integer.
+            </p>
+
+            <p>
+                If a value cannot be converted, ignore it
+                instead of stopping the program.
+            </p>
+
+            <p>
+                Return a <strong>new list</strong> containing
+                only successfully converted integers.
+            </p>
+
+            <p>
+                The original list must not be modified.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>parse_numbers([
+    "10",
+    "Python",
+    "25",
+    "3.5",
+    "-7"
+])
+
+→ [10, 25, -7]</pre>
+
+            <p>
+                A string such as <code>"3.5"</code> is not
+                a valid integer for <code>int(...)</code>
+                and must therefore be ignored.
+            </p>
+
+            <p>
+                Different implementations are valid as long
+                as the required behavior is respected.
+            </p>
+        `,
+
+
+        starterCode:
+`def parse_numbers(values):
+    pass
+
+
+print(parse_numbers([
+    "10",
+    "Python",
+    "25",
+    "3.5",
+    "-7"
+]))`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "parse_numbers"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called parse_numbers()."
+        )
+
+
+    else:
+
+        success(
+            "Function parse_numbers() found"
+        )
+
+
+        tests = [
+
+            (
+                [],
+                []
+            ),
+
+            (
+                ["1", "2", "3"],
+                [1, 2, 3]
+            ),
+
+            (
+                ["Python"],
+                []
+            ),
+
+            (
+                ["10", "x", "-2"],
+                [10, -2]
+            ),
+
+            (
+                ["3.5", "5"],
+                [5]
+            ),
+
+            (
+                [
+                    "10",
+                    "Python",
+                    "25",
+                    "3.5",
+                    "-7"
+                ],
+                [10, 25, -7]
+            ),
+
+            (
+                [
+                    "   8   ",
+                    "+4",
+                    "003",
+                    "",
+                    "   ",
+                    "-0"
+                ],
+                [8, 4, 3, 0]
+            ),
+
+            (
+                [
+                    "-10",
+                    "0",
+                    "hello",
+                    "42"
+                ],
+                [-10, 0, 42]
+            )
+
+        ]
+
+
+        tests_ok = True
+
+
+        for value, expected in tests:
+
+            original_input = (
+                value.copy()
+            )
+
+
+            obtained = function(
+                value
+            )
+
+
+            if not isinstance(
+                obtained,
+                list
+            ):
+
+                fail(
+                    "The function must return a list.\\\\n"
+                    f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if obtained != expected:
+
+                fail(
+                    f"Input: {original_input}\\\\n"
+                    f"Expected: {expected}\\\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if value != original_input:
+
+                fail(
+                    "The original input list must not be modified.\\\\n"
+                    f"Before: {original_input}\\\\n"
+                    f"After: {value}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+        if tests_ok:
+
+            success(
+                "Valid integers are converted correctly"
+            )
+
+            success(
+                "Invalid values are ignored correctly"
+            )
+
+            success(
+                "Negative and signed integers are handled correctly"
+            )
+
+            success(
+                "Surrounding whitespace is handled correctly"
+            )
+
+            success(
+                "The original list is not modified"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
     }
 
 
