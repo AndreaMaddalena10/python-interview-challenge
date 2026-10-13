@@ -7194,6 +7194,1333 @@ except Exception as error:
     )
 `
 
+    },
+
+
+        /* =====================================================
+       CHALLENGE 019
+       Most Frequent Value, First on Ties
+    ===================================================== */
+
+    19: {
+
+        chapter: 10,
+
+        number: "019",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Most Frequent Value, First on Ties",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>most_frequent(values)</code>.
+            </p>
+
+            <p>
+                Return the value that appears most
+                frequently.
+            </p>
+
+            <p>
+                If two or more values share the highest
+                frequency, return the one that appeared
+                first in the original input.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>most_frequent([
+    "python",
+    "java",
+    "java",
+    "python",
+    "sql"
+])
+
+→ "python"</pre>
+
+            <p>
+                Both <code>"python"</code> and
+                <code>"java"</code> appear twice, but
+                <code>"python"</code> appeared first.
+            </p>
+
+            <p>
+                Requirements:
+            </p>
+
+            <ul>
+                <li>
+                    build a frequency table using a
+                    dictionary;
+                </li>
+
+                <li>
+                    do not repeatedly scan the complete
+                    input for every value;
+                </li>
+
+                <li>
+                    do not sort the input to determine the
+                    answer;
+                </li>
+
+                <li>
+                    preserve the original input;
+                </li>
+
+                <li>
+                    aim for
+                    <code>O(n)</code> average time.
+                </li>
+            </ul>
+
+            <p>
+                Two separate linear passes are completely
+                acceptable:
+                <code>O(n) + O(n)</code> is still
+                <code>O(n)</code>.
+            </p>
+
+            <p>
+                You may assume:
+            </p>
+
+            <ul>
+                <li>
+                    <code>values</code> is not empty;
+                </li>
+
+                <li>
+                    every value is hashable;
+                </li>
+
+                <li>
+                    input validation is not required.
+                </li>
+            </ul>
+
+            <p>
+                Build the frequency table yourself using a
+                regular dictionary. Do not use
+                <code>collections.Counter</code>.
+            </p>
+        `,
+
+
+        starterCode:
+`def most_frequent(values):
+    pass
+
+
+values = [
+    "python",
+    "java",
+    "java",
+    "python",
+    "sql"
+]
+
+print(
+    most_frequent(values)
+)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    import ast
+    import copy
+
+
+    tests_ok = True
+
+
+    # -------------------------------------------------
+    # FIND FUNCTION
+    # -------------------------------------------------
+
+    tree = ast.parse(
+        user_code
+    )
+
+
+    function_node = None
+
+
+    for node in tree.body:
+
+        if (
+            isinstance(
+                node,
+                ast.FunctionDef
+            )
+            and node.name
+            == "most_frequent"
+        ):
+
+            function_node = node
+
+            break
+
+
+    if function_node is None:
+
+        fail(
+            "You must define a function called most_frequent()."
+        )
+
+        tests_ok = False
+
+
+    # -------------------------------------------------
+    # CHECK REQUIRED APPROACH
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        uses_dictionary = False
+        uses_counter = False
+        uses_sorting = False
+        uses_count_method = False
+        nested_loops = False
+
+
+        for node in ast.walk(
+            function_node
+        ):
+
+            # Dictionary literal or comprehension
+            if isinstance(
+                node,
+                (
+                    ast.Dict,
+                    ast.DictComp
+                )
+            ):
+
+                uses_dictionary = True
+
+
+            # Function calls
+            if isinstance(
+                node,
+                ast.Call
+            ):
+
+                if isinstance(
+                    node.func,
+                    ast.Name
+                ):
+
+                    if node.func.id == "dict":
+
+                        uses_dictionary = True
+
+
+                    elif node.func.id == "sorted":
+
+                        uses_sorting = True
+
+
+                    elif node.func.id == "Counter":
+
+                        uses_counter = True
+
+
+                elif isinstance(
+                    node.func,
+                    ast.Attribute
+                ):
+
+                    if node.func.attr == "sort":
+
+                        uses_sorting = True
+
+
+                    elif node.func.attr == "count":
+
+                        uses_count_method = True
+
+
+                    elif node.func.attr == "Counter":
+
+                        uses_counter = True
+
+
+            # Detect nested explicit loops
+            if isinstance(
+                node,
+                (
+                    ast.For,
+                    ast.While
+                )
+            ):
+
+                for child in ast.walk(
+                    node
+                ):
+
+                    if (
+                        child is not node
+                        and isinstance(
+                            child,
+                            (
+                                ast.For,
+                                ast.While
+                            )
+                        )
+                    ):
+
+                        nested_loops = True
+
+                        break
+
+
+        if uses_counter:
+
+            fail(
+                "Do not use collections.Counter for this challenge. "
+                "Build the frequency dictionary yourself."
+            )
+
+            tests_ok = False
+
+
+        elif not uses_dictionary:
+
+            fail(
+                "Use a dictionary to store value frequencies."
+            )
+
+            tests_ok = False
+
+
+        elif uses_sorting:
+
+            fail(
+                "Sorting is not required for this problem. "
+                "Find the answer without sorted() or .sort()."
+            )
+
+            tests_ok = False
+
+
+        elif uses_count_method:
+
+            fail(
+                "Do not repeatedly use .count() to calculate frequencies. "
+                "Build a frequency dictionary instead."
+            )
+
+            tests_ok = False
+
+
+        elif nested_loops:
+
+            fail(
+                "Avoid nested loops over the input. "
+                "The challenge should run in O(n) average time."
+            )
+
+            tests_ok = False
+
+
+    # -------------------------------------------------
+    # LOAD USER FUNCTION
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        exec(
+            user_code,
+            namespace
+        )
+
+
+        function = namespace.get(
+            "most_frequent"
+        )
+
+
+        if not callable(
+            function
+        ):
+
+            fail(
+                "most_frequent must be callable."
+            )
+
+            tests_ok = False
+
+
+        else:
+
+            success(
+                "Function most_frequent() found"
+            )
+
+
+    # -------------------------------------------------
+    # TEST CASES
+    # -------------------------------------------------
+
+    tests = [
+
+        (
+            [
+                "python",
+                "java",
+                "python",
+                "sql",
+                "python",
+                "java"
+            ],
+            "python"
+        ),
+
+        (
+            [
+                "python",
+                "java",
+                "java",
+                "python",
+                "sql"
+            ],
+            "python"
+        ),
+
+        (
+            [
+                1,
+                2,
+                2,
+                1
+            ],
+            1
+        ),
+
+        (
+            [
+                3,
+                1,
+                3,
+                1,
+                2,
+                2
+            ],
+            3
+        ),
+
+        (
+            [
+                42
+            ],
+            42
+        ),
+
+        (
+            [
+                -1,
+                4,
+                -1,
+                4,
+                4
+            ],
+            4
+        ),
+
+        (
+            [
+                (
+                    1,
+                    2
+                ),
+                (
+                    3,
+                    4
+                ),
+                (
+                    1,
+                    2
+                )
+            ],
+            (
+                1,
+                2
+            )
+        )
+
+    ]
+
+
+    if tests_ok:
+
+        for (
+            values,
+            expected
+        ) in tests:
+
+
+            original_snapshot = (
+                copy.deepcopy(
+                    values
+                )
+            )
+
+
+            obtained = function(
+                values
+            )
+
+
+            # -----------------------------------------
+            # RESULT
+            # -----------------------------------------
+
+            if obtained != expected:
+
+                fail(
+                    f"Input: {original_snapshot}\\n"
+                    f"Expected: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # INPUT MUST REMAIN UNCHANGED
+            # -----------------------------------------
+
+            if values != original_snapshot:
+
+                fail(
+                    "The original input must not be modified.\\n"
+                    f"Before: {original_snapshot}\\n"
+                    f"After: {values}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+    if tests_ok:
+
+        success(
+            "A dictionary is used for frequency counting"
+        )
+
+        success(
+            "The most frequent value is returned correctly"
+        )
+
+        success(
+            "Ties are resolved using first appearance"
+        )
+
+        success(
+            "Integer, string and tuple values are handled"
+        )
+
+        success(
+            "The solution avoids repeated full-list counting"
+        )
+
+        success(
+            "The solution avoids unnecessary sorting"
+        )
+
+        success(
+            "The original input remains unchanged"
+        )
+
+        success(
+            "The approach is compatible with O(n) average time"
+        )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+
+
+
+        /* =====================================================
+       CHALLENGE 020
+       Two Sum with Efficient Lookup
+    ===================================================== */
+
+    20: {
+
+        chapter: 10,
+
+        number: "020",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Two Sum with Efficient Lookup",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>two_sum(numbers, target)</code>.
+            </p>
+
+            <p>
+                Return the indexes of two different elements
+                whose values add up to
+                <code>target</code>.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>two_sum(
+    [2, 7, 11, 15],
+    9
+)
+
+→ [0, 1]</pre>
+
+            <p>
+                because:
+            </p>
+
+            <pre>2 + 7 = 9</pre>
+
+            <p>
+                Another example:
+            </p>
+
+            <pre>two_sum(
+    [3, 2, 4],
+    6
+)
+
+→ [1, 2]</pre>
+
+            <p>
+                Requirements:
+            </p>
+
+            <ul>
+                <li>
+                    use a dictionary for efficient lookup;
+                </li>
+
+                <li>
+                    avoid comparing every possible pair;
+                </li>
+
+                <li>
+                    aim for
+                    <code>O(n)</code> average time;
+                </li>
+
+                <li>
+                    do not use the same list position twice;
+                </li>
+
+                <li>
+                    return the two indexes in increasing
+                    order;
+                </li>
+
+                <li>
+                    do not modify the original input.
+                </li>
+            </ul>
+
+            <p>
+                Think about the current number:
+            </p>
+
+            <pre>number</pre>
+
+            <p>
+                and the value still needed:
+            </p>
+
+            <pre>needed = target - number</pre>
+
+            <p>
+                A dictionary can remember values and their
+                indexes so that you do not need to scan the
+                list again for every element.
+            </p>
+
+            <p>
+                You may assume:
+            </p>
+
+            <ul>
+                <li>
+                    <code>numbers</code> contains numeric
+                    values;
+                </li>
+
+                <li>
+                    there is exactly one valid solution;
+                </li>
+
+                <li>
+                    input validation is not required.
+                </li>
+            </ul>
+
+            <p>
+                A nested-loop
+                <code>O(n²)</code> solution may be a useful
+                first idea during an interview, but it does
+                not satisfy the final requirement of this
+                challenge.
+            </p>
+        `,
+
+
+        starterCode:
+`def two_sum(numbers, target):
+    pass
+
+
+numbers = [
+    2,
+    7,
+    11,
+    15
+]
+
+print(
+    two_sum(
+        numbers,
+        9
+    )
+)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    import ast
+    import copy
+
+
+    tests_ok = True
+
+
+    # -------------------------------------------------
+    # FIND FUNCTION
+    # -------------------------------------------------
+
+    tree = ast.parse(
+        user_code
+    )
+
+
+    function_node = None
+
+
+    for node in tree.body:
+
+        if (
+            isinstance(
+                node,
+                ast.FunctionDef
+            )
+            and node.name
+            == "two_sum"
+        ):
+
+            function_node = node
+
+            break
+
+
+    if function_node is None:
+
+        fail(
+            "You must define a function called two_sum()."
+        )
+
+        tests_ok = False
+
+
+    # -------------------------------------------------
+    # CHECK REQUIRED APPROACH
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        uses_dictionary = False
+        nested_loops = False
+        uses_sorting = False
+        uses_index_method = False
+        repeated_list_membership = False
+
+
+        for node in ast.walk(
+            function_node
+        ):
+
+            # Dictionary literal or comprehension
+            if isinstance(
+                node,
+                (
+                    ast.Dict,
+                    ast.DictComp
+                )
+            ):
+
+                uses_dictionary = True
+
+
+            if isinstance(
+                node,
+                ast.Call
+            ):
+
+                if isinstance(
+                    node.func,
+                    ast.Name
+                ):
+
+                    if node.func.id == "dict":
+
+                        uses_dictionary = True
+
+
+                    elif node.func.id == "sorted":
+
+                        uses_sorting = True
+
+
+                elif isinstance(
+                    node.func,
+                    ast.Attribute
+                ):
+
+                    if node.func.attr == "sort":
+
+                        uses_sorting = True
+
+
+                    elif node.func.attr == "index":
+
+                        uses_index_method = True
+
+
+            # Detect explicit nested loops
+            if isinstance(
+                node,
+                (
+                    ast.For,
+                    ast.While
+                )
+            ):
+
+                for child in ast.walk(
+                    node
+                ):
+
+                    if (
+                        child is not node
+                        and isinstance(
+                            child,
+                            (
+                                ast.For,
+                                ast.While
+                            )
+                        )
+                    ):
+
+                        nested_loops = True
+
+                        break
+
+
+            # Detect:
+            # needed in numbers
+            # which would repeatedly scan the input list.
+            if isinstance(
+                node,
+                ast.Compare
+            ):
+
+                for (
+                    operator,
+                    comparator
+                ) in zip(
+                    node.ops,
+                    node.comparators
+                ):
+
+                    if (
+                        isinstance(
+                            operator,
+                            (
+                                ast.In,
+                                ast.NotIn
+                            )
+                        )
+                        and isinstance(
+                            comparator,
+                            ast.Name
+                        )
+                        and comparator.id
+                        == "numbers"
+                    ):
+
+                        repeated_list_membership = True
+
+
+        if not uses_dictionary:
+
+            fail(
+                "Use a dictionary for efficient value lookup."
+            )
+
+            tests_ok = False
+
+
+        elif nested_loops:
+
+            fail(
+                "Do not compare every possible pair with nested loops. "
+                "Aim for O(n) average time."
+            )
+
+            tests_ok = False
+
+
+        elif uses_sorting:
+
+            fail(
+                "Sorting is not required for Two Sum and would increase "
+                "the time complexity unnecessarily."
+            )
+
+            tests_ok = False
+
+
+        elif uses_index_method:
+
+            fail(
+                "Avoid repeatedly searching the list with .index(). "
+                "Use the dictionary to remember indexes."
+            )
+
+            tests_ok = False
+
+
+        elif repeated_list_membership:
+
+            fail(
+                "Do not repeatedly search the original numbers list "
+                "with membership checks. Use dictionary lookup instead."
+            )
+
+            tests_ok = False
+
+
+    # -------------------------------------------------
+    # LOAD USER FUNCTION
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        exec(
+            user_code,
+            namespace
+        )
+
+
+        function = namespace.get(
+            "two_sum"
+        )
+
+
+        if not callable(
+            function
+        ):
+
+            fail(
+                "two_sum must be callable."
+            )
+
+            tests_ok = False
+
+
+        else:
+
+            success(
+                "Function two_sum() found"
+            )
+
+
+    # -------------------------------------------------
+    # TEST CASES
+    # -------------------------------------------------
+
+    tests = [
+
+        (
+            [
+                2,
+                7,
+                11,
+                15
+            ],
+            9,
+            [
+                0,
+                1
+            ]
+        ),
+
+        (
+            [
+                3,
+                2,
+                4
+            ],
+            6,
+            [
+                1,
+                2
+            ]
+        ),
+
+        (
+            [
+                3,
+                3
+            ],
+            6,
+            [
+                0,
+                1
+            ]
+        ),
+
+        (
+            [
+                -3,
+                4,
+                3,
+                90
+            ],
+            0,
+            [
+                0,
+                2
+            ]
+        ),
+
+        (
+            [
+                0,
+                4,
+                3,
+                0
+            ],
+            0,
+            [
+                0,
+                3
+            ]
+        ),
+
+        (
+            [
+                10,
+                -2,
+                5,
+                7
+            ],
+            3,
+            [
+                1,
+                2
+            ]
+        ),
+
+        (
+            [
+                1.5,
+                2.5,
+                8.0
+            ],
+            4.0,
+            [
+                0,
+                1
+            ]
+        )
+
+    ]
+
+
+    if tests_ok:
+
+        for (
+            numbers,
+            target,
+            expected
+        ) in tests:
+
+
+            original_snapshot = (
+                copy.deepcopy(
+                    numbers
+                )
+            )
+
+
+            obtained = function(
+                numbers,
+                target
+            )
+
+
+            # -----------------------------------------
+            # RETURN TYPE
+            # -----------------------------------------
+
+            if not isinstance(
+                obtained,
+                list
+            ):
+
+                fail(
+                    "The function must return a list of two indexes.\\n"
+                    f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # EXACTLY TWO INDEXES
+            # -----------------------------------------
+
+            if len(
+                obtained
+            ) != 2:
+
+                fail(
+                    "Return exactly two indexes."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if any(
+                type(index) is not int
+                for index in obtained
+            ):
+
+                fail(
+                    "Both returned indexes must be integers."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # VALID INDEXES
+            # -----------------------------------------
+
+            first_index = obtained[0]
+            second_index = obtained[1]
+
+
+            if not (
+                0 <= first_index
+                < len(numbers)
+                and
+                0 <= second_index
+                < len(numbers)
+            ):
+
+                fail(
+                    "The returned indexes must be valid positions "
+                    "inside numbers."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if (
+                first_index
+                == second_index
+            ):
+
+                fail(
+                    "The same list position cannot be used twice."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # INDEX ORDER
+            # -----------------------------------------
+
+            if (
+                first_index
+                >= second_index
+            ):
+
+                fail(
+                    "Return the indexes in increasing order."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # VALUES MUST PRODUCE TARGET
+            # -----------------------------------------
+
+            if (
+                numbers[first_index]
+                + numbers[second_index]
+                != target
+            ):
+
+                fail(
+                    "The values at the returned indexes do not "
+                    "add up to the target."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # EXPECTED UNIQUE SOLUTION
+            # -----------------------------------------
+
+            if obtained != expected:
+
+                fail(
+                    f"Numbers: {original_snapshot}\\n"
+                    f"Target: {target}\\n"
+                    f"Expected indexes: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # INPUT MUST REMAIN UNCHANGED
+            # -----------------------------------------
+
+            if numbers != original_snapshot:
+
+                fail(
+                    "The original numbers list must not be modified."
+                )
+
+                tests_ok = False
+
+                break
+
+
+    if tests_ok:
+
+        success(
+            "A dictionary is used for efficient lookup"
+        )
+
+        success(
+            "The correct pair of indexes is returned"
+        )
+
+        success(
+            "Duplicate values are handled correctly"
+        )
+
+        success(
+            "Negative numbers and zero are handled correctly"
+        )
+
+        success(
+            "The same position is never used twice"
+        )
+
+        success(
+            "Indexes are returned in increasing order"
+        )
+
+        success(
+            "The original input remains unchanged"
+        )
+
+        success(
+            "The solution avoids an O(n²) pair-by-pair search"
+        )
+
+        success(
+            "The approach is compatible with O(n) average time"
+        )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
     }
 
 
