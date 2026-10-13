@@ -8521,7 +8521,4369 @@ except Exception as error:
     )
 `
 
+    },
+
+
+
+    /* =====================================================
+   CHALLENGE 021
+   Transaction Audit Pipeline
+===================================================== */
+
+21: {
+
+    chapter: 11,
+
+    number: "021",
+
+    difficulty: "Hard",
+
+    layout: "macro",
+
+    title:
+        "Transaction Audit Pipeline",
+
+    description: `
+        <p>
+            Build a complete transaction-processing pipeline using
+            <strong>two functions that work together</strong>.
+        </p>
+
+        <p>
+            The first function must read and validate transactions
+            lazily from a file:
+        </p>
+
+        <pre>def iter_transactions(filename):
+    pass</pre>
+
+        <p>
+            The second function must process those transactions and
+            build a final report:
+        </p>
+
+        <pre>def build_transaction_report(filename):
+    pass</pre>
+
+        <h3>Input Format</h3>
+
+        <p>
+            The file contains one transaction per line in this format:
+        </p>
+
+        <pre>transaction_id,user,type,amount</pre>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>T001,Alex,deposit,100
+T002,Sam,withdraw,40
+invalid line
+T003,Alex,withdraw,25
+T004,Sam,deposit,80
+T002,Sam,withdraw,40</pre>
+
+        <h3>Part 1 — iter_transactions()</h3>
+
+        <p>
+            <code>iter_transactions(filename)</code> must be a
+            <strong>generator function</strong>.
+        </p>
+
+        <p>
+            For every valid line, yield a dictionary with exactly
+            these keys:
+        </p>
+
+        <pre>{
+    "id": "T001",
+    "user": "alex",
+    "type": "deposit",
+    "amount": 100
+}</pre>
+
+        <p>
+            Apply the following rules:
+        </p>
+
+        <ul>
+            <li>
+                remove surrounding whitespace from every field;
+            </li>
+
+            <li>
+                convert the user name to lowercase;
+            </li>
+
+            <li>
+                convert the transaction type to lowercase;
+            </li>
+
+            <li>
+                the type must be either
+                <code>"deposit"</code> or
+                <code>"withdraw"</code>;
+            </li>
+
+            <li>
+                the amount must be successfully converted using
+                <code>int()</code>;
+            </li>
+
+            <li>
+                the amount must be greater than or equal to zero;
+            </li>
+
+            <li>
+                the transaction ID cannot be empty;
+            </li>
+
+            <li>
+                the user cannot be empty;
+            </li>
+
+            <li>
+                a valid line must contain exactly four
+                comma-separated fields;
+            </li>
+
+            <li>
+                invalid lines must be ignored;
+            </li>
+
+            <li>
+                a missing file must behave like an empty input
+                instead of crashing the program.
+            </li>
+        </ul>
+
+        <p>
+            The file must be processed
+            <strong>lazily</strong>.
+            Do not load the complete file before producing the first
+            valid transaction.
+        </p>
+
+        <h3>Part 2 — build_transaction_report()</h3>
+
+        <p>
+            <code>build_transaction_report(filename)</code>
+            must use:
+        </p>
+
+        <pre>iter_transactions(filename)</pre>
+
+        <p>
+            Every transaction is identified by its
+            <code>"id"</code>.
+        </p>
+
+        <p>
+            If the same <strong>valid</strong> transaction ID appears
+            more than once, only the first occurrence must be
+            processed.
+        </p>
+
+        <p>
+            Every later valid occurrence of that same ID must be
+            ignored and counted as a duplicate.
+        </p>
+
+        <p>
+            Invalid lines are ignored completely and therefore do not
+            count as duplicate transactions.
+        </p>
+
+        <p>
+            Use a <strong>set</strong> to keep track of transaction
+            IDs that have already been processed.
+        </p>
+
+        <p>
+            A deposit increases the user's balance.
+            A withdrawal decreases it.
+        </p>
+
+        <h3>Required Result</h3>
+
+        <p>
+            Return a dictionary containing exactly these keys:
+        </p>
+
+        <pre>{
+    "balances": ...,
+    "ranking": ...,
+    "top_user": ...,
+    "total_deposits": ...,
+    "total_withdrawals": ...,
+    "processed_transactions": ...,
+    "duplicate_transactions": ...,
+    "all_balances_non_negative": ...,
+    "any_negative_balance": ...
+}</pre>
+
+        <h3>Ranking</h3>
+
+        <p>
+            <code>ranking</code> must contain the users ordered from
+            the highest balance to the lowest balance.
+        </p>
+
+        <p>
+            If two or more users have the same balance, their relative
+            order must remain the order in which they first appeared
+            among the processed transactions.
+        </p>
+
+        <p>
+            <code>top_user</code> must contain the first user in the
+            ranking.
+        </p>
+
+        <p>
+            If no valid transaction is processed,
+            <code>top_user</code> must be:
+        </p>
+
+        <pre>None</pre>
+
+        <h3>Balance Checks</h3>
+
+        <p>
+            A balance equal to <code>0</code> is considered
+            non-negative.
+        </p>
+
+        <p>
+            Therefore:
+        </p>
+
+        <ul>
+            <li>
+                <code>all_balances_non_negative</code> is true when
+                every balance is greater than or equal to zero;
+            </li>
+
+            <li>
+                <code>any_negative_balance</code> is true only when
+                at least one balance is strictly less than zero.
+            </li>
+        </ul>
+
+        <h3>Required Techniques</h3>
+
+        <p>
+            Your solution must:
+        </p>
+
+        <ul>
+            <li>
+                make <code>iter_transactions()</code> a generator;
+            </li>
+
+            <li>
+                read the file progressively;
+            </li>
+
+            <li>
+                handle malformed data without crashing;
+            </li>
+
+            <li>
+                handle <code>FileNotFoundError</code>;
+            </li>
+
+            <li>
+                make <code>build_transaction_report()</code> call
+                <code>iter_transactions()</code>;
+            </li>
+
+            <li>
+                use a set to track processed transaction IDs;
+            </li>
+
+            <li>
+                use <code>sorted()</code> for the ranking;
+            </li>
+
+            <li>
+                use <code>all()</code>;
+            </li>
+
+            <li>
+                use <code>any()</code>.
+            </li>
+        </ul>
+
+        <h3>Example Result</h3>
+
+        <p>
+            For the example file above, the result should be:
+        </p>
+
+        <pre>{
+    "balances": {
+        "alex": 75,
+        "sam": 40
+    },
+    "ranking": [
+        "alex",
+        "sam"
+    ],
+    "top_user": "alex",
+    "total_deposits": 180,
+    "total_withdrawals": 65,
+    "processed_transactions": 4,
+    "duplicate_transactions": 1,
+    "all_balances_non_negative": True,
+    "any_negative_balance": False
+}</pre>
+
+        <p>
+            This is a cumulative challenge.
+            Your implementation does not need to match a predefined
+            solution, but it must satisfy all required behavior and
+            techniques.
+        </p>
+    `,
+
+    starterCode:
+`def iter_transactions(filename):
+    pass
+
+
+def build_transaction_report(filename):
+    pass
+
+
+example_filename = "__example_transactions_021.txt"
+
+with open(
+    example_filename,
+    "w",
+    encoding="utf-8"
+) as file:
+
+    file.write(
+        """T001,Alex,deposit,100
+T002,Sam,withdraw,40
+invalid line
+T003,Alex,withdraw,25
+T004,Sam,deposit,80
+T002,Sam,withdraw,40
+"""
+    )
+
+
+print(
+    build_transaction_report(
+        example_filename
+    )
+)`,
+
+    checker:
+`
+import ast
+import contextlib
+import inspect
+import io
+import os
+
+from types import GeneratorType
+
+
+# =====================================================
+# PARSE USER CODE
+# =====================================================
+
+try:
+
+    tree = ast.parse(
+        user_code
+    )
+
+except SyntaxError as error:
+
+    fail(
+        "Your code contains a syntax error: "
+        + str(error)
+    )
+
+    tree = None
+
+
+if tree is not None:
+
+    function_nodes = {
+        node.name: node
+        for node in tree.body
+        if isinstance(
+            node,
+            ast.FunctionDef
+        )
     }
+
+
+    iter_node = function_nodes.get(
+        "iter_transactions"
+    )
+
+    report_node = function_nodes.get(
+        "build_transaction_report"
+    )
+
+
+    # =================================================
+    # REQUIRED FUNCTION DEFINITIONS
+    # =================================================
+
+    definitions_ok = True
+
+
+    if iter_node is None:
+
+        fail(
+            "You must define a function called "
+            "iter_transactions()."
+        )
+
+        definitions_ok = False
+
+
+    if report_node is None:
+
+        fail(
+            "You must define a function called "
+            "build_transaction_report()."
+        )
+
+        definitions_ok = False
+
+
+    if definitions_ok:
+
+        success(
+            "Both required functions were found"
+        )
+
+
+        # =============================================
+        # CHECK GENERATOR SYNTAX
+        # =============================================
+
+        uses_yield = any(
+
+            isinstance(
+                node,
+                (
+                    ast.Yield,
+                    ast.YieldFrom
+                )
+            )
+
+            for node in ast.walk(
+                iter_node
+            )
+        )
+
+
+        if not uses_yield:
+
+            fail(
+                "iter_transactions() must use yield "
+                "and behave as a generator."
+            )
+
+        else:
+
+            success(
+                "yield detected in iter_transactions()"
+            )
+
+
+        # =============================================
+        # CHECK FOR EAGER FILE READING
+        # =============================================
+
+        forbidden_file_methods = set()
+
+
+        for node in ast.walk(
+            iter_node
+        ):
+
+            if (
+                isinstance(
+                    node,
+                    ast.Call
+                )
+                and isinstance(
+                    node.func,
+                    ast.Attribute
+                )
+                and node.func.attr in {
+                    "read",
+                    "readlines",
+                    "read_text"
+                }
+            ):
+
+                forbidden_file_methods.add(
+                    node.func.attr
+                )
+
+
+        if forbidden_file_methods:
+
+            fail(
+                "iter_transactions() must read the file "
+                "progressively. Do not use read(), "
+                "readlines() or read_text()."
+            )
+
+        else:
+
+            success(
+                "No eager whole-file read detected"
+            )
+
+
+        # =============================================
+        # CHECK THAT REPORT USES GENERATOR FUNCTION
+        # =============================================
+
+        report_calls = []
+
+
+        for node in ast.walk(
+            report_node
+        ):
+
+            if (
+                isinstance(
+                    node,
+                    ast.Call
+                )
+                and isinstance(
+                    node.func,
+                    ast.Name
+                )
+            ):
+
+                report_calls.append(
+                    node.func.id
+                )
+
+
+        if (
+            "iter_transactions"
+            not in report_calls
+        ):
+
+            fail(
+                "build_transaction_report() must call "
+                "iter_transactions()."
+            )
+
+        else:
+
+            success(
+                "build_transaction_report() uses "
+                "iter_transactions()"
+            )
+
+
+        # =============================================
+        # CHECK SET USAGE
+        # =============================================
+
+        uses_set = any(
+
+            isinstance(
+                node,
+                ast.Set
+            )
+
+            or (
+
+                isinstance(
+                    node,
+                    ast.Call
+                )
+
+                and isinstance(
+                    node.func,
+                    ast.Name
+                )
+
+                and node.func.id == "set"
+
+            )
+
+            for node in ast.walk(
+                report_node
+            )
+        )
+
+
+        if not uses_set:
+
+            fail(
+                "Use a set inside "
+                "build_transaction_report() to track "
+                "processed transaction IDs."
+            )
+
+        else:
+
+            success(
+                "Set-based duplicate tracking detected"
+            )
+
+
+        # =============================================
+        # CHECK REQUIRED BUILT-INS
+        # =============================================
+
+        required_calls = {
+            "sorted",
+            "all",
+            "any"
+        }
+
+
+        missing_calls = (
+            required_calls
+            - set(
+                report_calls
+            )
+        )
+
+
+        if missing_calls:
+
+            fail(
+                "build_transaction_report() must use: "
+                + ", ".join(
+                    sorted(
+                        missing_calls
+                    )
+                )
+                + "."
+            )
+
+        else:
+
+            success(
+                "sorted(), all() and any() detected"
+            )
+
+
+        # =============================================
+        # LOAD USER CODE
+        # =============================================
+
+        namespace = {
+            "__name__": "__challenge_checker__"
+        }
+
+
+        runtime_ready = True
+
+
+        try:
+
+            hidden_output = io.StringIO()
+
+            with contextlib.redirect_stdout(
+                hidden_output
+            ):
+
+                exec(
+                    user_code,
+                    namespace
+                )
+
+
+        except Exception as error:
+
+            fail(
+                "Error while loading your code: "
+                + str(error)
+            )
+
+            runtime_ready = False
+
+
+        if runtime_ready:
+
+            iter_function = namespace.get(
+                "iter_transactions"
+            )
+
+            report_function = namespace.get(
+                "build_transaction_report"
+            )
+
+
+            if not callable(
+                iter_function
+            ):
+
+                fail(
+                    "iter_transactions() must be callable."
+                )
+
+                runtime_ready = False
+
+
+            if not callable(
+                report_function
+            ):
+
+                fail(
+                    "build_transaction_report() must be callable."
+                )
+
+                runtime_ready = False
+
+
+            if runtime_ready:
+
+                success(
+                    "Both functions are callable"
+                )
+
+
+        # =============================================
+        # RUNTIME TESTS
+        # =============================================
+
+        if runtime_ready:
+
+            test_files = []
+
+
+            def write_test_file(
+                filename,
+                lines
+            ):
+
+                with open(
+                    filename,
+                    "w",
+                    encoding="utf-8"
+                ) as file:
+
+                    file.write(
+                        chr(10).join(
+                            lines
+                        )
+                    )
+
+                    file.write(
+                        chr(10)
+                    )
+
+
+                test_files.append(
+                    filename
+                )
+
+
+            # =========================================
+            # GENERATOR OBJECT TEST
+            # =========================================
+
+            if not inspect.isgeneratorfunction(
+                iter_function
+            ):
+
+                fail(
+                    "iter_transactions() must be a "
+                    "generator function."
+                )
+
+            else:
+
+                success(
+                    "iter_transactions() is a generator function"
+                )
+
+
+            # =========================================
+            # PARSING AND VALIDATION
+            # =========================================
+
+            parsing_filename = (
+                "__challenge021_parsing.txt"
+            )
+
+
+            write_test_file(
+                parsing_filename,
+                [
+                    "  T001 , Alice , DePoSiT , 100  ",
+                    "invalid line",
+                    " T002 , BOB , withdraw , 25 ",
+                    "T003,,deposit,10",
+                    "T004,Sam,refund,10",
+                    "T005,Sam,deposit,-1",
+                    "T006,Sam,deposit,3.5",
+                    "T007,Élodie,DEPOSIT,+7",
+                    "T008,Too,Many,Fields,10",
+                    "T009,Zero,deposit,0"
+                ]
+            )
+
+
+            expected_transactions = [
+                {
+                    "id": "T001",
+                    "user": "alice",
+                    "type": "deposit",
+                    "amount": 100
+                },
+                {
+                    "id": "T002",
+                    "user": "bob",
+                    "type": "withdraw",
+                    "amount": 25
+                },
+                {
+                    "id": "T007",
+                    "user": "élodie",
+                    "type": "deposit",
+                    "amount": 7
+                },
+                {
+                    "id": "T009",
+                    "user": "zero",
+                    "type": "deposit",
+                    "amount": 0
+                }
+            ]
+
+
+            try:
+
+                result = iter_function(
+                    parsing_filename
+                )
+
+
+                if not isinstance(
+                    result,
+                    GeneratorType
+                ):
+
+                    fail(
+                        "iter_transactions() must return "
+                        "a generator object."
+                    )
+
+
+                else:
+
+                    obtained_transactions = list(
+                        result
+                    )
+
+
+                    if (
+                        obtained_transactions
+                        != expected_transactions
+                    ):
+
+                        fail(
+                            "Transaction parsing or validation "
+                            "is incorrect.\\n"
+                            "Expected: "
+                            + str(
+                                expected_transactions
+                            )
+                            + "\\nObtained: "
+                            + str(
+                                obtained_transactions
+                            )
+                        )
+
+
+                    else:
+
+                        success(
+                            "Parsing, normalization and "
+                            "validation are correct"
+                        )
+
+
+            except Exception as error:
+
+                fail(
+                    "iter_transactions() raised an error "
+                    "while processing the parsing test: "
+                    + str(error)
+                )
+
+
+            # =========================================
+            # MISSING FILE TEST
+            # =========================================
+
+            missing_filename = (
+                "__challenge021_missing_file.txt"
+            )
+
+
+            if os.path.exists(
+                missing_filename
+            ):
+
+                os.remove(
+                    missing_filename
+                )
+
+
+            try:
+
+                missing_result = list(
+                    iter_function(
+                        missing_filename
+                    )
+                )
+
+
+                if missing_result != []:
+
+                    fail(
+                        "A missing file should produce "
+                        "no transactions."
+                    )
+
+
+                else:
+
+                    success(
+                        "Missing files are handled correctly"
+                    )
+
+
+            except FileNotFoundError:
+
+                fail(
+                    "iter_transactions() must handle "
+                    "FileNotFoundError."
+                )
+
+
+            except Exception as error:
+
+                fail(
+                    "Unexpected error while testing a "
+                    "missing file: "
+                    + str(error)
+                )
+
+
+            # =========================================
+            # LAZY FILE CONSUMPTION
+            # =========================================
+
+            class TrackingFile:
+
+                def __init__(
+                    self,
+                    lines
+                ):
+
+                    self.lines = lines
+                    self.index = 0
+                    self.consumed = 0
+
+
+                def __enter__(
+                    self
+                ):
+
+                    return self
+
+
+                def __exit__(
+                    self,
+                    exc_type,
+                    exc_value,
+                    traceback
+                ):
+
+                    return False
+
+
+                def __iter__(
+                    self
+                ):
+
+                    return self
+
+
+                def __next__(
+                    self
+                ):
+
+                    if (
+                        self.index
+                        >= len(
+                            self.lines
+                        )
+                    ):
+
+                        raise StopIteration
+
+
+                    value = self.lines[
+                        self.index
+                    ]
+
+
+                    self.index += 1
+                    self.consumed += 1
+
+
+                    return value
+
+
+                def close(
+                    self
+                ):
+
+                    pass
+
+
+            tracking_file = TrackingFile(
+                [
+                    "invalid line" + chr(10),
+
+                    "L1,Lazy,deposit,10"
+                    + chr(10),
+
+                    "L2,Later,deposit,20"
+                    + chr(10),
+
+                    "L3,Last,deposit,30"
+                    + chr(10)
+                ]
+            )
+
+
+            def fake_open(
+                *args,
+                **kwargs
+            ):
+
+                return tracking_file
+
+
+            original_open_exists = (
+                "open" in namespace
+            )
+
+
+            original_open = namespace.get(
+                "open"
+            )
+
+
+            namespace[
+                "open"
+            ] = fake_open
+
+
+            try:
+
+                lazy_generator = iter_function(
+                    "ignored_filename.txt"
+                )
+
+
+                before_next = (
+                    tracking_file.consumed
+                )
+
+
+                first_transaction = next(
+                    lazy_generator
+                )
+
+
+                after_next = (
+                    tracking_file.consumed
+                )
+
+
+                expected_first = {
+                    "id": "L1",
+                    "user": "lazy",
+                    "type": "deposit",
+                    "amount": 10
+                }
+
+
+                if before_next != 0:
+
+                    fail(
+                        "The file must not be consumed "
+                        "when the generator is only created."
+                    )
+
+
+                elif (
+                    first_transaction
+                    != expected_first
+                ):
+
+                    fail(
+                        "The first lazily produced "
+                        "transaction is incorrect."
+                    )
+
+
+                elif after_next != 2:
+
+                    fail(
+                        "iter_transactions() consumed more "
+                        "lines than necessary before its "
+                        "first yield."
+                    )
+
+
+                else:
+
+                    success(
+                        "File processing is genuinely lazy"
+                    )
+
+
+            except Exception as error:
+
+                fail(
+                    "Lazy-processing test failed: "
+                    + str(error)
+                )
+
+
+            finally:
+
+                if original_open_exists:
+
+                    namespace[
+                        "open"
+                    ] = original_open
+
+                else:
+
+                    namespace.pop(
+                        "open",
+                        None
+                    )
+
+
+            # =========================================
+            # REPORT TEST 1 — MAIN EXAMPLE
+            # =========================================
+
+            report_filename_1 = (
+                "__challenge021_report_1.txt"
+            )
+
+
+            write_test_file(
+                report_filename_1,
+                [
+                    "T001,Alex,deposit,100",
+                    "T002,Sam,withdraw,40",
+                    "invalid line",
+                    "T003,Alex,withdraw,25",
+                    "T004,Sam,deposit,80",
+                    "T002,Sam,withdraw,40"
+                ]
+            )
+
+
+            expected_report_1 = {
+                "balances": {
+                    "alex": 75,
+                    "sam": 40
+                },
+                "ranking": [
+                    "alex",
+                    "sam"
+                ],
+                "top_user": "alex",
+                "total_deposits": 180,
+                "total_withdrawals": 65,
+                "processed_transactions": 4,
+                "duplicate_transactions": 1,
+                "all_balances_non_negative": True,
+                "any_negative_balance": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 2 — NORMALIZATION + NEGATIVE
+            # =========================================
+
+            report_filename_2 = (
+                "__challenge021_report_2.txt"
+            )
+
+
+            write_test_file(
+                report_filename_2,
+                [
+                    " A1 , Alice Smith , DePoSiT , 50 ",
+                    "A2,Bob,refund,20",
+                    "A3,Bob,withdraw,-5",
+                    "A4,Bob,withdraw,abc",
+                    "A5,Bob,withdraw,15",
+                    "A6,ALICE SMITH,withdraw,10",
+                    "A7,,deposit,500"
+                ]
+            )
+
+
+            expected_report_2 = {
+                "balances": {
+                    "alice smith": 40,
+                    "bob": -15
+                },
+                "ranking": [
+                    "alice smith",
+                    "bob"
+                ],
+                "top_user": "alice smith",
+                "total_deposits": 50,
+                "total_withdrawals": 25,
+                "processed_transactions": 3,
+                "duplicate_transactions": 0,
+                "all_balances_non_negative": False,
+                "any_negative_balance": True
+            }
+
+
+            # =========================================
+            # REPORT TEST 3 — STABLE TIE + DUPLICATE
+            # =========================================
+
+            report_filename_3 = (
+                "__challenge021_report_3.txt"
+            )
+
+
+            write_test_file(
+                report_filename_3,
+                [
+                    "T1,Zoe,deposit,20",
+                    "T2,Adam,deposit,50",
+                    "T3,Mia,deposit,50",
+                    "T4,Zoe,deposit,30",
+                    "T1,Zoe,withdraw,1000"
+                ]
+            )
+
+
+            expected_report_3 = {
+                "balances": {
+                    "zoe": 50,
+                    "adam": 50,
+                    "mia": 50
+                },
+                "ranking": [
+                    "zoe",
+                    "adam",
+                    "mia"
+                ],
+                "top_user": "zoe",
+                "total_deposits": 150,
+                "total_withdrawals": 0,
+                "processed_transactions": 4,
+                "duplicate_transactions": 1,
+                "all_balances_non_negative": True,
+                "any_negative_balance": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 4 — NO VALID TRANSACTIONS
+            # =========================================
+
+            report_filename_4 = (
+                "__challenge021_report_4.txt"
+            )
+
+
+            write_test_file(
+                report_filename_4,
+                [
+                    "invalid",
+                    "T1,,deposit,10",
+                    "T2,Alex,unknown,10",
+                    "T3,Alex,deposit,-1",
+                    "T4,Alex,withdraw,nope",
+                    "T5,Alex,deposit,1,extra"
+                ]
+            )
+
+
+            expected_report_4 = {
+                "balances": {},
+                "ranking": [],
+                "top_user": None,
+                "total_deposits": 0,
+                "total_withdrawals": 0,
+                "processed_transactions": 0,
+                "duplicate_transactions": 0,
+                "all_balances_non_negative": True,
+                "any_negative_balance": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 5 — INVALID DUPLICATE
+            # =========================================
+
+            report_filename_5 = (
+                "__challenge021_report_5.txt"
+            )
+
+
+            write_test_file(
+                report_filename_5,
+                [
+                    "T1,Alex,deposit,10",
+                    "T1,Alex,deposit,abc",
+                    "T2,Sam,deposit,5"
+                ]
+            )
+
+
+            expected_report_5 = {
+                "balances": {
+                    "alex": 10,
+                    "sam": 5
+                },
+                "ranking": [
+                    "alex",
+                    "sam"
+                ],
+                "top_user": "alex",
+                "total_deposits": 15,
+                "total_withdrawals": 0,
+                "processed_transactions": 2,
+                "duplicate_transactions": 0,
+                "all_balances_non_negative": True,
+                "any_negative_balance": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 6 — ZERO BALANCE
+            # =========================================
+
+            report_filename_6 = (
+                "__challenge021_report_6.txt"
+            )
+
+
+            write_test_file(
+                report_filename_6,
+                [
+                    "T1,Alex,deposit,10",
+                    "T2,Alex,withdraw,10"
+                ]
+            )
+
+
+            expected_report_6 = {
+                "balances": {
+                    "alex": 0
+                },
+                "ranking": [
+                    "alex"
+                ],
+                "top_user": "alex",
+                "total_deposits": 10,
+                "total_withdrawals": 10,
+                "processed_transactions": 2,
+                "duplicate_transactions": 0,
+                "all_balances_non_negative": True,
+                "any_negative_balance": False
+            }
+
+
+            # =========================================
+            # RUN REPORT TESTS
+            # =========================================
+
+            report_tests = [
+                (
+                    report_filename_1,
+                    expected_report_1
+                ),
+                (
+                    report_filename_2,
+                    expected_report_2
+                ),
+                (
+                    report_filename_3,
+                    expected_report_3
+                ),
+                (
+                    report_filename_4,
+                    expected_report_4
+                ),
+                (
+                    report_filename_5,
+                    expected_report_5
+                ),
+                (
+                    report_filename_6,
+                    expected_report_6
+                )
+            ]
+
+
+            reports_ok = True
+
+
+            for (
+                filename,
+                expected
+            ) in report_tests:
+
+                try:
+
+                    obtained = report_function(
+                        filename
+                    )
+
+
+                except Exception as error:
+
+                    fail(
+                        "build_transaction_report() "
+                        "raised an error: "
+                        + str(error)
+                    )
+
+                    reports_ok = False
+
+                    break
+
+
+                if not isinstance(
+                    obtained,
+                    dict
+                ):
+
+                    fail(
+                        "build_transaction_report() "
+                        "must return a dictionary."
+                    )
+
+                    reports_ok = False
+
+                    break
+
+
+                expected_keys = set(
+                    expected.keys()
+                )
+
+
+                obtained_keys = set(
+                    obtained.keys()
+                )
+
+
+                if (
+                    obtained_keys
+                    != expected_keys
+                ):
+
+                    fail(
+                        "The report must contain exactly "
+                        "the required keys.\\n"
+                        "Expected keys: "
+                        + str(
+                            list(
+                                expected.keys()
+                            )
+                        )
+                        + "\\nObtained keys: "
+                        + str(
+                            list(
+                                obtained.keys()
+                            )
+                        )
+                    )
+
+                    reports_ok = False
+
+                    break
+
+
+                if obtained != expected:
+
+                    fail(
+                        "A transaction report is incorrect.\\n"
+                        "Expected: "
+                        + str(
+                            expected
+                        )
+                        + "\\nObtained: "
+                        + str(
+                            obtained
+                        )
+                    )
+
+                    reports_ok = False
+
+                    break
+
+
+            if reports_ok:
+
+                success(
+                    "All transaction report tests passed"
+                )
+
+
+            # =========================================
+            # MISSING FILE REPORT
+            # =========================================
+
+            empty_report = {
+                "balances": {},
+                "ranking": [],
+                "top_user": None,
+                "total_deposits": 0,
+                "total_withdrawals": 0,
+                "processed_transactions": 0,
+                "duplicate_transactions": 0,
+                "all_balances_non_negative": True,
+                "any_negative_balance": False
+            }
+
+
+            try:
+
+                missing_report = (
+                    report_function(
+                        missing_filename
+                    )
+                )
+
+
+                if (
+                    missing_report
+                    != empty_report
+                ):
+
+                    fail(
+                        "build_transaction_report() must "
+                        "return the empty report when the "
+                        "file does not exist."
+                    )
+
+
+                else:
+
+                    success(
+                        "Missing-file report is correct"
+                    )
+
+
+            except Exception as error:
+
+                fail(
+                    "build_transaction_report() failed "
+                    "for a missing file: "
+                    + str(error)
+                )
+
+
+            # =========================================
+            # CLEANUP
+            # =========================================
+
+            for filename in test_files:
+
+                try:
+
+                    if os.path.exists(
+                        filename
+                    ):
+
+                        os.remove(
+                            filename
+                        )
+
+                except Exception:
+
+                    pass
+`
+
+},
+
+
+/* =====================================================
+   CHALLENGE 022
+   Inventory & Order Fulfillment Engine
+===================================================== */
+
+22: {
+
+    chapter: 11,
+
+    number: "022",
+
+    difficulty: "Hard",
+
+    layout: "macro",
+
+    title:
+        "Inventory & Order Fulfillment Engine",
+
+    description: `
+        <p>
+            Build a stateful inventory and order-processing system
+            using a Python class.
+        </p>
+
+        <p>
+            You must implement:
+        </p>
+
+        <pre>class Inventory:
+
+    def __init__(self, products):
+        pass
+
+    def process_orders(self, orders):
+        pass
+
+    def iter_available_products(self):
+        pass</pre>
+
+        <h3>Products</h3>
+
+        <p>
+            The constructor receives a list of product dictionaries:
+        </p>
+
+        <pre>[
+    {
+        "sku": "P100",
+        "name": "Keyboard",
+        "price": 50.0,
+        "stock": 4
+    },
+    {
+        "sku": "P200",
+        "name": "Mouse",
+        "price": 25.0,
+        "stock": 3
+    }
+]</pre>
+
+        <p>
+            You may assume that product dictionaries contain all the
+            required keys and that product SKUs are unique.
+        </p>
+
+        <p>
+            You may also assume that every product has a
+            <strong>non-negative integer stock</strong>.
+        </p>
+
+        <h3>Internal Inventory</h3>
+
+        <p>
+            Store the internal inventory in an attribute called
+            <code>self.products</code>.
+        </p>
+
+        <p>
+            <code>self.products</code> must be a
+            <strong>dictionary keyed by SKU</strong>.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>{
+    "P100": {
+        "sku": "P100",
+        "name": "Keyboard",
+        "price": 50.0,
+        "stock": 4
+    },
+
+    "P200": {
+        "sku": "P200",
+        "name": "Mouse",
+        "price": 25.0,
+        "stock": 3
+    }
+}</pre>
+
+        <p>
+            The internal product dictionaries must be independent
+            from the dictionaries received by the constructor.
+        </p>
+
+        <p>
+            Changing the inventory must therefore
+            <strong>not modify the original products input</strong>.
+        </p>
+
+        <p>
+            Do not use <code>copy.deepcopy()</code>.
+        </p>
+
+        <h3>Orders</h3>
+
+        <p>
+            <code>process_orders()</code> receives a list of orders:
+        </p>
+
+        <pre>[
+    {
+        "id": "O1",
+        "items": [
+            {
+                "sku": "P100",
+                "quantity": 2
+            },
+            {
+                "sku": "P200",
+                "quantity": 1
+            }
+        ]
+    }
+]</pre>
+
+        <p>
+            You may assume that every order contains an
+            <code>"id"</code> and an <code>"items"</code> list,
+            and that every item contains
+            <code>"sku"</code> and <code>"quantity"</code>.
+        </p>
+
+        <p>
+            An order whose <code>"items"</code> list is empty is
+            valid. It is accepted without changing stock or revenue.
+        </p>
+
+        <p>
+            <code>process_orders()</code> must not modify the
+            <code>orders</code> input, the order dictionaries or
+            their nested item dictionaries.
+        </p>
+
+        <h3>Duplicate Orders</h3>
+
+        <p>
+            Use a <strong>set</strong> to keep track of order IDs
+            inside each call to <code>process_orders()</code>.
+        </p>
+
+        <p>
+            The first occurrence of an order ID is evaluated normally,
+            whether it is ultimately accepted or rejected.
+        </p>
+
+        <p>
+            Every later occurrence of the same order ID in that batch
+            must be ignored immediately and counted in:
+        </p>
+
+        <pre>"duplicate_orders"</pre>
+
+        <p>
+            A duplicate order must not be validated again and must
+            never modify stock, revenue, sold quantities,
+            accepted orders or rejected orders.
+        </p>
+
+        <p>
+            Duplicate orders must also be ignored when calculating
+            <code>all_orders_fulfilled</code>.
+        </p>
+
+        <p>
+            Duplicate tracking applies only to the current call to
+            <code>process_orders()</code>.
+        </p>
+
+        <p>
+            An order ID used in an earlier call may therefore be used
+            again in a later call.
+        </p>
+
+        <h3>Item Validation</h3>
+
+        <p>
+            An item can be fulfilled only if:
+        </p>
+
+        <ul>
+            <li>
+                its SKU exists in the inventory;
+            </li>
+
+            <li>
+                its quantity has type <code>int</code>;
+            </li>
+
+            <li>
+                boolean values such as <code>True</code> and
+                <code>False</code> are not valid quantities;
+            </li>
+
+            <li>
+                its quantity is greater than zero;
+            </li>
+
+            <li>
+                enough stock is available.
+            </li>
+        </ul>
+
+        <h3>Repeated SKUs Inside an Order</h3>
+
+        <p>
+            The same SKU may appear multiple times inside one order.
+        </p>
+
+        <p>
+            You must first combine those quantities before deciding
+            whether the order can be fulfilled.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>[
+    {
+        "sku": "P100",
+        "quantity": 2
+    },
+    {
+        "sku": "P100",
+        "quantity": 3
+    }
+]</pre>
+
+        <p>
+            requires a total quantity of:
+        </p>
+
+        <pre>5</pre>
+
+        <p>
+            If only four units are available, the entire order must
+            be rejected.
+        </p>
+
+        <h3>Atomic Order Processing</h3>
+
+        <p>
+            An order must be accepted only if
+            <strong>every requested item can be fulfilled</strong>.
+        </p>
+
+        <p>
+            If even one item cannot be fulfilled, the whole order is
+            rejected and the inventory must remain exactly as it was
+            before that order.
+        </p>
+
+        <p>
+            In other words:
+        </p>
+
+        <pre>validate the complete order
+        ↓
+decide whether it can be fulfilled
+        ↓
+only then modify stock</pre>
+
+        <h3>Persistent Inventory State</h3>
+
+        <p>
+            The <code>Inventory</code> object is stateful.
+        </p>
+
+        <p>
+            If <code>process_orders()</code> is called more than once
+            on the same object, every new call must continue from the
+            stock remaining after previous calls.
+        </p>
+
+        <p>
+            Do not restore the original stock at the beginning of a
+            new call.
+        </p>
+
+        <p>
+            The report returned by each call describes only the orders
+            passed to that specific call, while
+            <code>remaining_stock</code> reflects the current inventory
+            after that batch has been processed.
+        </p>
+
+        <h3>Revenue</h3>
+
+        <p>
+            Only accepted orders contribute to revenue.
+        </p>
+
+        <p>
+            For every fulfilled item:
+        </p>
+
+        <pre>price * quantity</pre>
+
+        <p>
+            must be added to the revenue for the current call.
+        </p>
+
+        <h3>Sold Quantities</h3>
+
+        <p>
+            Track how many units of every product were actually sold
+            during the current call to
+            <code>process_orders()</code>.
+        </p>
+
+        <p>
+            The result must contain every product from the inventory,
+            including products with zero sales in that batch.
+        </p>
+
+        <h3>Ranking</h3>
+
+        <p>
+            Create a ranking containing all product SKUs ordered by
+            quantity sold during the current call, from highest to
+            lowest.
+        </p>
+
+        <p>
+            Use <code>sorted()</code>.
+        </p>
+
+        <p>
+            If two products have the same sold quantity, preserve
+            their relative order from the original inventory.
+        </p>
+
+        <p>
+            <code>top_product</code> is the first SKU in that ranking.
+        </p>
+
+        <p>
+            If the inventory is empty:
+        </p>
+
+        <pre>"top_product": None</pre>
+
+        <h3>all_orders_fulfilled</h3>
+
+        <p>
+            Use <code>all()</code>.
+        </p>
+
+        <p>
+            This value must be true only if every
+            <strong>non-duplicate</strong> order evaluated during the
+            current call was accepted.
+        </p>
+
+        <p>
+            Duplicate orders are ignored for this calculation.
+        </p>
+
+        <p>
+            If no orders are evaluated, the result must be:
+        </p>
+
+        <pre>True</pre>
+
+        <h3>any_out_of_stock</h3>
+
+        <p>
+            Use <code>any()</code>.
+        </p>
+
+        <p>
+            This value must be true when at least one product has no
+            stock remaining after the current batch has been
+            processed.
+        </p>
+
+        <h3>Required Report</h3>
+
+        <p>
+            <code>process_orders()</code> must return a dictionary
+            containing exactly these keys:
+        </p>
+
+        <pre>{
+    "accepted_orders": ...,
+    "rejected_orders": ...,
+    "duplicate_orders": ...,
+    "revenue": ...,
+    "remaining_stock": ...,
+    "sold_quantities": ...,
+    "top_product": ...,
+    "ranking": ...,
+    "all_orders_fulfilled": ...,
+    "any_out_of_stock": ...
+}</pre>
+
+        <p>
+            Accepted and rejected order IDs must remain in the order
+            in which those orders were evaluated.
+        </p>
+
+        <h3>iter_available_products()</h3>
+
+        <p>
+            This method must be a
+            <strong>generator function</strong>.
+        </p>
+
+        <p>
+            It must always inspect the
+            <strong>current inventory state</strong>.
+        </p>
+
+        <p>
+            Yield only products whose current stock is greater than
+            zero.
+        </p>
+
+        <p>
+            Products must be yielded in their original inventory
+            order, not alphabetically by SKU.
+        </p>
+
+        <p>
+            Each yielded dictionary must be an independent copy of
+            the internal product dictionary.
+        </p>
+
+        <p>
+            Therefore, modifying a dictionary returned by the
+            generator must not modify the inventory itself.
+        </p>
+
+        <h3>Required Techniques</h3>
+
+        <ul>
+            <li>
+                use a class;
+            </li>
+
+            <li>
+                store products in <code>self.products</code>;
+            </li>
+
+            <li>
+                make <code>self.products</code> a dictionary keyed by
+                SKU;
+            </li>
+
+            <li>
+                keep internal product dictionaries independent from
+                the constructor input;
+            </li>
+
+            <li>
+                do not use <code>deepcopy()</code>;
+            </li>
+
+            <li>
+                do not modify the orders input;
+            </li>
+
+            <li>
+                use a set for duplicate order IDs;
+            </li>
+
+            <li>
+                correctly aggregate repeated SKUs inside an order;
+            </li>
+
+            <li>
+                process orders atomically;
+            </li>
+
+            <li>
+                preserve inventory state across multiple calls;
+            </li>
+
+            <li>
+                use <code>sorted()</code>;
+            </li>
+
+            <li>
+                use <code>all()</code>;
+            </li>
+
+            <li>
+                use <code>any()</code>;
+            </li>
+
+            <li>
+                make <code>iter_available_products()</code> a
+                generator.
+            </li>
+        </ul>
+    `,
+
+    starterCode:
+`class Inventory:
+
+    def __init__(self, products):
+        pass
+
+
+    def process_orders(self, orders):
+        pass
+
+
+    def iter_available_products(self):
+        pass
+
+
+
+products = [
+    {
+        "sku": "P100",
+        "name": "Keyboard",
+        "price": 50.0,
+        "stock": 4
+    },
+    {
+        "sku": "P200",
+        "name": "Mouse",
+        "price": 25.0,
+        "stock": 3
+    },
+    {
+        "sku": "P300",
+        "name": "Monitor",
+        "price": 200.0,
+        "stock": 1
+    }
+]
+
+
+orders = [
+    {
+        "id": "O1",
+        "items": [
+            {
+                "sku": "P100",
+                "quantity": 2
+            },
+            {
+                "sku": "P200",
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "id": "O2",
+        "items": [
+            {
+                "sku": "P100",
+                "quantity": 3
+            }
+        ]
+    },
+    {
+        "id": "O3",
+        "items": [
+            {
+                "sku": "P300",
+                "quantity": 1
+            },
+            {
+                "sku": "P200",
+                "quantity": 2
+            }
+        ]
+    },
+    {
+        "id": "O1",
+        "items": [
+            {
+                "sku": "P100",
+                "quantity": 1
+            }
+        ]
+    }
+]
+
+
+inventory = Inventory(products)
+
+print(
+    inventory.process_orders(
+        orders
+    )
+)
+
+print(
+    list(
+        inventory.iter_available_products()
+    )
+)`,
+
+    checker:
+`
+import ast
+import contextlib
+import copy
+import inspect
+import io
+
+from types import GeneratorType
+
+
+# =====================================================
+# PARSE USER CODE
+# =====================================================
+
+try:
+
+    tree = ast.parse(
+        user_code
+    )
+
+except SyntaxError as error:
+
+    fail(
+        "Your code contains a syntax error: "
+        + str(error)
+    )
+
+    tree = None
+
+
+if tree is not None:
+
+    # =================================================
+    # FIND INVENTORY CLASS
+    # =================================================
+
+    inventory_node = None
+
+
+    for node in tree.body:
+
+        if (
+            isinstance(
+                node,
+                ast.ClassDef
+            )
+            and node.name == "Inventory"
+        ):
+
+            inventory_node = node
+            break
+
+
+    if inventory_node is None:
+
+        fail(
+            "You must define a class called Inventory."
+        )
+
+
+    else:
+
+        success(
+            "Inventory class found"
+        )
+
+
+        method_nodes = {
+            node.name: node
+            for node in inventory_node.body
+            if isinstance(
+                node,
+                ast.FunctionDef
+            )
+        }
+
+
+        init_node = method_nodes.get(
+            "__init__"
+        )
+
+        process_node = method_nodes.get(
+            "process_orders"
+        )
+
+        generator_node = method_nodes.get(
+            "iter_available_products"
+        )
+
+
+        methods_ok = True
+
+
+        if init_node is None:
+
+            fail(
+                "Inventory must define __init__()."
+            )
+
+            methods_ok = False
+
+
+        if process_node is None:
+
+            fail(
+                "Inventory must define process_orders()."
+            )
+
+            methods_ok = False
+
+
+        if generator_node is None:
+
+            fail(
+                "Inventory must define "
+                "iter_available_products()."
+            )
+
+            methods_ok = False
+
+
+        if methods_ok:
+
+            success(
+                "All required methods were found"
+            )
+
+
+            # =========================================
+            # GENERATOR SYNTAX
+            # =========================================
+
+            uses_yield = any(
+
+                isinstance(
+                    node,
+                    (
+                        ast.Yield,
+                        ast.YieldFrom
+                    )
+                )
+
+                for node in ast.walk(
+                    generator_node
+                )
+            )
+
+
+            if not uses_yield:
+
+                fail(
+                    "iter_available_products() must "
+                    "use yield."
+                )
+
+            else:
+
+                success(
+                    "yield detected in "
+                    "iter_available_products()"
+                )
+
+
+            # =========================================
+            # REQUIRED BUILT-INS
+            # =========================================
+
+            direct_calls = []
+
+
+            for node in ast.walk(
+                inventory_node
+            ):
+
+                if (
+                    isinstance(
+                        node,
+                        ast.Call
+                    )
+                    and isinstance(
+                        node.func,
+                        ast.Name
+                    )
+                ):
+
+                    direct_calls.append(
+                        node.func.id
+                    )
+
+
+            required_calls = {
+                "sorted",
+                "all",
+                "any"
+            }
+
+
+            missing_calls = (
+                required_calls
+                - set(
+                    direct_calls
+                )
+            )
+
+
+            if missing_calls:
+
+                fail(
+                    "Your Inventory class must use: "
+                    + ", ".join(
+                        sorted(
+                            missing_calls
+                        )
+                    )
+                    + "."
+                )
+
+            else:
+
+                success(
+                    "sorted(), all() and any() detected"
+                )
+
+
+            # =========================================
+            # SET USAGE
+            # =========================================
+
+            uses_set = any(
+
+                isinstance(
+                    node,
+                    ast.Set
+                )
+
+                or (
+
+                    isinstance(
+                        node,
+                        ast.Call
+                    )
+
+                    and isinstance(
+                        node.func,
+                        ast.Name
+                    )
+
+                    and node.func.id == "set"
+
+                )
+
+                for node in ast.walk(
+                    inventory_node
+                )
+            )
+
+
+            if not uses_set:
+
+                fail(
+                    "Use a set inside the Inventory class "
+                    "to track duplicate order IDs."
+                )
+
+            else:
+
+                success(
+                    "Set usage detected"
+                )
+
+
+            # =========================================
+            # DEEPCOPY MUST NOT BE USED
+            # =========================================
+
+            uses_deepcopy = False
+
+
+            for node in ast.walk(
+                inventory_node
+            ):
+
+                if not isinstance(
+                    node,
+                    ast.Call
+                ):
+
+                    continue
+
+
+                if (
+                    isinstance(
+                        node.func,
+                        ast.Name
+                    )
+                    and node.func.id == "deepcopy"
+                ):
+
+                    uses_deepcopy = True
+
+
+                if (
+                    isinstance(
+                        node.func,
+                        ast.Attribute
+                    )
+                    and node.func.attr == "deepcopy"
+                ):
+
+                    uses_deepcopy = True
+
+
+            if uses_deepcopy:
+
+                fail(
+                    "Do not use deepcopy() for this "
+                    "challenge."
+                )
+
+            else:
+
+                success(
+                    "No deepcopy() usage detected"
+                )
+
+
+        # =============================================
+        # LOAD USER CODE
+        # =============================================
+
+        namespace = {
+            "__name__": "__challenge_checker__"
+        }
+
+
+        runtime_ready = True
+
+
+        try:
+
+            hidden_output = io.StringIO()
+
+
+            with contextlib.redirect_stdout(
+                hidden_output
+            ):
+
+                exec(
+                    user_code,
+                    namespace
+                )
+
+
+        except Exception as error:
+
+            fail(
+                "Error while loading your code: "
+                + str(error)
+            )
+
+            runtime_ready = False
+
+
+        if runtime_ready:
+
+            Inventory = namespace.get(
+                "Inventory"
+            )
+
+
+            if not inspect.isclass(
+                Inventory
+            ):
+
+                fail(
+                    "Inventory must be a class."
+                )
+
+                runtime_ready = False
+
+
+            else:
+
+                success(
+                    "Inventory is a class"
+                )
+
+
+        # =============================================
+        # RUNTIME TESTS
+        # =============================================
+
+        if runtime_ready:
+
+            # =========================================
+            # CONSTRUCTOR / COPY TEST
+            # =========================================
+
+            source_products = [
+                {
+                    "sku": "C1",
+                    "name": "Copy One",
+                    "price": 10.0,
+                    "stock": 2
+                },
+                {
+                    "sku": "C2",
+                    "name": "Copy Two",
+                    "price": 20.0,
+                    "stock": 0
+                }
+            ]
+
+
+            constructor_ok = True
+
+
+            try:
+
+                inventory = Inventory(
+                    source_products
+                )
+
+
+            except Exception as error:
+
+                fail(
+                    "Inventory() raised an error: "
+                    + str(error)
+                )
+
+                constructor_ok = False
+
+
+            if constructor_ok:
+
+                if not hasattr(
+                    inventory,
+                    "products"
+                ):
+
+                    fail(
+                        "Store the internal inventory "
+                        "in self.products."
+                    )
+
+                    constructor_ok = False
+
+
+            if constructor_ok:
+
+                if not isinstance(
+                    inventory.products,
+                    dict
+                ):
+
+                    fail(
+                        "self.products must be a dictionary "
+                        "keyed by SKU."
+                    )
+
+                    constructor_ok = False
+
+
+            # Only the SKU mapping is required here.
+            # Internal dictionary ordering is deliberately
+            # NOT enforced by the checker.
+
+            if constructor_ok:
+
+                expected_keys = {
+                    "C1",
+                    "C2"
+                }
+
+
+                obtained_keys = set(
+                    inventory.products.keys()
+                )
+
+
+                if (
+                    obtained_keys
+                    != expected_keys
+                ):
+
+                    fail(
+                        "self.products must contain exactly "
+                        "the product SKUs as dictionary keys."
+                    )
+
+                    constructor_ok = False
+
+
+            if constructor_ok:
+
+                try:
+
+                    source_products[0][
+                        "stock"
+                    ] = 999
+
+
+                    internal_stock = (
+                        inventory.products[
+                            "C1"
+                        ][
+                            "stock"
+                        ]
+                    )
+
+
+                    if internal_stock != 2:
+
+                        fail(
+                            "Internal product dictionaries "
+                            "must be independent from the "
+                            "constructor input."
+                        )
+
+                        constructor_ok = False
+
+
+                except Exception as error:
+
+                    fail(
+                        "Could not verify independent "
+                        "product dictionaries: "
+                        + str(error)
+                    )
+
+                    constructor_ok = False
+
+
+            if constructor_ok:
+
+                if (
+                    inventory.products[
+                        "C1"
+                    ]
+                    is source_products[0]
+                ):
+
+                    fail(
+                        "Do not store the original product "
+                        "dictionary objects directly."
+                    )
+
+                    constructor_ok = False
+
+
+            if constructor_ok:
+
+                success(
+                    "Internal inventory structure and "
+                    "copying are correct"
+                )
+
+
+            # =========================================
+            # GENERATOR TEST
+            # NON-ALPHABETICAL INVENTORY ORDER
+            # =========================================
+
+            generator_products = [
+                {
+                    "sku": "Z9",
+                    "name": "First",
+                    "price": 10.0,
+                    "stock": 2
+                },
+                {
+                    "sku": "A1",
+                    "name": "Empty",
+                    "price": 20.0,
+                    "stock": 0
+                },
+                {
+                    "sku": "M5",
+                    "name": "Third",
+                    "price": 30.0,
+                    "stock": 1
+                }
+            ]
+
+
+            generator_ok = True
+
+
+            try:
+
+                generator_inventory = Inventory(
+                    generator_products
+                )
+
+
+                generator_method = (
+                    generator_inventory
+                    .iter_available_products
+                )
+
+
+                if not inspect.isgeneratorfunction(
+                    generator_method
+                ):
+
+                    fail(
+                        "iter_available_products() must "
+                        "be a generator function."
+                    )
+
+                    generator_ok = False
+
+
+                else:
+
+                    produced = generator_method()
+
+
+                    if not isinstance(
+                        produced,
+                        GeneratorType
+                    ):
+
+                        fail(
+                            "iter_available_products() must "
+                            "return a generator object."
+                        )
+
+                        generator_ok = False
+
+
+                    else:
+
+                        available_products = list(
+                            produced
+                        )
+
+
+            except Exception as error:
+
+                fail(
+                    "iter_available_products() raised "
+                    "an error: "
+                    + str(error)
+                )
+
+                generator_ok = False
+
+
+            if generator_ok:
+
+                expected_available = [
+                    {
+                        "sku": "Z9",
+                        "name": "First",
+                        "price": 10.0,
+                        "stock": 2
+                    },
+                    {
+                        "sku": "M5",
+                        "name": "Third",
+                        "price": 30.0,
+                        "stock": 1
+                    }
+                ]
+
+
+                if (
+                    available_products
+                    != expected_available
+                ):
+
+                    fail(
+                        "iter_available_products() returned "
+                        "the wrong products or order.\\n"
+                        "Expected: "
+                        + str(
+                            expected_available
+                        )
+                        + "\\nObtained: "
+                        + str(
+                            available_products
+                        )
+                    )
+
+                    generator_ok = False
+
+
+            if generator_ok:
+
+                available_products[0][
+                    "stock"
+                ] = 999
+
+
+                if (
+                    generator_inventory.products[
+                        "Z9"
+                    ][
+                        "stock"
+                    ]
+                    != 2
+                ):
+
+                    fail(
+                        "Products yielded by "
+                        "iter_available_products() must "
+                        "be independent copies."
+                    )
+
+                    generator_ok = False
+
+
+            if generator_ok:
+
+                success(
+                    "Available-products generator is correct"
+                )
+
+
+            # =========================================
+            # REPORT TEST HELPER
+            # =========================================
+
+            def run_report_test(
+                products,
+                orders,
+                expected,
+                label
+            ):
+
+                products_snapshot = copy.deepcopy(
+                    products
+                )
+
+                orders_snapshot = copy.deepcopy(
+                    orders
+                )
+
+
+                try:
+
+                    test_inventory = Inventory(
+                        products
+                    )
+
+
+                    result = (
+                        test_inventory
+                        .process_orders(
+                            orders
+                        )
+                    )
+
+
+                except Exception as error:
+
+                    fail(
+                        label
+                        + " raised an error: "
+                        + str(error)
+                    )
+
+                    return False
+
+
+                if not isinstance(
+                    result,
+                    dict
+                ):
+
+                    fail(
+                        label
+                        + ": process_orders() must "
+                        "return a dictionary."
+                    )
+
+                    return False
+
+
+                expected_keys = set(
+                    expected.keys()
+                )
+
+
+                obtained_keys = set(
+                    result.keys()
+                )
+
+
+                if (
+                    obtained_keys
+                    != expected_keys
+                ):
+
+                    fail(
+                        label
+                        + ": the report must contain "
+                        "exactly the required keys.\\n"
+                        "Expected keys: "
+                        + str(
+                            list(
+                                expected.keys()
+                            )
+                        )
+                        + "\\nObtained keys: "
+                        + str(
+                            list(
+                                result.keys()
+                            )
+                        )
+                    )
+
+                    return False
+
+
+                if result != expected:
+
+                    fail(
+                        label
+                        + " produced an incorrect report.\\n"
+                        "Expected: "
+                        + str(
+                            expected
+                        )
+                        + "\\nObtained: "
+                        + str(
+                            result
+                        )
+                    )
+
+                    return False
+
+
+                if (
+                    products
+                    != products_snapshot
+                ):
+
+                    fail(
+                        label
+                        + ": processing orders must not "
+                        "modify the original products input."
+                    )
+
+                    return False
+
+
+                if (
+                    orders
+                    != orders_snapshot
+                ):
+
+                    fail(
+                        label
+                        + ": process_orders() must not "
+                        "modify the orders input or its "
+                        "nested item dictionaries."
+                    )
+
+                    return False
+
+
+                try:
+
+                    internal_stock = {
+                        sku: product[
+                            "stock"
+                        ]
+                        for (
+                            sku,
+                            product
+                        ) in (
+                            test_inventory
+                            .products
+                            .items()
+                        )
+                    }
+
+
+                except Exception as error:
+
+                    fail(
+                        label
+                        + ": could not inspect the "
+                        "internal inventory state: "
+                        + str(error)
+                    )
+
+                    return False
+
+
+                if (
+                    internal_stock
+                    != expected[
+                        "remaining_stock"
+                    ]
+                ):
+
+                    fail(
+                        label
+                        + ": the returned remaining stock "
+                        "does not match the actual "
+                        "Inventory state."
+                    )
+
+                    return False
+
+
+                return True
+
+
+            # =========================================
+            # REPORT TEST 1
+            # ATOMICITY + DUPLICATES + REPEATED SKU
+            # =========================================
+
+            products_1 = [
+                {
+                    "sku": "Z9",
+                    "name": "Zenith",
+                    "price": 30.0,
+                    "stock": 4
+                },
+                {
+                    "sku": "A1",
+                    "name": "Alpha",
+                    "price": 20.0,
+                    "stock": 3
+                },
+                {
+                    "sku": "M5",
+                    "name": "Metro",
+                    "price": 50.0,
+                    "stock": 1
+                },
+                {
+                    "sku": "K2",
+                    "name": "Kappa",
+                    "price": 10.0,
+                    "stock": 2
+                }
+            ]
+
+
+            orders_1 = [
+                {
+                    "id": "O1",
+                    "items": [
+                        {
+                            "sku": "Z9",
+                            "quantity": 2
+                        },
+                        {
+                            "sku": "A1",
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "O2",
+                    "items": [
+                        {
+                            "sku": "Z9",
+                            "quantity": 2
+                        },
+                        {
+                            "sku": "Z9",
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "O3",
+                    "items": [
+                        {
+                            "sku": "M5",
+                            "quantity": 1
+                        },
+                        {
+                            "sku": "K2",
+                            "quantity": 2
+                        }
+                    ]
+                },
+                {
+                    "id": "O1",
+                    "items": [
+                        {
+                            "sku": "A1",
+                            "quantity": 2
+                        }
+                    ]
+                },
+                {
+                    "id": "O4",
+                    "items": [
+                        {
+                            "sku": "A1",
+                            "quantity": 2
+                        }
+                    ]
+                },
+                {
+                    "id": "O5",
+                    "items": [
+                        {
+                            "sku": "Z9",
+                            "quantity": 1
+                        },
+                        {
+                            "sku": "X404",
+                            "quantity": 1
+                        }
+                    ]
+                }
+            ]
+
+
+            expected_1 = {
+                "accepted_orders": [
+                    "O1",
+                    "O3",
+                    "O4"
+                ],
+                "rejected_orders": [
+                    "O2",
+                    "O5"
+                ],
+                "duplicate_orders": 1,
+                "revenue": 190.0,
+                "remaining_stock": {
+                    "Z9": 2,
+                    "A1": 0,
+                    "M5": 0,
+                    "K2": 0
+                },
+                "sold_quantities": {
+                    "Z9": 2,
+                    "A1": 3,
+                    "M5": 1,
+                    "K2": 2
+                },
+                "top_product": "A1",
+                "ranking": [
+                    "A1",
+                    "Z9",
+                    "K2",
+                    "M5"
+                ],
+                "all_orders_fulfilled": False,
+                "any_out_of_stock": True
+            }
+
+
+            # =========================================
+            # REPORT TEST 2
+            # REPEATED SKU CAN BE VALID
+            # =========================================
+
+            products_2 = [
+                {
+                    "sku": "P1",
+                    "name": "Product One",
+                    "price": 12.5,
+                    "stock": 5
+                },
+                {
+                    "sku": "P2",
+                    "name": "Product Two",
+                    "price": 5.0,
+                    "stock": 2
+                }
+            ]
+
+
+            orders_2 = [
+                {
+                    "id": "R1",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": 2
+                        },
+                        {
+                            "sku": "P1",
+                            "quantity": 3
+                        }
+                    ]
+                },
+                {
+                    "id": "R2",
+                    "items": [
+                        {
+                            "sku": "P2",
+                            "quantity": 1
+                        }
+                    ]
+                }
+            ]
+
+
+            expected_2 = {
+                "accepted_orders": [
+                    "R1",
+                    "R2"
+                ],
+                "rejected_orders": [],
+                "duplicate_orders": 0,
+                "revenue": 67.5,
+                "remaining_stock": {
+                    "P1": 0,
+                    "P2": 1
+                },
+                "sold_quantities": {
+                    "P1": 5,
+                    "P2": 1
+                },
+                "top_product": "P1",
+                "ranking": [
+                    "P1",
+                    "P2"
+                ],
+                "all_orders_fulfilled": True,
+                "any_out_of_stock": True
+            }
+
+
+            # =========================================
+            # REPORT TEST 3
+            # STABLE RANKING TIES
+            # =========================================
+
+            products_3 = [
+                {
+                    "sku": "ZETA",
+                    "name": "Zeta",
+                    "price": 10.0,
+                    "stock": 2
+                },
+                {
+                    "sku": "ALPHA",
+                    "name": "Alpha",
+                    "price": 10.0,
+                    "stock": 2
+                },
+                {
+                    "sku": "MIKE",
+                    "name": "Mike",
+                    "price": 10.0,
+                    "stock": 2
+                }
+            ]
+
+
+            orders_3 = [
+                {
+                    "id": "T1",
+                    "items": [
+                        {
+                            "sku": "ALPHA",
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "T2",
+                    "items": [
+                        {
+                            "sku": "MIKE",
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "T3",
+                    "items": [
+                        {
+                            "sku": "ZETA",
+                            "quantity": 1
+                        }
+                    ]
+                }
+            ]
+
+
+            expected_3 = {
+                "accepted_orders": [
+                    "T1",
+                    "T2",
+                    "T3"
+                ],
+                "rejected_orders": [],
+                "duplicate_orders": 0,
+                "revenue": 30.0,
+                "remaining_stock": {
+                    "ZETA": 1,
+                    "ALPHA": 1,
+                    "MIKE": 1
+                },
+                "sold_quantities": {
+                    "ZETA": 1,
+                    "ALPHA": 1,
+                    "MIKE": 1
+                },
+                "top_product": "ZETA",
+                "ranking": [
+                    "ZETA",
+                    "ALPHA",
+                    "MIKE"
+                ],
+                "all_orders_fulfilled": True,
+                "any_out_of_stock": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 4
+            # INVALID QUANTITIES + ATOMICITY
+            # =========================================
+
+            products_4 = [
+                {
+                    "sku": "P1",
+                    "name": "One",
+                    "price": 10.0,
+                    "stock": 3
+                },
+                {
+                    "sku": "P2",
+                    "name": "Two",
+                    "price": 20.0,
+                    "stock": 3
+                }
+            ]
+
+
+            orders_4 = [
+                {
+                    "id": "I1",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": 0
+                        }
+                    ]
+                },
+                {
+                    "id": "I2",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": -1
+                        }
+                    ]
+                },
+                {
+                    "id": "I3",
+                    "items": [
+                        {
+                            "sku": "UNKNOWN",
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "I4",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": 4
+                        }
+                    ]
+                },
+                {
+                    "id": "I5",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": 2
+                        },
+                        {
+                            "sku": "P2",
+                            "quantity": 4
+                        }
+                    ]
+                },
+                {
+                    "id": "I6",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": 2
+                        }
+                    ]
+                },
+                {
+                    "id": "I7",
+                    "items": [
+                        {
+                            "sku": "P2",
+                            "quantity": 1.5
+                        }
+                    ]
+                },
+                {
+                    "id": "I8",
+                    "items": [
+                        {
+                            "sku": "P2",
+                            "quantity": True
+                        }
+                    ]
+                },
+                {
+                    "id": "I9",
+                    "items": [
+                        {
+                            "sku": "P2",
+                            "quantity": False
+                        }
+                    ]
+                }
+            ]
+
+
+            expected_4 = {
+                "accepted_orders": [
+                    "I6"
+                ],
+                "rejected_orders": [
+                    "I1",
+                    "I2",
+                    "I3",
+                    "I4",
+                    "I5",
+                    "I7",
+                    "I8",
+                    "I9"
+                ],
+                "duplicate_orders": 0,
+                "revenue": 20.0,
+                "remaining_stock": {
+                    "P1": 1,
+                    "P2": 3
+                },
+                "sold_quantities": {
+                    "P1": 2,
+                    "P2": 0
+                },
+                "top_product": "P1",
+                "ranking": [
+                    "P1",
+                    "P2"
+                ],
+                "all_orders_fulfilled": False,
+                "any_out_of_stock": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 5
+            # DUPLICATE AFTER REJECTED FIRST ORDER
+            # =========================================
+
+            products_5 = [
+                {
+                    "sku": "P1",
+                    "name": "Single",
+                    "price": 10.0,
+                    "stock": 1
+                }
+            ]
+
+
+            orders_5 = [
+                {
+                    "id": "D1",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": 2
+                        }
+                    ]
+                },
+                {
+                    "id": "D1",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": 1
+                        }
+                    ]
+                }
+            ]
+
+
+            expected_5 = {
+                "accepted_orders": [],
+                "rejected_orders": [
+                    "D1"
+                ],
+                "duplicate_orders": 1,
+                "revenue": 0,
+                "remaining_stock": {
+                    "P1": 1
+                },
+                "sold_quantities": {
+                    "P1": 0
+                },
+                "top_product": "P1",
+                "ranking": [
+                    "P1"
+                ],
+                "all_orders_fulfilled": False,
+                "any_out_of_stock": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 6
+            # EMPTY ORDER BATCH
+            # =========================================
+
+            products_6 = [
+                {
+                    "sku": "P1",
+                    "name": "Empty Stock",
+                    "price": 10.0,
+                    "stock": 0
+                },
+                {
+                    "sku": "P2",
+                    "name": "Available",
+                    "price": 20.0,
+                    "stock": 2
+                }
+            ]
+
+
+            orders_6 = []
+
+
+            expected_6 = {
+                "accepted_orders": [],
+                "rejected_orders": [],
+                "duplicate_orders": 0,
+                "revenue": 0,
+                "remaining_stock": {
+                    "P1": 0,
+                    "P2": 2
+                },
+                "sold_quantities": {
+                    "P1": 0,
+                    "P2": 0
+                },
+                "top_product": "P1",
+                "ranking": [
+                    "P1",
+                    "P2"
+                ],
+                "all_orders_fulfilled": True,
+                "any_out_of_stock": True
+            }
+
+
+            # =========================================
+            # REPORT TEST 7
+            # EMPTY INVENTORY
+            # =========================================
+
+            products_7 = []
+
+            orders_7 = []
+
+
+            expected_7 = {
+                "accepted_orders": [],
+                "rejected_orders": [],
+                "duplicate_orders": 0,
+                "revenue": 0,
+                "remaining_stock": {},
+                "sold_quantities": {},
+                "top_product": None,
+                "ranking": [],
+                "all_orders_fulfilled": True,
+                "any_out_of_stock": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 8
+            # DUPLICATE BEFORE VALIDATION
+            # =========================================
+
+            products_8 = [
+                {
+                    "sku": "P1",
+                    "name": "Duplicate Test",
+                    "price": 10.0,
+                    "stock": 2
+                }
+            ]
+
+
+            orders_8 = [
+                {
+                    "id": "DUP1",
+                    "items": [
+                        {
+                            "sku": "P1",
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "id": "DUP1",
+                    "items": [
+                        {
+                            "sku": "UNKNOWN",
+                            "quantity": True
+                        }
+                    ]
+                }
+            ]
+
+
+            expected_8 = {
+                "accepted_orders": [
+                    "DUP1"
+                ],
+                "rejected_orders": [],
+                "duplicate_orders": 1,
+                "revenue": 10.0,
+                "remaining_stock": {
+                    "P1": 1
+                },
+                "sold_quantities": {
+                    "P1": 1
+                },
+                "top_product": "P1",
+                "ranking": [
+                    "P1"
+                ],
+                "all_orders_fulfilled": True,
+                "any_out_of_stock": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 9
+            # EMPTY ORDER IS VALID
+            # =========================================
+
+            products_9 = [
+                {
+                    "sku": "P1",
+                    "name": "Empty Order Test",
+                    "price": 10.0,
+                    "stock": 2
+                }
+            ]
+
+
+            orders_9 = [
+                {
+                    "id": "EMPTY1",
+                    "items": []
+                }
+            ]
+
+
+            expected_9 = {
+                "accepted_orders": [
+                    "EMPTY1"
+                ],
+                "rejected_orders": [],
+                "duplicate_orders": 0,
+                "revenue": 0,
+                "remaining_stock": {
+                    "P1": 2
+                },
+                "sold_quantities": {
+                    "P1": 0
+                },
+                "top_product": "P1",
+                "ranking": [
+                    "P1"
+                ],
+                "all_orders_fulfilled": True,
+                "any_out_of_stock": False
+            }
+
+
+            # =========================================
+            # RUN STANDARD REPORT TESTS
+            # =========================================
+
+            report_tests = [
+                (
+                    products_1,
+                    orders_1,
+                    expected_1,
+                    "Main fulfillment test"
+                ),
+                (
+                    products_2,
+                    orders_2,
+                    expected_2,
+                    "Repeated-SKU acceptance test"
+                ),
+                (
+                    products_3,
+                    orders_3,
+                    expected_3,
+                    "Stable-ranking test"
+                ),
+                (
+                    products_4,
+                    orders_4,
+                    expected_4,
+                    "Validation and atomicity test"
+                ),
+                (
+                    products_5,
+                    orders_5,
+                    expected_5,
+                    "Rejected-order duplicate test"
+                ),
+                (
+                    products_6,
+                    orders_6,
+                    expected_6,
+                    "Empty-order-batch test"
+                ),
+                (
+                    products_7,
+                    orders_7,
+                    expected_7,
+                    "Empty-inventory test"
+                ),
+                (
+                    products_8,
+                    orders_8,
+                    expected_8,
+                    "Duplicate-before-validation test"
+                ),
+                (
+                    products_9,
+                    orders_9,
+                    expected_9,
+                    "Empty-order acceptance test"
+                )
+            ]
+
+
+            reports_ok = True
+
+
+            for (
+                products,
+                orders,
+                expected,
+                label
+            ) in report_tests:
+
+                if not run_report_test(
+                    products,
+                    orders,
+                    expected,
+                    label
+                ):
+
+                    reports_ok = False
+                    break
+
+
+            if reports_ok:
+
+                success(
+                    "All standard inventory and "
+                    "order-processing tests passed"
+                )
+
+
+            # =========================================
+            # STATE PERSISTENCE TEST
+            # DUPLICATE TRACKING RESETS PER CALL
+            # =========================================
+
+            stateful_ok = True
+
+
+            stateful_products = [
+                {
+                    "sku": "S1",
+                    "name": "Stateful Product",
+                    "price": 10.0,
+                    "stock": 2
+                }
+            ]
+
+
+            stateful_source_snapshot = copy.deepcopy(
+                stateful_products
+            )
+
+
+            try:
+
+                stateful_inventory = Inventory(
+                    stateful_products
+                )
+
+
+                first_batch = [
+                    {
+                        "id": "B1",
+                        "items": [
+                            {
+                                "sku": "S1",
+                                "quantity": 1
+                            }
+                        ]
+                    }
+                ]
+
+
+                first_batch_snapshot = copy.deepcopy(
+                    first_batch
+                )
+
+
+                first_report = (
+                    stateful_inventory
+                    .process_orders(
+                        first_batch
+                    )
+                )
+
+
+                expected_first_report = {
+                    "accepted_orders": [
+                        "B1"
+                    ],
+                    "rejected_orders": [],
+                    "duplicate_orders": 0,
+                    "revenue": 10.0,
+                    "remaining_stock": {
+                        "S1": 1
+                    },
+                    "sold_quantities": {
+                        "S1": 1
+                    },
+                    "top_product": "S1",
+                    "ranking": [
+                        "S1"
+                    ],
+                    "all_orders_fulfilled": True,
+                    "any_out_of_stock": False
+                }
+
+
+                if (
+                    first_report
+                    != expected_first_report
+                ):
+
+                    fail(
+                        "The first state-persistence "
+                        "report is incorrect.\\n"
+                        "Expected: "
+                        + str(
+                            expected_first_report
+                        )
+                        + "\\nObtained: "
+                        + str(
+                            first_report
+                        )
+                    )
+
+                    stateful_ok = False
+
+
+                if (
+                    stateful_ok
+                    and first_batch
+                    != first_batch_snapshot
+                ):
+
+                    fail(
+                        "process_orders() must not modify "
+                        "the orders input."
+                    )
+
+                    stateful_ok = False
+
+
+                # Same ID deliberately used again.
+                # Duplicate IDs are local to each call.
+
+                second_batch = [
+                    {
+                        "id": "B1",
+                        "items": [
+                            {
+                                "sku": "S1",
+                                "quantity": 1
+                            }
+                        ]
+                    }
+                ]
+
+
+                second_batch_snapshot = copy.deepcopy(
+                    second_batch
+                )
+
+
+                second_report = (
+                    stateful_inventory
+                    .process_orders(
+                        second_batch
+                    )
+                )
+
+
+                expected_second_report = {
+                    "accepted_orders": [
+                        "B1"
+                    ],
+                    "rejected_orders": [],
+                    "duplicate_orders": 0,
+                    "revenue": 10.0,
+                    "remaining_stock": {
+                        "S1": 0
+                    },
+                    "sold_quantities": {
+                        "S1": 1
+                    },
+                    "top_product": "S1",
+                    "ranking": [
+                        "S1"
+                    ],
+                    "all_orders_fulfilled": True,
+                    "any_out_of_stock": True
+                }
+
+
+                if (
+                    stateful_ok
+                    and second_report
+                    != expected_second_report
+                ):
+
+                    fail(
+                        "Inventory state must persist "
+                        "between calls, but duplicate "
+                        "order IDs must reset for each "
+                        "new call.\\n"
+                        "Expected second report: "
+                        + str(
+                            expected_second_report
+                        )
+                        + "\\nObtained: "
+                        + str(
+                            second_report
+                        )
+                    )
+
+                    stateful_ok = False
+
+
+                if (
+                    stateful_ok
+                    and second_batch
+                    != second_batch_snapshot
+                ):
+
+                    fail(
+                        "process_orders() must not modify "
+                        "orders passed to later calls."
+                    )
+
+                    stateful_ok = False
+
+
+                if (
+                    stateful_ok
+                    and stateful_inventory.products[
+                        "S1"
+                    ][
+                        "stock"
+                    ]
+                    != 0
+                ):
+
+                    fail(
+                        "The second call must continue "
+                        "from the stock left by the first "
+                        "call."
+                    )
+
+                    stateful_ok = False
+
+
+                if (
+                    stateful_ok
+                    and stateful_products
+                    != stateful_source_snapshot
+                ):
+
+                    fail(
+                        "Multiple process_orders() calls "
+                        "must not modify the original "
+                        "products input."
+                    )
+
+                    stateful_ok = False
+
+
+            except Exception as error:
+
+                fail(
+                    "State-persistence test raised "
+                    "an error: "
+                    + str(error)
+                )
+
+                stateful_ok = False
+
+
+            if stateful_ok:
+
+                success(
+                    "Inventory state persists correctly "
+                    "while duplicate tracking resets "
+                    "between process_orders() calls"
+                )
+
+
+            # =========================================
+            # GENERATOR MUST USE CURRENT STATE
+            # AND ORIGINAL INVENTORY ORDER
+            # =========================================
+
+            current_generator_ok = True
+
+
+            current_products = [
+                {
+                    "sku": "Z9",
+                    "name": "First Current",
+                    "price": 10.0,
+                    "stock": 2
+                },
+                {
+                    "sku": "A1",
+                    "name": "Second Current",
+                    "price": 20.0,
+                    "stock": 1
+                },
+                {
+                    "sku": "M5",
+                    "name": "Third Current",
+                    "price": 30.0,
+                    "stock": 1
+                }
+            ]
+
+
+            try:
+
+                current_inventory = Inventory(
+                    current_products
+                )
+
+
+                depletion_orders = [
+                    {
+                        "id": "G1",
+                        "items": [
+                            {
+                                "sku": "M5",
+                                "quantity": 1
+                            }
+                        ]
+                    }
+                ]
+
+
+                depletion_snapshot = copy.deepcopy(
+                    depletion_orders
+                )
+
+
+                current_inventory.process_orders(
+                    depletion_orders
+                )
+
+
+                if (
+                    depletion_orders
+                    != depletion_snapshot
+                ):
+
+                    fail(
+                        "process_orders() modified the "
+                        "orders input during the generator "
+                        "state test."
+                    )
+
+                    current_generator_ok = False
+
+
+                current_available = list(
+                    current_inventory
+                    .iter_available_products()
+                )
+
+
+                expected_current_available = [
+                    {
+                        "sku": "Z9",
+                        "name": "First Current",
+                        "price": 10.0,
+                        "stock": 2
+                    },
+                    {
+                        "sku": "A1",
+                        "name": "Second Current",
+                        "price": 20.0,
+                        "stock": 1
+                    }
+                ]
+
+
+                if (
+                    current_generator_ok
+                    and current_available
+                    != expected_current_available
+                ):
+
+                    fail(
+                        "iter_available_products() must "
+                        "use the current inventory state "
+                        "and preserve original inventory "
+                        "order.\\n"
+                        "Expected: "
+                        + str(
+                            expected_current_available
+                        )
+                        + "\\nObtained: "
+                        + str(
+                            current_available
+                        )
+                    )
+
+                    current_generator_ok = False
+
+
+                if (
+                    current_generator_ok
+                    and current_available
+                ):
+
+                    current_available[0][
+                        "stock"
+                    ] = 999
+
+
+                    if (
+                        current_inventory.products[
+                            "Z9"
+                        ][
+                            "stock"
+                        ]
+                        != 2
+                    ):
+
+                        fail(
+                            "Products yielded after order "
+                            "processing must still be "
+                            "independent copies."
+                        )
+
+                        current_generator_ok = False
+
+
+            except Exception as error:
+
+                fail(
+                    "Current-state generator test raised "
+                    "an error: "
+                    + str(error)
+                )
+
+                current_generator_ok = False
+
+
+            if current_generator_ok:
+
+                success(
+                    "Generator uses current inventory state "
+                    "and preserves original product order"
+                )
+`
+
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 };
