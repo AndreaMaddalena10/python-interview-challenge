@@ -3335,7 +3335,7 @@ except Exception as error:
 
         /* =====================================================
        CHALLENGE 013
-       Create an Independent Copy
+       Copy Nested Records Independently
     ===================================================== */
 
     13: {
@@ -3349,17 +3349,23 @@ except Exception as error:
         layout: "standard",
 
         title:
-            "Create an Independent Copy",
+            "Copy Nested Records Independently",
 
 
         description: `
             <p>
                 Write a function
-                <code>independent_copy(data)</code>.
+                <code>copy_records(records)</code>.
             </p>
 
             <p>
-                The function receives a list containing lists.
+                The function receives a list of dictionaries.
+            </p>
+
+            <p>
+                Every dictionary represents a record and
+                contains a <code>"skills"</code> key whose
+                value is a list.
             </p>
 
             <p>
@@ -3368,44 +3374,26 @@ except Exception as error:
 
             <ul>
                 <li>
-                    the outer list is a new, independent object;
+                    the outer list is a new object;
                 </li>
 
                 <li>
-                    every direct inner list is also a new,
-                    independent object;
+                    every record dictionary is a new object;
                 </li>
 
                 <li>
-                    changing a returned inner list must not
-                    modify the corresponding inner list in
-                    the original structure.
-                </li>
-            </ul>
-
-            <p>
-                For this challenge, you may assume:
-            </p>
-
-            <ul>
-                <li>
-                    <code>data</code> is a list;
+                    every <code>"skills"</code> list is a
+                    new object;
                 </li>
 
                 <li>
-                    every direct element of
-                    <code>data</code> is also a list;
+                    the values remain equal to the original
+                    structure;
                 </li>
 
                 <li>
-                    the elements inside those inner lists
-                    contain no further mutable nested
-                    structures;
-                </li>
-
-                <li>
-                    only the outer list and the direct inner
-                    lists need to be independent.
+                    modifying the returned records or skills
+                    must not modify the original data.
                 </li>
             </ul>
 
@@ -3413,55 +3401,100 @@ except Exception as error:
                 Example:
             </p>
 
-            <pre>original = [
-    [1, 2],
-    [3, 4]
+            <pre>records = [
+    {
+        "name": "Alex",
+        "skills": ["Python", "SQL"]
+    },
+    {
+        "name": "Sam",
+        "skills": ["Java"]
+    }
 ]
 
-copied = independent_copy(original)
+copied = copy_records(records)
 
-copied[0].append(99)</pre>
+copied[0]["skills"].append("Git")</pre>
 
             <p>
                 After the modification,
-                <code>copied</code> should be:
+                <code>copied[0]["skills"]</code> should be:
             </p>
 
-            <pre>[
-    [1, 2, 99],
-    [3, 4]
-]</pre>
+            <pre>["Python", "SQL", "Git"]</pre>
 
             <p>
-                while <code>original</code> must still be:
+                while:
             </p>
 
-            <pre>[
-    [1, 2],
-    [3, 4]
-]</pre>
+            <pre>records[0]["skills"]</pre>
 
             <p>
-                The platform will test both
-                <strong>value equality</strong> and
-                <strong>object independence</strong>.
+                must still be:
+            </p>
+
+            <pre>["Python", "SQL"]</pre>
+
+            <p>
+                You may assume:
+            </p>
+
+            <ul>
+                <li>
+                    <code>records</code> is a list;
+                </li>
+
+                <li>
+                    every direct element is a dictionary;
+                </li>
+
+                <li>
+                    every dictionary contains a
+                    <code>"skills"</code> list;
+                </li>
+
+                <li>
+                    all other dictionary values are
+                    immutable;
+                </li>
+
+                <li>
+                    no deeper mutable structures need to be
+                    copied.
+                </li>
+            </ul>
+
+            <p>
+                <strong>Important:</strong>
+                do not use <code>copy.deepcopy()</code>.
+            </p>
+
+            <p>
+                The goal is to decide which levels of the
+                structure actually need to be copied.
             </p>
         `,
 
 
         starterCode:
-`def independent_copy(data):
+`def copy_records(records):
     pass
 
 
-original = [
-    [1, 2],
-    [3, 4]
+records = [
+    {
+        "name": "Alex",
+        "skills": ["Python", "SQL"]
+    },
+    {
+        "name": "Sam",
+        "skills": ["Java"]
+    }
 ]
 
-copied = independent_copy(original)
-
-print(copied)`,
+print(
+    copy_records(records)
+)`,
 
 
         checker:
@@ -3470,76 +3503,230 @@ namespace = {}
 
 try:
 
-    exec(
-        user_code,
-        namespace
+    import ast
+    import copy
+
+
+    tests_ok = True
+
+
+    # -------------------------------------------------
+    # DEEPCOPY IS NOT ALLOWED
+    # -------------------------------------------------
+
+    tree = ast.parse(
+        user_code
     )
 
-    function = namespace.get(
-        "independent_copy"
-    )
+
+    uses_deepcopy = False
 
 
-    if not callable(function):
+    for node in ast.walk(
+        tree
+    ):
+
+        if isinstance(
+            node,
+            ast.ImportFrom
+        ):
+
+            if node.module == "copy":
+
+                for alias in node.names:
+
+                    if alias.name == "deepcopy":
+
+                        uses_deepcopy = True
+
+
+        if isinstance(
+            node,
+            ast.Call
+        ):
+
+            if isinstance(
+                node.func,
+                ast.Attribute
+            ):
+
+                if (
+                    node.func.attr
+                    == "deepcopy"
+                ):
+
+                    uses_deepcopy = True
+
+
+            elif isinstance(
+                node.func,
+                ast.Name
+            ):
+
+                if (
+                    node.func.id
+                    == "deepcopy"
+                ):
+
+                    uses_deepcopy = True
+
+
+    if uses_deepcopy:
 
         fail(
-            "You must define a function called independent_copy()."
+            "Do not use copy.deepcopy() for this challenge. "
+            "Copy only the levels that need to become independent."
+        )
+
+        tests_ok = False
+
+
+    # -------------------------------------------------
+    # LOAD USER FUNCTION
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        exec(
+            user_code,
+            namespace
         )
 
 
-    else:
-
-        success(
-            "Function independent_copy() found"
+        function = namespace.get(
+            "copy_records"
         )
 
 
-        tests = [
+        if not callable(
+            function
+        ):
 
-            [
-                [1, 2],
-                [3, 4]
-            ],
+            fail(
+                "You must define a function called copy_records()."
+            )
 
-            [
-                ["Python"],
-                ["Java", "SQL"]
-            ],
+            tests_ok = False
 
-            [
-                [],
-                [1],
-                [2, 3, 4]
-            ],
 
-            [],
+        else:
 
-            [
-                [True, None],
-                ["a", "b"],
-                [(1, 2), 5]
-            ]
+            success(
+                "Function copy_records() found"
+            )
 
+
+    # -------------------------------------------------
+    # TEST CASES
+    # -------------------------------------------------
+
+    tests = [
+
+        [
+            {
+                "name": "Alex",
+                "skills": [
+                    "Python",
+                    "SQL"
+                ],
+                "active": True
+            },
+            {
+                "name": "Sam",
+                "skills": [
+                    "Java"
+                ],
+                "active": False
+            }
+        ],
+
+        [],
+
+        [
+            {
+                "name": "Taylor",
+                "skills": [],
+                "level": 1
+            }
+        ],
+
+        [
+            {
+                "name": "A",
+                "skills": [
+                    "Python"
+                ]
+            },
+            {
+                "name": "A",
+                "skills": [
+                    "Python"
+                ]
+            }
+        ],
+
+        [
+            {
+                "name": "One",
+                "skills": [
+                    "A",
+                    "B"
+                ],
+                "score": 10
+            },
+            {
+                "name": "Two",
+                "skills": [
+                    "C"
+                ],
+                "score": 20
+            },
+            {
+                "name": "Three",
+                "skills": [
+                    "D",
+                    "E",
+                    "F"
+                ],
+                "score": 30
+            }
         ]
 
+    ]
 
-        tests_ok = True
+
+    if tests_ok:
+
+        for records in tests:
 
 
-        for original in tests:
+            original_snapshot = (
+                copy.deepcopy(
+                    records
+                )
+            )
 
-            expected_original = [
-                inner.copy()
-                for inner in original
+
+            original_record_refs = list(
+                records
+            )
+
+
+            original_skill_refs = [
+                record["skills"]
+                for record in records
             ]
 
 
             obtained = function(
-                original
+                records
             )
 
 
-            # The result must be a list.
+            # -----------------------------------------
+            # RETURN TYPE
+            # -----------------------------------------
+
             if not isinstance(
                 obtained,
                 list
@@ -3555,8 +3742,11 @@ try:
                 break
 
 
-            # The outer list must be a different object.
-            if obtained is original:
+            # -----------------------------------------
+            # OUTER LIST INDEPENDENCE
+            # -----------------------------------------
+
+            if obtained is records:
 
                 fail(
                     "The returned outer list must be a new object."
@@ -3567,12 +3757,16 @@ try:
                 break
 
 
-            # Values must initially be equal.
-            if obtained != expected_original:
+            # -----------------------------------------
+            # INITIAL VALUE EQUALITY
+            # -----------------------------------------
+
+            if obtained != original_snapshot:
 
                 fail(
-                    f"Input: {expected_original}\\n"
-                    f"Expected: {expected_original}\\n"
+                    "The copied structure must initially contain "
+                    "the same values as the original.\\n"
+                    f"Expected: {original_snapshot}\\n"
                     f"Obtained: {obtained}"
                 )
 
@@ -3581,11 +3775,14 @@ try:
                 break
 
 
-            # The function itself must not modify the input.
-            if original != expected_original:
+            # -----------------------------------------
+            # INPUT MUST REMAIN UNCHANGED
+            # -----------------------------------------
+
+            if records != original_snapshot:
 
                 fail(
-                    "The original structure must not be modified."
+                    "The original structure was modified."
                 )
 
                 tests_ok = False
@@ -3593,15 +3790,14 @@ try:
                 break
 
 
-            # The number of inner lists must stay the same.
             if len(
                 obtained
             ) != len(
-                original
+                records
             ):
 
                 fail(
-                    "The returned outer list must contain the same number of inner lists."
+                    "The returned list must contain the same number of records."
                 )
 
                 tests_ok = False
@@ -3609,19 +3805,23 @@ try:
                 break
 
 
-            # Every direct inner element must still be a list
-            # and must be a different object from the original.
+            # -----------------------------------------
+            # ORIGINAL OBJECTS MUST NOT BE REPLACED
+            # -----------------------------------------
+
             for index in range(
-                len(original)
+                len(records)
             ):
 
-                if not isinstance(
-                    obtained[index],
-                    list
+                if (
+                    records[index]
+                    is not
+                    original_record_refs[index]
                 ):
 
                     fail(
-                        "Every direct element in the returned structure must be a list."
+                        "The function must not replace record objects "
+                        "inside the original list."
                     )
 
                     tests_ok = False
@@ -3630,13 +3830,14 @@ try:
 
 
                 if (
-                    obtained[index]
-                    is original[index]
+                    records[index]["skills"]
+                    is not
+                    original_skill_refs[index]
                 ):
 
                     fail(
-                        "Every direct inner list must be an independent object.\\n"
-                        f"Shared inner list found at index {index}."
+                        "The function must not replace the original "
+                        "skills lists."
                     )
 
                     tests_ok = False
@@ -3649,29 +3850,21 @@ try:
                 break
 
 
-            # Verify independence through an actual mutation.
-            if len(
-                obtained
-            ) > 0:
+            # -----------------------------------------
+            # DICTIONARY + SKILLS INDEPENDENCE
+            # -----------------------------------------
 
-                original_snapshot = [
-                    inner.copy()
-                    for inner in original
-                ]
+            for index in range(
+                len(records)
+            ):
 
-
-                obtained[0].append(
-                    "__copy_test_marker__"
-                )
-
-
-                if (
-                    original
-                    != original_snapshot
+                if not isinstance(
+                    obtained[index],
+                    dict
                 ):
 
                     fail(
-                        "Changing an inner list in the copy must not modify the original structure."
+                        "Every returned record must be a dictionary."
                     )
 
                     tests_ok = False
@@ -3679,27 +3872,163 @@ try:
                     break
 
 
-        if tests_ok:
+                if (
+                    obtained[index]
+                    is records[index]
+                ):
 
-            success(
-                "The outer list is an independent object"
-            )
+                    fail(
+                        "Every record dictionary must be a new object.\\n"
+                        f"Shared dictionary found at index {index}."
+                    )
 
-            success(
-                "Every direct inner list is independent"
-            )
+                    tests_ok = False
 
-            success(
-                "The copied structure initially contains equal values"
-            )
+                    break
 
-            success(
-                "Mutating the copy does not modify the original"
-            )
 
-            success(
-                "The original structure remains unchanged"
-            )
+                if not isinstance(
+                    obtained[index]["skills"],
+                    list
+                ):
+
+                    fail(
+                        'Every "skills" value must remain a list.'
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                if (
+                    obtained[index]["skills"]
+                    is
+                    records[index]["skills"]
+                ):
+
+                    fail(
+                        'Every "skills" list must be an independent object.\\n'
+                        f"Shared skills list found at index {index}."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+            if not tests_ok:
+
+                break
+
+
+            # -----------------------------------------
+            # RETURNED RECORDS MUST NOT SHARE COPIES
+            # WITH EACH OTHER
+            # -----------------------------------------
+
+            record_ids = [
+                id(record)
+                for record in obtained
+            ]
+
+
+            if (
+                len(record_ids)
+                != len(set(record_ids))
+            ):
+
+                fail(
+                    "Each returned record must be a separate dictionary object."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            skill_ids = [
+                id(record["skills"])
+                for record in obtained
+            ]
+
+
+            if (
+                len(skill_ids)
+                != len(set(skill_ids))
+            ):
+
+                fail(
+                    "Each returned skills list must be a separate list object."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # ACTUAL MUTATION TEST
+            # -----------------------------------------
+
+            if obtained:
+
+                obtained[0][
+                    "name"
+                ] = "__changed_name__"
+
+
+                obtained[0][
+                    "skills"
+                ].append(
+                    "__new_skill__"
+                )
+
+
+                if (
+                    records
+                    != original_snapshot
+                ):
+
+                    fail(
+                        "Changing the copied structure must not "
+                        "modify the original structure."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+    if tests_ok:
+
+        success(
+            "The outer list is independent"
+        )
+
+        success(
+            "Every record dictionary is independent"
+        )
+
+        success(
+            "Every skills list is independent"
+        )
+
+        success(
+            "The copied values are initially equal to the original"
+        )
+
+        success(
+            "Mutating the copy does not affect the original"
+        )
+
+        success(
+            "The original structure remains unchanged"
+        )
+
+        success(
+            "Only the required levels are copied without deepcopy()"
+        )
 
 
 except Exception as error:
@@ -3716,7 +4045,7 @@ except Exception as error:
 
     /* =====================================================
        CHALLENGE 014
-       Non-Mutating Dictionary Update
+       Count Repeated Paths
     ===================================================== */
 
     14: {
@@ -3725,117 +4054,122 @@ except Exception as error:
 
         number: "014",
 
-        difficulty: "Easy",
+        difficulty: "Medium",
 
         layout: "standard",
 
         title:
-            "Non-Mutating Dictionary Update",
+            "Count Repeated Paths",
 
 
         description: `
             <p>
                 Write a function
-                <code>update_settings(settings, key, value)</code>.
+                <code>count_paths(paths)</code>.
             </p>
 
             <p>
-                The function must:
+                The function receives a list of paths.
+            </p>
+
+            <p>
+                Each path is represented by a list of
+                strings.
+            </p>
+
+            <p>
+                Count how many times each distinct path
+                appears.
+            </p>
+
+            <p>
+                Return a dictionary where:
             </p>
 
             <ul>
                 <li>
-                    receive an existing dictionary;
+                    each key is the path represented as a
+                    tuple;
                 </li>
 
                 <li>
-                    create a new dictionary;
-                </li>
-
-                <li>
-                    update or add the requested key in the
-                    new dictionary;
-                </li>
-
-                <li>
-                    return the new dictionary;
-                </li>
-
-                <li>
-                    leave the original dictionary unchanged;
-                </li>
-
-                <li>
-                    return an object that is not the original
-                    dictionary.
+                    each value is the number of times that
+                    path appeared.
                 </li>
             </ul>
-
-            <p>
-                Only top-level dictionary independence is
-                required.
-            </p>
-
-            <p>
-                You may assume that the existing dictionary
-                values are immutable.
-            </p>
-
-            <p>
-                You do not need to deep-copy nested
-                structures.
-            </p>
 
             <p>
                 Example:
             </p>
 
-            <pre>settings = {
-    "theme": "light",
-    "language": "en"
-}
-
-updated = update_settings(
-    settings,
-    "theme",
-    "dark"
-)</pre>
+            <pre>paths = [
+    ["api", "users"],
+    ["api", "posts"],
+    ["api", "users"],
+    ["admin", "users"]
+]</pre>
 
             <p>
-                <code>updated</code> should be:
+                Then:
             </p>
 
-            <pre>{
-    "theme": "dark",
-    "language": "en"
+            <pre>count_paths(paths)
+
+→ {
+    ("api", "users"): 2,
+    ("api", "posts"): 1,
+    ("admin", "users"): 1
 }</pre>
 
             <p>
-                while the original
-                <code>settings</code> dictionary must remain
-                unchanged.
+                The original list and its inner path lists
+                must remain unchanged.
+            </p>
+
+            <p>
+                For this challenge, you may assume:
+            </p>
+
+            <ul>
+                <li>
+                    <code>paths</code> is a list;
+                </li>
+
+                <li>
+                    every direct element is a list;
+                </li>
+
+                <li>
+                    every path contains only strings;
+                </li>
+
+                <li>
+                    input validation is not required.
+                </li>
+            </ul>
+
+            <p>
+                Remember that dictionary keys must be
+                hashable.
             </p>
         `,
 
 
         starterCode:
-`def update_settings(settings, key, value):
+`def count_paths(paths):
     pass
 
 
-settings = {
-    "theme": "light",
-    "language": "en"
-}
+paths = [
+    ["api", "users"],
+    ["api", "posts"],
+    ["api", "users"],
+    ["admin", "users"]
+]
 
-updated = update_settings(
-    settings,
-    "theme",
-    "dark"
-)
-
-print(updated)
-print(settings)`,
+print(
+    count_paths(paths)
+)`,
 
 
         checker:
@@ -3849,128 +4183,176 @@ try:
         namespace
     )
 
+
     function = namespace.get(
-        "update_settings"
+        "count_paths"
     )
 
 
-    if not callable(function):
+    if not callable(
+        function
+    ):
 
         fail(
-            "You must define a function called update_settings()."
+            "You must define a function called count_paths()."
         )
 
 
     else:
 
         success(
-            "Function update_settings() found"
+            "Function count_paths() found"
         )
+
+
+        tests_ok = True
 
 
         tests = [
 
             (
+                [
+                    ["api", "users"],
+                    ["api", "posts"],
+                    ["api", "users"],
+                    ["admin", "users"]
+                ],
                 {
-                    "theme": "light",
-                    "language": "en"
-                },
-                "theme",
-                "dark",
-                {
-                    "theme": "dark",
-                    "language": "en"
+                    (
+                        "api",
+                        "users"
+                    ): 2,
+
+                    (
+                        "api",
+                        "posts"
+                    ): 1,
+
+                    (
+                        "admin",
+                        "users"
+                    ): 1
                 }
             ),
 
             (
+                [],
+                {}
+            ),
+
+            (
+                [
+                    ["python"],
+                    ["python"],
+                    ["java"],
+                    ["python"]
+                ],
                 {
-                    "theme": "light"
-                },
-                "language",
-                "it",
-                {
-                    "theme": "light",
-                    "language": "it"
+                    (
+                        "python",
+                    ): 3,
+
+                    (
+                        "java",
+                    ): 1
                 }
             ),
 
             (
-                {},
-                "debug",
-                True,
+                [
+                    [],
+                    ["api"],
+                    [],
+                    ["api", "users"],
+                    ["api"]
+                ],
                 {
-                    "debug": True
+                    (): 2,
+
+                    (
+                        "api",
+                    ): 2,
+
+                    (
+                        "api",
+                        "users"
+                    ): 1
                 }
             ),
 
             (
+                [
+                    ["a", "b", "c"],
+                    ["a", "b"],
+                    ["a", "b", "c"],
+                    ["a"],
+                    ["a", "b"]
+                ],
                 {
-                    "volume": 50,
-                    "enabled": False
-                },
-                "volume",
-                75,
-                {
-                    "volume": 75,
-                    "enabled": False
+                    (
+                        "a",
+                        "b",
+                        "c"
+                    ): 2,
+
+                    (
+                        "a",
+                        "b"
+                    ): 2,
+
+                    (
+                        "a",
+                    ): 1
                 }
             ),
 
             (
+                [
+                    ["caffè", "utenti"],
+                    ["caffè", "utenti"],
+                    ["東京"]
+                ],
                 {
-                    1: "one",
-                    2: "two"
-                },
-                3,
-                "three",
-                {
-                    1: "one",
-                    2: "two",
-                    3: "three"
-                }
-            ),
+                    (
+                        "caffè",
+                        "utenti"
+                    ): 2,
 
-            (
-                {
-                    "mode": "light",
-                    "version": 1
-                },
-                "mode",
-                "light",
-                {
-                    "mode": "light",
-                    "version": 1
+                    (
+                        "東京",
+                    ): 1
                 }
             )
 
         ]
 
 
-        tests_ok = True
-
-
         for (
-            settings,
-            key,
-            value,
+            paths,
             expected
         ) in tests:
 
 
-            original_settings = (
-                settings.copy()
+            original_values = [
+                path.copy()
+                for path in paths
+            ]
+
+
+            original_refs = list(
+                paths
             )
 
 
             obtained = function(
-                settings,
-                key,
-                value
+                paths
             )
 
 
-            # The result must be a dictionary.
+            # -----------------------------------------
+            # RETURN TYPE
+            # -----------------------------------------
+
             if not isinstance(
                 obtained,
                 dict
@@ -3986,25 +4368,14 @@ try:
                 break
 
 
-            # A new top-level dictionary must be returned.
-            if obtained is settings:
+            # -----------------------------------------
+            # RESULT
+            # -----------------------------------------
 
-                fail(
-                    "The function must return a new dictionary object."
-                )
-
-                tests_ok = False
-
-                break
-
-
-            # Check the returned values.
             if obtained != expected:
 
                 fail(
-                    f"Original settings: {original_settings}\\n"
-                    f"Key: {repr(key)}\\n"
-                    f"Value: {repr(value)}\\n"
+                    f"Input: {original_values}\\n"
                     f"Expected: {expected}\\n"
                     f"Obtained: {obtained}"
                 )
@@ -4014,13 +4385,17 @@ try:
                 break
 
 
-            # The original dictionary must remain unchanged.
-            if settings != original_settings:
+            # -----------------------------------------
+            # KEYS MUST BE TUPLES
+            # -----------------------------------------
+
+            if any(
+                type(key) is not tuple
+                for key in obtained
+            ):
 
                 fail(
-                    "The original dictionary must not be modified.\\n"
-                    f"Before: {original_settings}\\n"
-                    f"After: {settings}"
+                    "Every dictionary key must be a tuple representing a path."
                 )
 
                 tests_ok = False
@@ -4028,26 +4403,1289 @@ try:
                 break
 
 
+            # -----------------------------------------
+            # COUNTS MUST BE INTEGERS
+            # -----------------------------------------
+
+            if any(
+                type(count) is not int
+                for count in obtained.values()
+            ):
+
+                fail(
+                    "Every path count must be an integer."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # ORIGINAL VALUES MUST REMAIN UNCHANGED
+            # -----------------------------------------
+
+            if paths != original_values:
+
+                fail(
+                    "The original paths must not be modified.\\n"
+                    f"Before: {original_values}\\n"
+                    f"After: {paths}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # ORIGINAL INNER LISTS MUST NOT BE REPLACED
+            # -----------------------------------------
+
+            if len(
+                paths
+            ) != len(
+                original_refs
+            ):
+
+                fail(
+                    "The original paths list must not be modified."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            for index in range(
+                len(paths)
+            ):
+
+                if (
+                    paths[index]
+                    is not
+                    original_refs[index]
+                ):
+
+                    fail(
+                        "The function must not replace the original inner path lists."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+            if not tests_ok:
+
+                break
+
+
         if tests_ok:
 
             success(
-                "Existing keys are updated correctly"
+                "Repeated paths are counted correctly"
             )
 
             success(
-                "New keys are added correctly"
+                "Distinct paths remain separate"
             )
 
             success(
-                "A new dictionary object is returned"
+                "Dictionary keys are tuples"
             )
 
             success(
-                "The original dictionary remains unchanged"
+                "Empty and single-element paths are handled correctly"
             )
 
             success(
-                "Existing settings are preserved correctly"
+                "The original input remains unchanged"
+            )
+
+            success(
+                "The solution uses hashable path representations correctly"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+
+
+
+
+        /* =====================================================
+       CHALLENGE 015
+       Chunk an Iterable Lazily
+    ===================================================== */
+
+    15: {
+
+        chapter: 8,
+
+        number: "015",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Chunk an Iterable Lazily",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>lazy_chunks(values, size)</code>.
+            </p>
+
+            <p>
+                The function receives an
+                <strong>iterable</strong> and must lazily
+                produce lists containing at most
+                <code>size</code> elements each.
+            </p>
+
+            <p>
+                The original order of the values must be
+                preserved.
+            </p>
+
+            <p>
+                Every complete chunk should contain exactly
+                <code>size</code> elements.
+            </p>
+
+            <p>
+                The final chunk may contain fewer elements
+                if the iterable is exhausted.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>list(
+    lazy_chunks(
+        [1, 2, 3, 4, 5],
+        2
+    )
+)
+
+→ [
+    [1, 2],
+    [3, 4],
+    [5]
+]</pre>
+
+            <p>
+                Another example:
+            </p>
+
+            <pre>list(
+    lazy_chunks(
+        ["a", "b", "c", "d"],
+        3
+    )
+)
+
+→ [
+    ["a", "b", "c"],
+    ["d"]
+]</pre>
+
+            <p>
+                For this challenge, you may assume:
+            </p>
+
+            <ul>
+                <li>
+                    <code>size</code> is an integer greater
+                    than <code>0</code>;
+                </li>
+
+                <li>
+                    <code>values</code> can be any iterable;
+                </li>
+
+                <li>
+                    input validation is not required.
+                </li>
+            </ul>
+
+            <p>
+                <strong>Important:</strong>
+                the function must be a generator function.
+            </p>
+
+            <p>
+                It must process the input lazily.
+                It must not convert the complete iterable
+                into a list before producing the first
+                chunk.
+            </p>
+
+            <p>
+                When one chunk is requested, the function
+                should consume only the values needed to
+                build that chunk.
+            </p>
+
+            <p>
+                Each produced chunk must be a new list.
+            </p>
+        `,
+
+
+        starterCode:
+`def lazy_chunks(values, size):
+    pass
+
+
+result = lazy_chunks(
+    [1, 2, 3, 4, 5],
+    2
+)
+
+print(
+    list(result)
+)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "lazy_chunks"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called lazy_chunks()."
+        )
+
+
+    else:
+
+        success(
+            "Function lazy_chunks() found"
+        )
+
+
+        import inspect
+        import types
+
+
+        tests_ok = True
+
+
+        # -------------------------------------------------
+        # GENERATOR FUNCTION REQUIREMENT
+        # -------------------------------------------------
+
+        if not inspect.isgeneratorfunction(
+            function
+        ):
+
+            fail(
+                "lazy_chunks() must be a generator function."
+            )
+
+            tests_ok = False
+
+
+        # -------------------------------------------------
+        # STANDARD VALUE TESTS
+        # -------------------------------------------------
+
+        tests = [
+
+            (
+                [],
+                3,
+                []
+            ),
+
+            (
+                [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                2,
+                [
+                    [1, 2],
+                    [3, 4],
+                    [5]
+                ]
+            ),
+
+            (
+                (
+                    "a",
+                    "b",
+                    "c",
+                    "d"
+                ),
+                3,
+                [
+                    ["a", "b", "c"],
+                    ["d"]
+                ]
+            ),
+
+            (
+                [
+                    10,
+                    20,
+                    30
+                ],
+                1,
+                [
+                    [10],
+                    [20],
+                    [30]
+                ]
+            ),
+
+            (
+                [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                4,
+                [
+                    [1, 2, 3, 4]
+                ]
+            ),
+
+            (
+                [
+                    1,
+                    2,
+                    3
+                ],
+                10,
+                [
+                    [1, 2, 3]
+                ]
+            )
+
+        ]
+
+
+        if tests_ok:
+
+            for (
+                values,
+                size,
+                expected
+            ) in tests:
+
+
+                result = function(
+                    values,
+                    size
+                )
+
+
+                if not isinstance(
+                    result,
+                    types.GeneratorType
+                ):
+
+                    fail(
+                        "Each call to lazy_chunks() must return a generator object."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                obtained = list(
+                    result
+                )
+
+
+                if obtained != expected:
+
+                    fail(
+                        f"Input: {values}\\n"
+                        f"Chunk size: {size}\\n"
+                        f"Expected: {expected}\\n"
+                        f"Obtained: {obtained}"
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                if any(
+                    not isinstance(
+                        chunk,
+                        list
+                    )
+                    for chunk in obtained
+                ):
+
+                    fail(
+                        "Every produced chunk must be a list."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                chunk_ids = [
+                    id(chunk)
+                    for chunk in obtained
+                ]
+
+
+                if (
+                    len(chunk_ids)
+                    != len(set(chunk_ids))
+                ):
+
+                    fail(
+                        "Each produced chunk must be a separate list object."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+        # -------------------------------------------------
+        # ITERATOR INPUT TEST
+        # -------------------------------------------------
+        #
+        # values is not guaranteed to be a list.
+        # Solutions that depend on indexing or slicing
+        # should not work for every valid input.
+
+        if tests_ok:
+
+            source = iter(
+                [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                ]
+            )
+
+
+            result = function(
+                source,
+                4
+            )
+
+
+            obtained = list(
+                result
+            )
+
+
+            expected = [
+                [1, 2, 3, 4],
+                [5, 6]
+            ]
+
+
+            if obtained != expected:
+
+                fail(
+                    "The function must work with iterators, not only lists.\\n"
+                    f"Expected: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+
+        # -------------------------------------------------
+        # GENERATOR-EXPRESSION INPUT TEST
+        # -------------------------------------------------
+
+        if tests_ok:
+
+            source = (
+                number * number
+                for number in range(5)
+            )
+
+
+            obtained = list(
+                function(
+                    source,
+                    2
+                )
+            )
+
+
+            expected = [
+                [0, 1],
+                [4, 9],
+                [16]
+            ]
+
+
+            if obtained != expected:
+
+                fail(
+                    "The function must accept any iterable, including generators.\\n"
+                    f"Expected: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+
+        # -------------------------------------------------
+        # LAZINESS TEST
+        # -------------------------------------------------
+
+        if tests_ok:
+
+            class TrackingIterable:
+
+                def __init__(
+                    self,
+                    values
+                ):
+
+                    self.values = values
+
+                    self.consumed = 0
+
+
+                def __iter__(
+                    self
+                ):
+
+                    for value in self.values:
+
+                        self.consumed += 1
+
+                        yield value
+
+
+            source = TrackingIterable(
+                [
+                    10,
+                    20,
+                    30,
+                    40,
+                    50,
+                    60,
+                    70,
+                    80
+                ]
+            )
+
+
+            result = function(
+                source,
+                3
+            )
+
+
+            # Creating the generator must not consume input.
+            if source.consumed != 0:
+
+                fail(
+                    "The input iterable was consumed before iteration began."
+                )
+
+                tests_ok = False
+
+
+            else:
+
+                first_chunk = next(
+                    result
+                )
+
+
+                if first_chunk != [
+                    10,
+                    20,
+                    30
+                ]:
+
+                    fail(
+                        "The first chunk is incorrect.\\n"
+                        "Expected: [10, 20, 30]\\n"
+                        f"Obtained: {first_chunk}"
+                    )
+
+                    tests_ok = False
+
+
+                elif source.consumed != 3:
+
+                    fail(
+                        "The function consumed values that belong to later chunks.\\n"
+                        "After requesting the first chunk of size 3, "
+                        "exactly 3 input values should have been consumed.\\n"
+                        f"Consumed: {source.consumed}"
+                    )
+
+                    tests_ok = False
+
+
+                else:
+
+                    second_chunk = next(
+                        result
+                    )
+
+
+                    if second_chunk != [
+                        40,
+                        50,
+                        60
+                    ]:
+
+                        fail(
+                            "The second chunk is incorrect.\\n"
+                            "Expected: [40, 50, 60]\\n"
+                            f"Obtained: {second_chunk}"
+                        )
+
+                        tests_ok = False
+
+
+                    elif source.consumed != 6:
+
+                        fail(
+                            "The generator should consume only the values needed for each requested chunk.\\n"
+                            f"Consumed after two chunks: {source.consumed}"
+                        )
+
+                        tests_ok = False
+
+
+        # -------------------------------------------------
+        # FINAL PARTIAL CHUNK + EXHAUSTION
+        # -------------------------------------------------
+
+        if tests_ok:
+
+            generator = function(
+                [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                2
+            )
+
+
+            first = next(
+                generator
+            )
+
+            second = next(
+                generator
+            )
+
+            third = next(
+                generator
+            )
+
+
+            if first != [1, 2]:
+
+                fail(
+                    "The first chunk is incorrect."
+                )
+
+                tests_ok = False
+
+
+            elif second != [3, 4]:
+
+                fail(
+                    "The second chunk is incorrect."
+                )
+
+                tests_ok = False
+
+
+            elif third != [5]:
+
+                fail(
+                    "The final partial chunk is incorrect."
+                )
+
+                tests_ok = False
+
+
+            else:
+
+                sentinel = object()
+
+
+                exhausted = next(
+                    generator,
+                    sentinel
+                )
+
+
+                if exhausted is not sentinel:
+
+                    fail(
+                        "The generator should be exhausted after the final chunk."
+                    )
+
+                    tests_ok = False
+
+
+        if tests_ok:
+
+            success(
+                "The function is a real generator function"
+            )
+
+            success(
+                "Values are grouped into chunks correctly"
+            )
+
+            success(
+                "The original order is preserved"
+            )
+
+            success(
+                "Final partial chunks are handled correctly"
+            )
+
+            success(
+                "Lists, tuples, iterators and generators are supported"
+            )
+
+            success(
+                "Each chunk is a separate list object"
+            )
+
+            success(
+                "Input values are consumed lazily"
+            )
+
+            success(
+                "Later chunks are not consumed before they are requested"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+
+
+
+
+    /* =====================================================
+       CHALLENGE 016
+       Read Valid Integers Lazily
+    ===================================================== */
+
+    16: {
+
+        chapter: 8,
+
+        number: "016",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Read Valid Integers Lazily",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>valid_integers(values)</code>.
+            </p>
+
+            <p>
+                The function receives an
+                <strong>iterable of strings</strong>.
+            </p>
+
+            <p>
+                It must lazily produce only the values that
+                can successfully be converted to integers.
+            </p>
+
+            <p>
+                Invalid integer strings must be ignored.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>result = valid_integers([
+    "10",
+    "Python",
+    "25",
+    "3.5",
+    "-4"
+])
+
+list(result)
+→ [10, 25, -4]</pre>
+
+            <p>
+                You may assume that every input item is a
+                string.
+            </p>
+
+            <p>
+                Therefore the conversion failure you need to
+                handle is <code>ValueError</code>.
+            </p>
+
+            <p>
+                <strong>Important:</strong>
+                the result must be produced lazily.
+            </p>
+
+            <p>
+                The function must not first construct a
+                complete list of converted values and only
+                then return or iterate over that list.
+            </p>
+        `,
+
+
+        starterCode:
+`def valid_integers(values):
+    pass
+
+
+result = valid_integers([
+    "10",
+    "Python",
+    "25",
+    "3.5",
+    "-4"
+])
+
+print(
+    list(result)
+)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "valid_integers"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called valid_integers()."
+        )
+
+
+    else:
+
+        success(
+            "Function valid_integers() found"
+        )
+
+
+        import types
+
+
+        tests_ok = True
+
+
+        tests = [
+
+            (
+                [],
+                []
+            ),
+
+            (
+                [
+                    "1",
+                    "2",
+                    "3"
+                ],
+                [
+                    1,
+                    2,
+                    3
+                ]
+            ),
+
+            (
+                [
+                    "Python"
+                ],
+                []
+            ),
+
+            (
+                [
+                    "10",
+                    "x",
+                    "-2"
+                ],
+                [
+                    10,
+                    -2
+                ]
+            ),
+
+            (
+                [
+                    "3.5",
+                    "5"
+                ],
+                [
+                    5
+                ]
+            ),
+
+            (
+                [
+                    "10",
+                    "Python",
+                    "25",
+                    "3.5",
+                    "-4"
+                ],
+                [
+                    10,
+                    25,
+                    -4
+                ]
+            ),
+
+            (
+                [
+                    "   8   ",
+                    "+4",
+                    "003",
+                    "",
+                    "   ",
+                    "-0"
+                ],
+                [
+                    8,
+                    4,
+                    3,
+                    0
+                ]
+            )
+
+        ]
+
+
+        for (
+            values,
+            expected
+        ) in tests:
+
+
+            result = function(
+                values
+            )
+
+
+            if not isinstance(
+                result,
+                types.GeneratorType
+            ):
+
+                fail(
+                    "valid_integers() must return a generator object."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            obtained = list(
+                result
+            )
+
+
+            if obtained != expected:
+
+                fail(
+                    f"Input: {values}\\n"
+                    f"Expected: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if any(
+                type(item) is not int
+                for item in obtained
+            ):
+
+                fail(
+                    "The generator must produce integers."
+                )
+
+                tests_ok = False
+
+                break
+
+
+        # -------------------------------------------------
+        # LAZINESS TEST
+        # -------------------------------------------------
+        #
+        # This custom iterable records how many source
+        # elements have actually been requested.
+        #
+        # A correct lazy implementation should not consume
+        # the entire source before the caller asks for all
+        # output values.
+
+        if tests_ok:
+
+            class TrackingIterable:
+
+                def __init__(
+                    self,
+                    values
+                ):
+
+                    self.values = values
+
+                    self.consumed = 0
+
+
+                def __iter__(
+                    self
+                ):
+
+                    for value in self.values:
+
+                        self.consumed += 1
+
+                        yield value
+
+
+            source = TrackingIterable(
+                [
+                    "10",
+                    "20",
+                    "Python",
+                    "30",
+                    "40"
+                ]
+            )
+
+
+            result = function(
+                source
+            )
+
+
+            if not isinstance(
+                result,
+                types.GeneratorType
+            ):
+
+                fail(
+                    "valid_integers() must return a generator object."
+                )
+
+                tests_ok = False
+
+
+            elif source.consumed != 0:
+
+                fail(
+                    "The input iterable was consumed before any value was requested. "
+                    "The function must behave lazily."
+                )
+
+                tests_ok = False
+
+
+            else:
+
+                first_value = next(
+                    result
+                )
+
+
+                if first_value != 10:
+
+                    fail(
+                        "The first produced integer is incorrect.\\n"
+                        f"Expected: 10\\n"
+                        f"Obtained: {first_value}"
+                    )
+
+                    tests_ok = False
+
+
+                elif source.consumed >= 5:
+
+                    fail(
+                        "The entire input iterable was consumed before only the first output value was needed. "
+                        "The function must process values lazily."
+                    )
+
+                    tests_ok = False
+
+
+                else:
+
+                    remaining = list(
+                        result
+                    )
+
+
+                    if remaining != [
+                        20,
+                        30,
+                        40
+                    ]:
+
+                        fail(
+                            "The remaining lazy values were produced incorrectly.\\n"
+                            "Expected: [20, 30, 40]\\n"
+                            f"Obtained: {remaining}"
+                        )
+
+                        tests_ok = False
+
+
+        # Test laziness when invalid values appear before
+        # the first valid integer.
+        if tests_ok:
+
+            source = TrackingIterable(
+                [
+                    "invalid",
+                    "still invalid",
+                    "7",
+                    "8",
+                    "9"
+                ]
+            )
+
+
+            result = function(
+                source
+            )
+
+
+            first_value = next(
+                result
+            )
+
+
+            if first_value != 7:
+
+                fail(
+                    "Invalid strings must be skipped until a valid integer is found."
+                )
+
+                tests_ok = False
+
+
+            elif source.consumed >= 5:
+
+                fail(
+                    "The generator consumed the complete input unnecessarily."
+                )
+
+                tests_ok = False
+
+
+        if tests_ok:
+
+            success(
+                "The function returns a generator"
+            )
+
+            success(
+                "Valid strings are converted to integers correctly"
+            )
+
+            success(
+                "Invalid integer strings are ignored correctly"
+            )
+
+            success(
+                "Signed and whitespace-surrounded integers are handled correctly"
+            )
+
+            success(
+                "Values are produced lazily"
+            )
+
+            success(
+                "The complete input is not consumed before it is needed"
             )
 
 
