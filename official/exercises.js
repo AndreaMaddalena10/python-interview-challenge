@@ -3330,6 +3330,735 @@ except Exception as error:
     )
 `
 
+    },
+
+
+        /* =====================================================
+       CHALLENGE 013
+       Create an Independent Copy
+    ===================================================== */
+
+    13: {
+
+        chapter: 7,
+
+        number: "013",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Create an Independent Copy",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>independent_copy(data)</code>.
+            </p>
+
+            <p>
+                The function receives a list containing lists.
+            </p>
+
+            <p>
+                Return a new structure where:
+            </p>
+
+            <ul>
+                <li>
+                    the outer list is a new, independent object;
+                </li>
+
+                <li>
+                    every direct inner list is also a new,
+                    independent object;
+                </li>
+
+                <li>
+                    changing a returned inner list must not
+                    modify the corresponding inner list in
+                    the original structure.
+                </li>
+            </ul>
+
+            <p>
+                For this challenge, you may assume:
+            </p>
+
+            <ul>
+                <li>
+                    <code>data</code> is a list;
+                </li>
+
+                <li>
+                    every direct element of
+                    <code>data</code> is also a list;
+                </li>
+
+                <li>
+                    the elements inside those inner lists
+                    contain no further mutable nested
+                    structures;
+                </li>
+
+                <li>
+                    only the outer list and the direct inner
+                    lists need to be independent.
+                </li>
+            </ul>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>original = [
+    [1, 2],
+    [3, 4]
+]
+
+copied = independent_copy(original)
+
+copied[0].append(99)</pre>
+
+            <p>
+                After the modification,
+                <code>copied</code> should be:
+            </p>
+
+            <pre>[
+    [1, 2, 99],
+    [3, 4]
+]</pre>
+
+            <p>
+                while <code>original</code> must still be:
+            </p>
+
+            <pre>[
+    [1, 2],
+    [3, 4]
+]</pre>
+
+            <p>
+                The platform will test both
+                <strong>value equality</strong> and
+                <strong>object independence</strong>.
+            </p>
+        `,
+
+
+        starterCode:
+`def independent_copy(data):
+    pass
+
+
+original = [
+    [1, 2],
+    [3, 4]
+]
+
+copied = independent_copy(original)
+
+print(copied)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "independent_copy"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called independent_copy()."
+        )
+
+
+    else:
+
+        success(
+            "Function independent_copy() found"
+        )
+
+
+        tests = [
+
+            [
+                [1, 2],
+                [3, 4]
+            ],
+
+            [
+                ["Python"],
+                ["Java", "SQL"]
+            ],
+
+            [
+                [],
+                [1],
+                [2, 3, 4]
+            ],
+
+            [],
+
+            [
+                [True, None],
+                ["a", "b"],
+                [(1, 2), 5]
+            ]
+
+        ]
+
+
+        tests_ok = True
+
+
+        for original in tests:
+
+            expected_original = [
+                inner.copy()
+                for inner in original
+            ]
+
+
+            obtained = function(
+                original
+            )
+
+
+            # The result must be a list.
+            if not isinstance(
+                obtained,
+                list
+            ):
+
+                fail(
+                    "The function must return a list.\\n"
+                    f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # The outer list must be a different object.
+            if obtained is original:
+
+                fail(
+                    "The returned outer list must be a new object."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # Values must initially be equal.
+            if obtained != expected_original:
+
+                fail(
+                    f"Input: {expected_original}\\n"
+                    f"Expected: {expected_original}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # The function itself must not modify the input.
+            if original != expected_original:
+
+                fail(
+                    "The original structure must not be modified."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # The number of inner lists must stay the same.
+            if len(
+                obtained
+            ) != len(
+                original
+            ):
+
+                fail(
+                    "The returned outer list must contain the same number of inner lists."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # Every direct inner element must still be a list
+            # and must be a different object from the original.
+            for index in range(
+                len(original)
+            ):
+
+                if not isinstance(
+                    obtained[index],
+                    list
+                ):
+
+                    fail(
+                        "Every direct element in the returned structure must be a list."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                if (
+                    obtained[index]
+                    is original[index]
+                ):
+
+                    fail(
+                        "Every direct inner list must be an independent object.\\n"
+                        f"Shared inner list found at index {index}."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+            if not tests_ok:
+
+                break
+
+
+            # Verify independence through an actual mutation.
+            if len(
+                obtained
+            ) > 0:
+
+                original_snapshot = [
+                    inner.copy()
+                    for inner in original
+                ]
+
+
+                obtained[0].append(
+                    "__copy_test_marker__"
+                )
+
+
+                if (
+                    original
+                    != original_snapshot
+                ):
+
+                    fail(
+                        "Changing an inner list in the copy must not modify the original structure."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+        if tests_ok:
+
+            success(
+                "The outer list is an independent object"
+            )
+
+            success(
+                "Every direct inner list is independent"
+            )
+
+            success(
+                "The copied structure initially contains equal values"
+            )
+
+            success(
+                "Mutating the copy does not modify the original"
+            )
+
+            success(
+                "The original structure remains unchanged"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+
+    /* =====================================================
+       CHALLENGE 014
+       Non-Mutating Dictionary Update
+    ===================================================== */
+
+    14: {
+
+        chapter: 7,
+
+        number: "014",
+
+        difficulty: "Easy",
+
+        layout: "standard",
+
+        title:
+            "Non-Mutating Dictionary Update",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>update_settings(settings, key, value)</code>.
+            </p>
+
+            <p>
+                The function must:
+            </p>
+
+            <ul>
+                <li>
+                    receive an existing dictionary;
+                </li>
+
+                <li>
+                    create a new dictionary;
+                </li>
+
+                <li>
+                    update or add the requested key in the
+                    new dictionary;
+                </li>
+
+                <li>
+                    return the new dictionary;
+                </li>
+
+                <li>
+                    leave the original dictionary unchanged;
+                </li>
+
+                <li>
+                    return an object that is not the original
+                    dictionary.
+                </li>
+            </ul>
+
+            <p>
+                Only top-level dictionary independence is
+                required.
+            </p>
+
+            <p>
+                You may assume that the existing dictionary
+                values are immutable.
+            </p>
+
+            <p>
+                You do not need to deep-copy nested
+                structures.
+            </p>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>settings = {
+    "theme": "light",
+    "language": "en"
+}
+
+updated = update_settings(
+    settings,
+    "theme",
+    "dark"
+)</pre>
+
+            <p>
+                <code>updated</code> should be:
+            </p>
+
+            <pre>{
+    "theme": "dark",
+    "language": "en"
+}</pre>
+
+            <p>
+                while the original
+                <code>settings</code> dictionary must remain
+                unchanged.
+            </p>
+        `,
+
+
+        starterCode:
+`def update_settings(settings, key, value):
+    pass
+
+
+settings = {
+    "theme": "light",
+    "language": "en"
+}
+
+updated = update_settings(
+    settings,
+    "theme",
+    "dark"
+)
+
+print(updated)
+print(settings)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    exec(
+        user_code,
+        namespace
+    )
+
+    function = namespace.get(
+        "update_settings"
+    )
+
+
+    if not callable(function):
+
+        fail(
+            "You must define a function called update_settings()."
+        )
+
+
+    else:
+
+        success(
+            "Function update_settings() found"
+        )
+
+
+        tests = [
+
+            (
+                {
+                    "theme": "light",
+                    "language": "en"
+                },
+                "theme",
+                "dark",
+                {
+                    "theme": "dark",
+                    "language": "en"
+                }
+            ),
+
+            (
+                {
+                    "theme": "light"
+                },
+                "language",
+                "it",
+                {
+                    "theme": "light",
+                    "language": "it"
+                }
+            ),
+
+            (
+                {},
+                "debug",
+                True,
+                {
+                    "debug": True
+                }
+            ),
+
+            (
+                {
+                    "volume": 50,
+                    "enabled": False
+                },
+                "volume",
+                75,
+                {
+                    "volume": 75,
+                    "enabled": False
+                }
+            ),
+
+            (
+                {
+                    1: "one",
+                    2: "two"
+                },
+                3,
+                "three",
+                {
+                    1: "one",
+                    2: "two",
+                    3: "three"
+                }
+            ),
+
+            (
+                {
+                    "mode": "light",
+                    "version": 1
+                },
+                "mode",
+                "light",
+                {
+                    "mode": "light",
+                    "version": 1
+                }
+            )
+
+        ]
+
+
+        tests_ok = True
+
+
+        for (
+            settings,
+            key,
+            value,
+            expected
+        ) in tests:
+
+
+            original_settings = (
+                settings.copy()
+            )
+
+
+            obtained = function(
+                settings,
+                key,
+                value
+            )
+
+
+            # The result must be a dictionary.
+            if not isinstance(
+                obtained,
+                dict
+            ):
+
+                fail(
+                    "The function must return a dictionary.\\n"
+                    f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # A new top-level dictionary must be returned.
+            if obtained is settings:
+
+                fail(
+                    "The function must return a new dictionary object."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # Check the returned values.
+            if obtained != expected:
+
+                fail(
+                    f"Original settings: {original_settings}\\n"
+                    f"Key: {repr(key)}\\n"
+                    f"Value: {repr(value)}\\n"
+                    f"Expected: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # The original dictionary must remain unchanged.
+            if settings != original_settings:
+
+                fail(
+                    "The original dictionary must not be modified.\\n"
+                    f"Before: {original_settings}\\n"
+                    f"After: {settings}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+        if tests_ok:
+
+            success(
+                "Existing keys are updated correctly"
+            )
+
+            success(
+                "New keys are added correctly"
+            )
+
+            success(
+                "A new dictionary object is returned"
+            )
+
+            success(
+                "The original dictionary remains unchanged"
+            )
+
+            success(
+                "Existing settings are preserved correctly"
+            )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
     }
 
 
