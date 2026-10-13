@@ -5697,6 +5697,1503 @@ except Exception as error:
     )
 `
 
+    },
+
+
+        /* =====================================================
+       CHALLENGE 017
+       Build a Ranked Student Report
+    ===================================================== */
+
+    17: {
+
+        chapter: 9,
+
+        number: "017",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Build a Ranked Student Report",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>ranked_report(names, scores)</code>.
+            </p>
+
+            <p>
+                The function receives two sequences:
+                <code>names</code> and <code>scores</code>.
+            </p>
+
+            <p>
+                Each name corresponds to the score at the
+                same position.
+            </p>
+
+            <p>
+                Return a new list of strings ranking the
+                students from the highest score to the
+                lowest.
+            </p>
+
+            <p>
+                Each line must use this format:
+            </p>
+
+            <pre>1. Sam: 95
+2. Maya: 90
+3. Alex: 80</pre>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>ranked_report(
+    [
+        "Alex",
+        "Sam",
+        "Maya",
+        "Leo"
+    ],
+    [
+        80,
+        95,
+        90,
+        70
+    ]
+)
+
+→ [
+    "1. Sam: 95",
+    "2. Maya: 90",
+    "3. Alex: 80",
+    "4. Leo: 70"
+]</pre>
+
+            <p>
+                Requirements:
+            </p>
+
+            <ul>
+                <li>
+                    use <code>zip()</code> to associate
+                    names with scores;
+                </li>
+
+                <li>
+                    use <code>sorted()</code> to create the
+                    ranking;
+                </li>
+
+                <li>
+                    use
+                    <code>enumerate(..., start=1)</code>
+                    to create the displayed positions;
+                </li>
+
+                <li>
+                    sort from highest score to lowest score;
+                </li>
+
+                <li>
+                    if two students have the same score,
+                    preserve their original relative order;
+                </li>
+
+                <li>
+                    do not modify either input sequence.
+                </li>
+            </ul>
+
+            <p>
+                You may assume:
+            </p>
+
+            <ul>
+                <li>
+                    <code>names</code> and
+                    <code>scores</code> have the same
+                    length;
+                </li>
+
+                <li>
+                    all values are already valid;
+                </li>
+
+                <li>
+                    input validation is not required.
+                </li>
+            </ul>
+
+            <p>
+                Different clear implementations are valid,
+                as long as the required Python tools are
+                used appropriately.
+            </p>
+        `,
+
+
+        starterCode:
+`def ranked_report(names, scores):
+    pass
+
+
+names = [
+    "Alex",
+    "Sam",
+    "Maya",
+    "Leo"
+]
+
+scores = [
+    80,
+    95,
+    90,
+    70
+]
+
+print(
+    ranked_report(
+        names,
+        scores
+    )
+)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    import ast
+
+
+    tests_ok = True
+
+
+    # -------------------------------------------------
+    # FIND THE FUNCTION
+    # -------------------------------------------------
+
+    tree = ast.parse(
+        user_code
+    )
+
+
+    function_node = None
+
+
+    for node in tree.body:
+
+        if (
+            isinstance(
+                node,
+                ast.FunctionDef
+            )
+            and node.name
+            == "ranked_report"
+        ):
+
+            function_node = node
+
+            break
+
+
+    if function_node is None:
+
+        fail(
+            "You must define a function called ranked_report()."
+        )
+
+        tests_ok = False
+
+
+    # -------------------------------------------------
+    # REQUIRED PYTHON TOOLS
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        uses_zip = False
+        uses_sorted = False
+        uses_enumerate = False
+        enumerate_starts_at_one = False
+
+
+        for node in ast.walk(
+            function_node
+        ):
+
+            if not isinstance(
+                node,
+                ast.Call
+            ):
+
+                continue
+
+
+            if isinstance(
+                node.func,
+                ast.Name
+            ):
+
+                if node.func.id == "zip":
+
+                    uses_zip = True
+
+
+                elif node.func.id == "sorted":
+
+                    uses_sorted = True
+
+
+                elif node.func.id == "enumerate":
+
+                    uses_enumerate = True
+
+
+                    # enumerate(values, 1)
+                    if (
+                        len(node.args) >= 2
+                        and isinstance(
+                            node.args[1],
+                            ast.Constant
+                        )
+                        and node.args[1].value == 1
+                    ):
+
+                        enumerate_starts_at_one = True
+
+
+                    # enumerate(values, start=1)
+                    for keyword in node.keywords:
+
+                        if (
+                            keyword.arg == "start"
+                            and isinstance(
+                                keyword.value,
+                                ast.Constant
+                            )
+                            and keyword.value.value == 1
+                        ):
+
+                            enumerate_starts_at_one = True
+
+
+        if not uses_zip:
+
+            fail(
+                "Use zip() to associate each name with its corresponding score."
+            )
+
+            tests_ok = False
+
+
+        elif not uses_sorted:
+
+            fail(
+                "Use sorted() to create the ranking."
+            )
+
+            tests_ok = False
+
+
+        elif not uses_enumerate:
+
+            fail(
+                "Use enumerate() to create the ranking positions."
+            )
+
+            tests_ok = False
+
+
+        elif not enumerate_starts_at_one:
+
+            fail(
+                "Use enumerate(..., start=1) so that ranking positions begin at 1."
+            )
+
+            tests_ok = False
+
+
+    # -------------------------------------------------
+    # LOAD USER FUNCTION
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        exec(
+            user_code,
+            namespace
+        )
+
+
+        function = namespace.get(
+            "ranked_report"
+        )
+
+
+        if not callable(
+            function
+        ):
+
+            fail(
+                "ranked_report must be callable."
+            )
+
+            tests_ok = False
+
+
+        else:
+
+            success(
+                "Function ranked_report() found"
+            )
+
+
+    # -------------------------------------------------
+    # TEST CASES
+    # -------------------------------------------------
+
+    tests = [
+
+        (
+            [
+                "Alex",
+                "Sam",
+                "Maya",
+                "Leo"
+            ],
+            [
+                80,
+                95,
+                90,
+                70
+            ],
+            [
+                "1. Sam: 95",
+                "2. Maya: 90",
+                "3. Alex: 80",
+                "4. Leo: 70"
+            ]
+        ),
+
+        (
+            [],
+            [],
+            []
+        ),
+
+        (
+            [
+                "Alex"
+            ],
+            [
+                100
+            ],
+            [
+                "1. Alex: 100"
+            ]
+        ),
+
+        (
+            [
+                "A",
+                "B",
+                "C"
+            ],
+            [
+                90,
+                90,
+                80
+            ],
+            [
+                "1. A: 90",
+                "2. B: 90",
+                "3. C: 80"
+            ]
+        ),
+
+        (
+            [
+                "First",
+                "Second",
+                "Third",
+                "Fourth"
+            ],
+            [
+                70,
+                100,
+                70,
+                100
+            ],
+            [
+                "1. Second: 100",
+                "2. Fourth: 100",
+                "3. First: 70",
+                "4. Third: 70"
+            ]
+        ),
+
+        (
+            (
+                "Python",
+                "Java",
+                "SQL"
+            ),
+            (
+                85,
+                60,
+                95
+            ),
+            [
+                "1. SQL: 95",
+                "2. Python: 85",
+                "3. Java: 60"
+            ]
+        )
+
+    ]
+
+
+    if tests_ok:
+
+        for (
+            names,
+            scores,
+            expected
+        ) in tests:
+
+
+            names_before = list(
+                names
+            )
+
+            scores_before = list(
+                scores
+            )
+
+
+            obtained = function(
+                names,
+                scores
+            )
+
+
+            # -----------------------------------------
+            # RETURN TYPE
+            # -----------------------------------------
+
+            if not isinstance(
+                obtained,
+                list
+            ):
+
+                fail(
+                    "The function must return a list.\\n"
+                    f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # EXACT RESULT
+            # -----------------------------------------
+
+            if obtained != expected:
+
+                fail(
+                    f"Names: {names_before}\\n"
+                    f"Scores: {scores_before}\\n"
+                    f"Expected: {expected}\\n"
+                    f"Obtained: {obtained}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if any(
+                type(line) is not str
+                for line in obtained
+            ):
+
+                fail(
+                    "Every item in the returned report must be a string."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # ORIGINAL INPUTS MUST REMAIN UNCHANGED
+            # -----------------------------------------
+
+            if list(names) != names_before:
+
+                fail(
+                    "The names sequence must not be modified."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if list(scores) != scores_before:
+
+                fail(
+                    "The scores sequence must not be modified."
+                )
+
+                tests_ok = False
+
+                break
+
+
+    if tests_ok:
+
+        success(
+            "zip() is used to associate names and scores"
+        )
+
+        success(
+            "sorted() is used to create the ranking"
+        )
+
+        success(
+            "enumerate(..., start=1) is used correctly"
+        )
+
+        success(
+            "Students are ordered from highest to lowest score"
+        )
+
+        success(
+            "Equal scores preserve the original relative order"
+        )
+
+        success(
+            "The report format is correct"
+        )
+
+        success(
+            "The original input sequences remain unchanged"
+        )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
+    },
+
+
+
+        /* =====================================================
+       CHALLENGE 018
+       Analyze Student Performance
+    ===================================================== */
+
+    18: {
+
+        chapter: 9,
+
+        number: "018",
+
+        difficulty: "Medium",
+
+        layout: "standard",
+
+        title:
+            "Analyze Student Performance",
+
+
+        description: `
+            <p>
+                Write a function
+                <code>analyze_students(students)</code>.
+            </p>
+
+            <p>
+                The function receives a list of student
+                dictionaries.
+            </p>
+
+            <p>
+                Each student has:
+            </p>
+
+            <ul>
+                <li>
+                    a <code>"name"</code>;
+                </li>
+
+                <li>
+                    a non-empty list of
+                    <code>"scores"</code>.
+                </li>
+            </ul>
+
+            <p>
+                Example input:
+            </p>
+
+            <pre>[
+    {
+        "name": "Alex",
+        "scores": [80, 70, 90]
+    },
+    {
+        "name": "Sam",
+        "scores": [100, 95, 90]
+    },
+    {
+        "name": "Maya",
+        "scores": [60, 65, 70]
+    }
+]</pre>
+
+            <p>
+                Return a dictionary containing:
+            </p>
+
+            <ul>
+                <li>
+                    <code>"top_student"</code>:
+                    the name of the student with the highest
+                    average;
+                </li>
+
+                <li>
+                    <code>"class_average"</code>:
+                    the average of the students'
+                    individual averages;
+                </li>
+
+                <li>
+                    <code>"all_passed"</code>:
+                    whether every student has every score
+                    greater than or equal to <code>60</code>;
+                </li>
+
+                <li>
+                    <code>"any_perfect"</code>:
+                    whether at least one score anywhere in
+                    the class is exactly <code>100</code>;
+                </li>
+
+                <li>
+                    <code>"ranking"</code>:
+                    a list of student names ordered by
+                    average from highest to lowest.
+                </li>
+            </ul>
+
+            <p>
+                For the example above, the result is:
+            </p>
+
+            <pre>{
+    "top_student": "Sam",
+    "class_average": 80.0,
+    "all_passed": True,
+    "any_perfect": True,
+    "ranking": [
+        "Sam",
+        "Alex",
+        "Maya"
+    ]
+}</pre>
+
+            <p>
+                Important details:
+            </p>
+
+            <ul>
+                <li>
+                    calculate each student's average from
+                    their own scores;
+                </li>
+
+                <li>
+                    <code>class_average</code> is the
+                    average of those student averages,
+                    not necessarily the average of every
+                    individual score combined;
+                </li>
+
+                <li>
+                    if students have equal averages,
+                    preserve their original relative order;
+                </li>
+
+                <li>
+                    the original input structure must not
+                    be modified.
+                </li>
+            </ul>
+
+            <p>
+                Use the appropriate Python built-ins:
+                <code>sum()</code>,
+                <code>all()</code>,
+                <code>any()</code> and
+                <code>sorted()</code>.
+            </p>
+
+            <p>
+                Avoid unnecessarily calculating the same
+                student's average multiple times.
+            </p>
+
+            <p>
+                You may assume:
+            </p>
+
+            <ul>
+                <li>
+                    there is at least one student;
+                </li>
+
+                <li>
+                    every student has at least one score;
+                </li>
+
+                <li>
+                    all names and scores are already valid;
+                </li>
+
+                <li>
+                    input validation is not required.
+                </li>
+            </ul>
+        `,
+
+
+        starterCode:
+`def analyze_students(students):
+    pass
+
+
+students = [
+    {
+        "name": "Alex",
+        "scores": [80, 70, 90]
+    },
+    {
+        "name": "Sam",
+        "scores": [100, 95, 90]
+    },
+    {
+        "name": "Maya",
+        "scores": [60, 65, 70]
+    }
+]
+
+print(
+    analyze_students(students)
+)`,
+
+
+        checker:
+`
+namespace = {}
+
+try:
+
+    import ast
+    import copy
+
+
+    tests_ok = True
+
+
+    # -------------------------------------------------
+    # FIND FUNCTION
+    # -------------------------------------------------
+
+    tree = ast.parse(
+        user_code
+    )
+
+
+    function_node = None
+
+
+    for node in tree.body:
+
+        if (
+            isinstance(
+                node,
+                ast.FunctionDef
+            )
+            and node.name
+            == "analyze_students"
+        ):
+
+            function_node = node
+
+            break
+
+
+    if function_node is None:
+
+        fail(
+            "You must define a function called analyze_students()."
+        )
+
+        tests_ok = False
+
+
+    # -------------------------------------------------
+    # REQUIRED BUILT-INS
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        required_calls = {
+            "sum": False,
+            "all": False,
+            "any": False,
+            "sorted": False
+        }
+
+
+        for node in ast.walk(
+            function_node
+        ):
+
+            if (
+                isinstance(
+                    node,
+                    ast.Call
+                )
+                and isinstance(
+                    node.func,
+                    ast.Name
+                )
+                and node.func.id
+                in required_calls
+            ):
+
+                required_calls[
+                    node.func.id
+                ] = True
+
+
+        missing = [
+            name
+            for name, used
+            in required_calls.items()
+            if not used
+        ]
+
+
+        if missing:
+
+            fail(
+                "Use the appropriate required Python built-ins.\\n"
+                "Missing: "
+                + ", ".join(
+                    missing
+                )
+            )
+
+            tests_ok = False
+
+
+    # -------------------------------------------------
+    # LOAD USER FUNCTION
+    # -------------------------------------------------
+
+    if tests_ok:
+
+        exec(
+            user_code,
+            namespace
+        )
+
+
+        function = namespace.get(
+            "analyze_students"
+        )
+
+
+        if not callable(
+            function
+        ):
+
+            fail(
+                "analyze_students must be callable."
+            )
+
+            tests_ok = False
+
+
+        else:
+
+            success(
+                "Function analyze_students() found"
+            )
+
+
+    # -------------------------------------------------
+    # TEST CASES
+    # -------------------------------------------------
+
+    tests = [
+
+        (
+            [
+                {
+                    "name": "Alex",
+                    "scores": [
+                        80,
+                        70,
+                        90
+                    ]
+                },
+                {
+                    "name": "Sam",
+                    "scores": [
+                        100,
+                        95,
+                        90
+                    ]
+                },
+                {
+                    "name": "Maya",
+                    "scores": [
+                        60,
+                        65,
+                        70
+                    ]
+                }
+            ],
+            {
+                "top_student": "Sam",
+                "class_average": 80.0,
+                "all_passed": True,
+                "any_perfect": True,
+                "ranking": [
+                    "Sam",
+                    "Alex",
+                    "Maya"
+                ]
+            }
+        ),
+
+        (
+            [
+                {
+                    "name": "A",
+                    "scores": [
+                        100
+                    ]
+                },
+                {
+                    "name": "B",
+                    "scores": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            ],
+            {
+                "top_student": "A",
+                "class_average": 50.0,
+                "all_passed": False,
+                "any_perfect": True,
+                "ranking": [
+                    "A",
+                    "B"
+                ]
+            }
+        ),
+
+        (
+            [
+                {
+                    "name": "Alex",
+                    "scores": [
+                        80,
+                        80
+                    ]
+                },
+                {
+                    "name": "Sam",
+                    "scores": [
+                        90,
+                        70
+                    ]
+                },
+                {
+                    "name": "Maya",
+                    "scores": [
+                        75,
+                        75
+                    ]
+                }
+            ],
+            {
+                "top_student": "Alex",
+                "class_average": 78.33333333333333,
+                "all_passed": True,
+                "any_perfect": False,
+                "ranking": [
+                    "Alex",
+                    "Sam",
+                    "Maya"
+                ]
+            }
+        ),
+
+        (
+            [
+                {
+                    "name": "Solo",
+                    "scores": [
+                        100,
+                        100
+                    ]
+                }
+            ],
+            {
+                "top_student": "Solo",
+                "class_average": 100.0,
+                "all_passed": True,
+                "any_perfect": True,
+                "ranking": [
+                    "Solo"
+                ]
+            }
+        ),
+
+        (
+            [
+                {
+                    "name": "One",
+                    "scores": [
+                        59,
+                        100
+                    ]
+                },
+                {
+                    "name": "Two",
+                    "scores": [
+                        80,
+                        80
+                    ]
+                },
+                {
+                    "name": "Three",
+                    "scores": [
+                        90
+                    ]
+                }
+            ],
+            {
+                "top_student": "Three",
+                "class_average": 83.16666666666667,
+                "all_passed": False,
+                "any_perfect": True,
+                "ranking": [
+                    "Three",
+                    "Two",
+                    "One"
+                ]
+            }
+        )
+
+    ]
+
+
+    if tests_ok:
+
+        for (
+            students,
+            expected
+        ) in tests:
+
+
+            original_snapshot = (
+                copy.deepcopy(
+                    students
+                )
+            )
+
+
+            original_student_refs = list(
+                students
+            )
+
+
+            original_scores_refs = [
+                student["scores"]
+                for student in students
+            ]
+
+
+            obtained = function(
+                students
+            )
+
+
+            # -----------------------------------------
+            # RETURN TYPE
+            # -----------------------------------------
+
+            if not isinstance(
+                obtained,
+                dict
+            ):
+
+                fail(
+                    "The function must return a dictionary.\\n"
+                    f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # REQUIRED KEYS
+            # -----------------------------------------
+
+            expected_keys = {
+                "top_student",
+                "class_average",
+                "all_passed",
+                "any_perfect",
+                "ranking"
+            }
+
+
+            if set(
+                obtained.keys()
+            ) != expected_keys:
+
+                fail(
+                    "The returned dictionary must contain exactly these keys:\\n"
+                    "top_student, class_average, all_passed, any_perfect, ranking"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # TYPE CHECKS
+            # -----------------------------------------
+
+            if type(
+                obtained[
+                    "top_student"
+                ]
+            ) is not str:
+
+                fail(
+                    "top_student must be a string."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if type(
+                obtained[
+                    "class_average"
+                ]
+            ) is not float:
+
+                fail(
+                    "class_average must be a float."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if type(
+                obtained[
+                    "all_passed"
+                ]
+            ) is not bool:
+
+                fail(
+                    "all_passed must be a Boolean."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if type(
+                obtained[
+                    "any_perfect"
+                ]
+            ) is not bool:
+
+                fail(
+                    "any_perfect must be a Boolean."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if not isinstance(
+                obtained[
+                    "ranking"
+                ],
+                list
+            ):
+
+                fail(
+                    "ranking must be a list."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # RESULT CHECK
+            # -----------------------------------------
+
+            if (
+                obtained[
+                    "top_student"
+                ]
+                != expected[
+                    "top_student"
+                ]
+            ):
+
+                fail(
+                    "top_student is incorrect.\\n"
+                    f"Expected: {expected['top_student']}\\n"
+                    f"Obtained: {obtained['top_student']}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if abs(
+                obtained[
+                    "class_average"
+                ]
+                - expected[
+                    "class_average"
+                ]
+            ) > 1e-9:
+
+                fail(
+                    "class_average is incorrect.\\n"
+                    f"Expected: {expected['class_average']}\\n"
+                    f"Obtained: {obtained['class_average']}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if (
+                obtained[
+                    "all_passed"
+                ]
+                != expected[
+                    "all_passed"
+                ]
+            ):
+
+                fail(
+                    "all_passed is incorrect.\\n"
+                    f"Expected: {expected['all_passed']}\\n"
+                    f"Obtained: {obtained['all_passed']}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if (
+                obtained[
+                    "any_perfect"
+                ]
+                != expected[
+                    "any_perfect"
+                ]
+            ):
+
+                fail(
+                    "any_perfect is incorrect.\\n"
+                    f"Expected: {expected['any_perfect']}\\n"
+                    f"Obtained: {obtained['any_perfect']}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if (
+                obtained[
+                    "ranking"
+                ]
+                != expected[
+                    "ranking"
+                ]
+            ):
+
+                fail(
+                    "ranking is incorrect.\\n"
+                    f"Expected: {expected['ranking']}\\n"
+                    f"Obtained: {obtained['ranking']}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # INPUT MUST REMAIN UNCHANGED
+            # -----------------------------------------
+
+            if students != original_snapshot:
+
+                fail(
+                    "The original students structure must not be modified."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
+            # ORIGINAL OBJECTS MUST NOT BE REPLACED
+            # -----------------------------------------
+
+            for index in range(
+                len(students)
+            ):
+
+                if (
+                    students[index]
+                    is not
+                    original_student_refs[index]
+                ):
+
+                    fail(
+                        "The original student dictionaries must not be replaced."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+                if (
+                    students[index][
+                        "scores"
+                    ]
+                    is not
+                    original_scores_refs[index]
+                ):
+
+                    fail(
+                        "The original score lists must not be replaced."
+                    )
+
+                    tests_ok = False
+
+                    break
+
+
+            if not tests_ok:
+
+                break
+
+
+    if tests_ok:
+
+        success(
+            "Student averages are calculated correctly"
+        )
+
+        success(
+            "The class average is calculated from student averages"
+        )
+
+        success(
+            "The top student is identified correctly"
+        )
+
+        success(
+            "The ranking is ordered correctly"
+        )
+
+        success(
+            "Equal averages preserve their original relative order"
+        )
+
+        success(
+            "all() is used for passing conditions"
+        )
+
+        success(
+            "any() is used for perfect-score detection"
+        )
+
+        success(
+            "Appropriate Python built-ins are used"
+        )
+
+        success(
+            "The original input structure remains unchanged"
+        )
+
+
+except Exception as error:
+
+    fail(
+        "Error during execution: "
+        + str(error)
+    )
+`
+
     }
 
 
