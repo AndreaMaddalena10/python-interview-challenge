@@ -1,57 +1,57 @@
 const exercises = {
 
     /* =====================================================
-       CHALLENGE 001
-       Remove Duplicates While Preserving Order
-    ===================================================== */
+   CHALLENGE 001
+   Remove Duplicates While Preserving Order
+===================================================== */
 
-    1: {
+1: {
 
-        chapter: 1,
+    chapter: 1,
 
-        number: "001",
+    number: "001",
 
-        difficulty: "Easy",
+    difficulty: "Easy",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Remove Duplicates While Preserving Order",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>remove_duplicates(items)</code>
-                that returns a <strong>new list</strong>
-                containing each value only once.
-            </p>
-
-            <p>
-                The order of the first appearance of each
-                element must be preserved.
-            </p>
-
-            <p>
-                You may assume that every element inside
-                <code>items</code> is <strong>hashable</strong>.
-            </p>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>remove_duplicates([1, 2, 2, 3, 1]) → [1, 2, 3]</pre>
-
-            <p>
-                Your implementation does not need to match
-                a predefined solution. It only needs to
-                satisfy the required behavior.
-            </p>
-        `,
+    title:
+        "Remove Duplicates While Preserving Order",
 
 
-        starterCode:
+    description: `
+        <p>
+            Write a function
+            <code>remove_duplicates(items)</code>
+            that returns a <strong>new list</strong>
+            containing each value only once.
+        </p>
+
+        <p>
+            The order of the first appearance of each
+            element must be preserved.
+        </p>
+
+        <p>
+            You may assume that every element inside
+            <code>items</code> is <strong>hashable</strong>.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>remove_duplicates([1, 2, 2, 3, 1]) → [1, 2, 3]</pre>
+
+        <p>
+            Your implementation does not need to match
+            a predefined solution. It only needs to
+            satisfy the required behavior.
+        </p>
+    `,
+
+
+    starterCode:
 `def remove_duplicates(items):
     pass
 
@@ -59,7 +59,7 @@ const exercises = {
 print(remove_duplicates([1, 2, 2, 3, 1]))`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -161,6 +161,18 @@ try:
                 break
 
 
+            if obtained is value:
+
+                fail(
+                    "The function must always return a new list, "
+                    "not the original input list."
+                )
+
+                tests_ok = False
+
+                break
+
+
             if obtained != expected:
 
                 fail(
@@ -184,31 +196,9 @@ try:
                 "The order of first appearance is preserved"
             )
 
-
-            identity_test = [
-                1,
-                2,
-                3
-            ]
-
-
-            identity_result = function(
-                identity_test
+            success(
+                "The function always returns a new list"
             )
-
-
-            if identity_result is identity_test:
-
-                fail(
-                    "The function must return a new list, "
-                    "not the original input list."
-                )
-
-            else:
-
-                success(
-                    "The function returns a new list"
-                )
 
 
 except Exception as error:
@@ -219,58 +209,57 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
+/* =====================================================
+   CHALLENGE 002
+   Count Word Occurrences
+===================================================== */
 
-    /* =====================================================
-       CHALLENGE 002
-       Count Word Occurrences
-    ===================================================== */
+2: {
 
-    2: {
+    chapter: 1,
 
-        chapter: 1,
+    number: "002",
 
-        number: "002",
+    difficulty: "Easy",
 
-        difficulty: "Easy",
+    layout: "standard",
 
-        layout: "standard",
-
-        title:
-            "Count Word Occurrences",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>count_words(words)</code>
-                that returns a dictionary containing the
-                number of occurrences of each word.
-            </p>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>count_words(["python", "java", "python"])</pre>
-
-            <p>
-                Expected result:
-            </p>
-
-            <pre>{"python": 2, "java": 1}</pre>
-
-            <p>
-                There may be several valid ways to solve
-                the problem. Your solution will be tested
-                by its behavior.
-            </p>
-        `,
+    title:
+        "Count Word Occurrences",
 
 
-        starterCode:
+    description: `
+        <p>
+            Write a function
+            <code>count_words(words)</code>
+            that returns a dictionary containing the
+            number of occurrences of each word.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>count_words(["python", "java", "python"])</pre>
+
+        <p>
+            Expected result:
+        </p>
+
+        <pre>{"python": 2, "java": 1}</pre>
+
+        <p>
+            There may be several valid ways to solve
+            the problem. Your solution will be tested
+            by its behavior.
+        </p>
+    `,
+
+
+    starterCode:
 `def count_words(words):
     pass
 
@@ -278,7 +267,7 @@ except Exception as error:
 print(count_words(["python", "java", "python"]))`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -411,94 +400,94 @@ except Exception as error:
     )
 `
 
-    },
+},
 
-        /* =====================================================
-       CHALLENGE 003
-       Calculate the Final Price
-    ===================================================== */
+/* =====================================================
+   CHALLENGE 003
+   Calculate the Final Price
+===================================================== */
 
-    3: {
+3: {
 
-        chapter: 2,
+    chapter: 2,
 
-        number: "003",
+    number: "003",
 
-        difficulty: "Easy",
+    difficulty: "Easy",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Calculate the Final Price",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>final_price(price, discount=0, tax=0)</code>.
-            </p>
-
-            <p>
-                The function must:
-            </p>
-
-            <ul>
-                <li>
-                    apply the percentage discount to the
-                    original price;
-                </li>
-
-                <li>
-                    apply the percentage tax to the
-                    discounted price;
-                </li>
-
-                <li>
-                    return the final amount rounded to
-                    two decimal places.
-                </li>
-            </ul>
-
-            <p>
-                You may assume that:
-            </p>
-
-            <ul>
-                <li>
-                    <code>price</code> is a non-negative
-                    numeric value;
-                </li>
-
-                <li>
-                    <code>discount</code> is between
-                    <code>0</code> and <code>100</code>;
-                </li>
-
-                <li>
-                    <code>tax</code> is a non-negative
-                    percentage.
-                </li>
-            </ul>
-
-            <p>
-                Input validation is not required.
-            </p>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>final_price(100, discount=20, tax=10) → 88.0</pre>
-
-            <p>
-                Your implementation does not need to match
-                a predefined solution. Only the required
-                behavior matters.
-            </p>
-        `,
+    title:
+        "Calculate the Final Price",
 
 
-        starterCode:
+    description: `
+        <p>
+            Write a function
+            <code>final_price(price, discount=0, tax=0)</code>.
+        </p>
+
+        <p>
+            The function must:
+        </p>
+
+        <ul>
+            <li>
+                apply the percentage discount to the
+                original price;
+            </li>
+
+            <li>
+                apply the percentage tax to the
+                discounted price;
+            </li>
+
+            <li>
+                return the final amount rounded to
+                two decimal places.
+            </li>
+        </ul>
+
+        <p>
+            You may assume that:
+        </p>
+
+        <ul>
+            <li>
+                <code>price</code> is a non-negative
+                numeric value;
+            </li>
+
+            <li>
+                <code>discount</code> is between
+                <code>0</code> and <code>100</code>;
+            </li>
+
+            <li>
+                <code>tax</code> is a non-negative
+                percentage.
+            </li>
+        </ul>
+
+        <p>
+            Input validation is not required.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>final_price(100, discount=20, tax=10) → 88.0</pre>
+
+        <p>
+            Your implementation does not need to match
+            a predefined solution. Only the required
+            behavior matters.
+        </p>
+    `,
+
+
+    starterCode:
 `def final_price(price, discount=0, tax=0):
     pass
 
@@ -506,7 +495,7 @@ except Exception as error:
 print(final_price(100, discount=20, tax=10))`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -585,6 +574,15 @@ try:
             ),
 
             (
+                (49.99,),
+                {
+                    "discount": 10,
+                    "tax": 7.5
+                },
+                48.37
+            ),
+
+            (
                 (200,),
                 {
                     "discount": 33,
@@ -653,73 +651,79 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
+/* =====================================================
+   CHALLENGE 004
+   Merge Configuration Settings
+===================================================== */
 
-    /* =====================================================
-       CHALLENGE 004
-       Merge Configuration Settings
-    ===================================================== */
+4: {
 
-    4: {
+    chapter: 2,
 
-        chapter: 2,
+    number: "004",
 
-        number: "004",
+    difficulty: "Easy",
 
-        difficulty: "Medium",
+    layout: "standard",
 
-        layout: "standard",
-
-        title:
-            "Merge Configuration Settings",
+    title:
+        "Merge Configuration Settings",
 
 
-        description: `
-            <p>
-                Write a function
-                <code>merge_settings(defaults, **overrides)</code>.
-            </p>
+    description: `
+        <p>
+            Write a function
+            <code>merge_settings(defaults, **overrides)</code>.
+        </p>
 
-            <p>
-                The function receives:
-            </p>
+        <p>
+            The function receives:
+        </p>
 
-            <ul>
-                <li>
-                    a dictionary containing the default
-                    settings;
-                </li>
+        <ul>
+            <li>
+                a dictionary containing the default
+                settings;
+            </li>
 
-                <li>
-                    zero or more keyword arguments containing
-                    values that should override those defaults.
-                </li>
-            </ul>
+            <li>
+                zero or more keyword arguments containing
+                values that should override those defaults.
+            </li>
+        </ul>
 
-            <p>
-                Return a <strong>new dictionary</strong>
-                containing the merged configuration.
-            </p>
+        <p>
+            Return a <strong>new dictionary</strong>
+            containing the merged configuration.
+        </p>
 
-            <p>
-                Values supplied through
-                <code>overrides</code> must replace matching
-                values from <code>defaults</code>.
-            </p>
+        <p>
+            Values supplied through
+            <code>overrides</code> must replace matching
+            values from <code>defaults</code>.
+        </p>
 
-            <p>
-                The original
-                <code>defaults</code>
-                dictionary must not be modified.
-            </p>
+        <p>
+            Override values such as
+            <code>False</code>, <code>0</code> and
+            an empty string are still valid values and
+            must be applied normally.
+        </p>
 
-            <p>
-                Example:
-            </p>
+        <p>
+            The original
+            <code>defaults</code>
+            dictionary must not be modified.
+        </p>
 
-            <pre>defaults = {
+        <p>
+            Example:
+        </p>
+
+        <pre>defaults = {
     "theme": "light",
     "notifications": True,
     "language": "en"
@@ -737,20 +741,20 @@ merge_settings(
     "language": "es"
 }</pre>
 
-            <p>
-                You only need to avoid modifying the
-                top-level <code>defaults</code> dictionary.
-                A deep copy of nested values is not required.
-            </p>
+        <p>
+            You only need to avoid modifying the
+            top-level <code>defaults</code> dictionary.
+            A deep copy of nested values is not required.
+        </p>
 
-            <p>
-                There are multiple valid ways to solve
-                this challenge.
-            </p>
-        `,
+        <p>
+            There are multiple valid ways to solve
+            this challenge.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def merge_settings(defaults, **overrides):
     pass
 
@@ -770,7 +774,7 @@ print(
 )`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -880,6 +884,26 @@ try:
                     "volume": 75,
                     "dark_mode": True
                 }
+            ),
+
+            (
+                {
+                    "debug": True,
+                    "timeout": 30,
+                    "name": "production"
+                },
+
+                {
+                    "debug": False,
+                    "timeout": 0,
+                    "name": ""
+                },
+
+                {
+                    "debug": False,
+                    "timeout": 0,
+                    "name": ""
+                }
             )
 
         ]
@@ -965,6 +989,10 @@ try:
             )
 
             success(
+                "Falsy override values are handled correctly"
+            )
+
+            success(
                 "The original dictionary is not modified"
             )
 
@@ -981,10 +1009,11 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
-        /* =====================================================
+
+/* =====================================================
        CHALLENGE 005
        Find the First Duplicate
     ===================================================== */
@@ -1183,68 +1212,72 @@ except Exception as error:
     },
 
 
-
     /* =====================================================
-       CHALLENGE 006
-       Square Only the Even Numbers
-    ===================================================== */
+   CHALLENGE 006
+   Square Only the Even Numbers
+===================================================== */
 
-    6: {
+6: {
 
-        chapter: 3,
+    chapter: 3,
 
-        number: "006",
+    number: "006",
 
-        difficulty: "Easy",
+    difficulty: "Easy",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Square Only the Even Numbers",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>square_evens(numbers)</code>.
-            </p>
-
-            <p>
-                Return a <strong>new list</strong> containing
-                the square of every even number in the
-                original iterable.
-            </p>
-
-            <p>
-                Preserve the original order.
-            </p>
-
-            <p>
-                The original input must not be modified.
-            </p>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>square_evens([1, 2, 3, 4, 5, 6]) → [4, 16, 36]</pre>
-
-            <p>
-                <strong>Bonus:</strong>
-                try solving the problem once with a normal
-                <code>for</code> loop and once with a list
-                comprehension.
-            </p>
-
-            <p>
-                Both implementations can be correct.
-                The platform evaluates behavior, not whether
-                your source code matches a specific solution.
-            </p>
-        `,
+    title:
+        "Square Only the Even Numbers",
 
 
-        starterCode:
+    description: `
+        <p>
+            Write a function
+            <code>square_evens(numbers)</code>.
+        </p>
+
+        <p>
+            Return a <strong>new list</strong> containing
+            the square of every even number in the
+            original list.
+        </p>
+
+        <p>
+            Preserve the original order.
+        </p>
+
+        <p>
+            You may assume that every value in
+            <code>numbers</code> is an integer.
+        </p>
+
+        <p>
+            The original input must not be modified.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>square_evens([1, 2, 3, 4, 5, 6]) → [4, 16, 36]</pre>
+
+        <p>
+            <strong>Bonus:</strong>
+            try solving the problem once with a normal
+            <code>for</code> loop and once with a list
+            comprehension.
+        </p>
+
+        <p>
+            Both implementations can be correct.
+            The platform evaluates behavior, not whether
+            your source code matches a specific solution.
+        </p>
+    `,
+
+
+    starterCode:
 `def square_evens(numbers):
     pass
 
@@ -1252,7 +1285,7 @@ except Exception as error:
 print(square_evens([1, 2, 3, 4, 5, 6]))`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -1349,6 +1382,18 @@ try:
                 break
 
 
+            if obtained is value:
+
+                fail(
+                    "The function must return a new list, "
+                    "not the original input list."
+                )
+
+                tests_ok = False
+
+                break
+
+
             if obtained != expected:
 
                 fail(
@@ -1393,6 +1438,10 @@ try:
                 "The original input is not modified"
             )
 
+            success(
+                "A new list is returned"
+            )
+
 
 except Exception as error:
 
@@ -1402,7 +1451,8 @@ except Exception as error:
     )
 `
 
-    },
+},
+
 
 
 
@@ -1437,7 +1487,7 @@ except Exception as error:
             </p>
 
             <p>
-                If every character appears more than once,
+                If no character appears exactly once,,
                 return <code>None</code>.
             </p>
 
@@ -1843,89 +1893,90 @@ except Exception as error:
     },
 
 
-        /* =====================================================
-       CHALLENGE 009
-       Build a Bank Account
-    ===================================================== */
 
-    9: {
+    /* =====================================================
+   CHALLENGE 009
+   Build a Bank Account
+===================================================== */
 
-        chapter: 5,
+9: {
 
-        number: "009",
+    chapter: 5,
 
-        difficulty: "Easy",
+    number: "009",
 
-        layout: "standard",
+    difficulty: "Easy",
 
-        title:
-            "Build a Bank Account",
+    layout: "standard",
 
-
-        description: `
-            <p>
-                Create a class
-                <code>BankAccount</code>.
-            </p>
-
-            <p>
-                The constructor must accept an initial
-                balance.
-            </p>
-
-            <pre>account = BankAccount(100)</pre>
-
-            <p>
-                You may assume that:
-            </p>
-
-            <ul>
-                <li>the initial balance is non-negative;</li>
-                <li>deposit amounts are positive;</li>
-                <li>withdrawal amounts are positive;</li>
-                <li>input validation is not required.</li>
-            </ul>
-
-            <p>
-                Your class must provide three methods.
-            </p>
-
-            <p>
-                <code>deposit(amount)</code> adds the amount
-                to the current balance.
-            </p>
-
-            <p>
-                <code>withdraw(amount)</code> subtracts the
-                amount only when sufficient funds are
-                available.
-            </p>
-
-            <p>
-                It must return <code>True</code> when the
-                withdrawal succeeds and <code>False</code>
-                when the balance is insufficient.
-            </p>
-
-            <p>
-                If a withdrawal fails, the balance must
-                remain unchanged.
-            </p>
-
-            <p>
-                <code>get_balance()</code> returns the
-                current balance.
-            </p>
-
-            <p>
-                The internal attribute used to store the
-                balance does not need to have a specific
-                name.
-            </p>
-        `,
+    title:
+        "Build a Bank Account",
 
 
-        starterCode:
+    description: `
+        <p>
+            Create a class
+            <code>BankAccount</code>.
+        </p>
+
+        <p>
+            The constructor must accept an initial
+            balance.
+        </p>
+
+        <pre>account = BankAccount(100)</pre>
+
+        <p>
+            You may assume that:
+        </p>
+
+        <ul>
+            <li>the initial balance is non-negative;</li>
+            <li>deposit amounts are positive;</li>
+            <li>withdrawal amounts are positive;</li>
+            <li>input validation is not required.</li>
+        </ul>
+
+        <p>
+            Your class must provide three methods.
+        </p>
+
+        <p>
+            <code>deposit(amount)</code> adds the amount
+            to the current balance.
+        </p>
+
+        <p>
+            <code>withdraw(amount)</code> subtracts the
+            amount only when sufficient funds are
+            available.
+        </p>
+
+        <p>
+            It must return <code>True</code> when the
+            withdrawal succeeds and <code>False</code>
+            when the balance is insufficient.
+        </p>
+
+        <p>
+            If a withdrawal fails, the balance must
+            remain unchanged.
+        </p>
+
+        <p>
+            <code>get_balance()</code> returns the
+            current balance.
+        </p>
+
+        <p>
+            The internal attribute used to store the
+            balance does not need to have a specific
+            name.
+        </p>
+    `,
+
+
+    starterCode:
 `class BankAccount:
     pass
 
@@ -1936,7 +1987,7 @@ account.deposit(50)
 print(account.get_balance())`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -1952,7 +2003,10 @@ try:
     )
 
 
-    if not isinstance(BankAccount, type):
+    if not isinstance(
+        BankAccount,
+        type
+    ):
 
         fail(
             "You must define a class called BankAccount."
@@ -1971,7 +2025,9 @@ try:
 
         try:
 
-            account = BankAccount(100)
+            account = BankAccount(
+                100
+            )
 
         except Exception as error:
 
@@ -2001,7 +2057,9 @@ try:
                 )
 
 
-                if not callable(method):
+                if not callable(
+                    method
+                ):
 
                     fail(
                         f"You must define a method called {method_name}()."
@@ -2014,7 +2072,10 @@ try:
 
         if tests_ok:
 
-            if account.get_balance() != 100:
+            if (
+                account.get_balance()
+                != 100
+            ):
 
                 fail(
                     "The initial balance was not stored correctly.\\n"
@@ -2027,9 +2088,15 @@ try:
 
         if tests_ok:
 
-            account.deposit(50)
+            account.deposit(
+                50
+            )
 
-            if account.get_balance() != 150:
+
+            if (
+                account.get_balance()
+                != 150
+            ):
 
                 fail(
                     "deposit() did not update the balance correctly.\\n"
@@ -2042,7 +2109,10 @@ try:
 
         if tests_ok:
 
-            result = account.withdraw(40)
+            result = account.withdraw(
+                40
+            )
+
 
             if result is not True:
 
@@ -2052,7 +2122,11 @@ try:
 
                 tests_ok = False
 
-            elif account.get_balance() != 110:
+
+            elif (
+                account.get_balance()
+                != 110
+            ):
 
                 fail(
                     "The balance after a successful withdrawal is incorrect.\\n"
@@ -2065,9 +2139,15 @@ try:
 
         if tests_ok:
 
-            balance_before = account.get_balance()
+            balance_before = (
+                account.get_balance()
+            )
 
-            result = account.withdraw(200)
+
+            result = account.withdraw(
+                200
+            )
+
 
             if result is not False:
 
@@ -2077,7 +2157,11 @@ try:
 
                 tests_ok = False
 
-            elif account.get_balance() != balance_before:
+
+            elif (
+                account.get_balance()
+                != balance_before
+            ):
 
                 fail(
                     "The balance must remain unchanged when a withdrawal fails."
@@ -2088,11 +2172,19 @@ try:
 
         if tests_ok:
 
-            account2 = BankAccount(50)
+            account2 = BankAccount(
+                50
+            )
 
-            account2.deposit(25)
+            account2.deposit(
+                25
+            )
 
-            if account2.get_balance() != 75:
+
+            if (
+                account2.get_balance()
+                != 75
+            ):
 
                 fail(
                     "A second BankAccount instance does not behave correctly."
@@ -2100,7 +2192,11 @@ try:
 
                 tests_ok = False
 
-            elif account.get_balance() != 110:
+
+            elif (
+                account.get_balance()
+                != 110
+            ):
 
                 fail(
                     "Different BankAccount instances must maintain independent balances."
@@ -2111,9 +2207,15 @@ try:
 
         if tests_ok:
 
-            account3 = BankAccount(30)
+            account3 = BankAccount(
+                30
+            )
 
-            result = account3.withdraw(30)
+
+            result = account3.withdraw(
+                30
+            )
+
 
             if result is not True:
 
@@ -2123,7 +2225,11 @@ try:
 
                 tests_ok = False
 
-            elif account3.get_balance() != 0:
+
+            elif (
+                account3.get_balance()
+                != 0
+            ):
 
                 fail(
                     "Withdrawing the exact balance should leave 0."
@@ -2134,11 +2240,19 @@ try:
 
         if tests_ok:
 
-            account4 = BankAccount(10.5)
+            account4 = BankAccount(
+                10.5
+            )
 
-            account4.deposit(4.5)
+            account4.deposit(
+                4.5
+            )
 
-            if account4.get_balance() != 15.0:
+
+            if (
+                account4.get_balance()
+                != 15.0
+            ):
 
                 fail(
                     "The class should also work with numeric decimal balances."
@@ -2147,10 +2261,57 @@ try:
                 tests_ok = False
 
 
+        # =========================================
+        # ZERO INITIAL BALANCE
+        # =========================================
+
+        if tests_ok:
+
+            account5 = BankAccount(
+                0
+            )
+
+
+            if (
+                account5.get_balance()
+                != 0
+            ):
+
+                fail(
+                    "A zero initial balance must be stored correctly."
+                )
+
+                tests_ok = False
+
+
+            else:
+
+                account5.deposit(
+                    10
+                )
+
+
+                if (
+                    account5.get_balance()
+                    != 10
+                ):
+
+                    fail(
+                        "Deposits must also work correctly "
+                        "from a zero balance."
+                    )
+
+                    tests_ok = False
+
+
         if tests_ok:
 
             success(
                 "Initial balance is handled correctly"
+            )
+
+            success(
+                "Zero initial balance is handled correctly"
             )
 
             success(
@@ -2178,81 +2339,95 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
+/* =====================================================
+   CHALLENGE 010
+   Employee and Developer
+===================================================== */
 
-    /* =====================================================
-       CHALLENGE 010
-       Employee and Developer
-    ===================================================== */
+10: {
 
-    10: {
+    chapter: 5,
 
-        chapter: 5,
+    number: "010",
 
-        number: "010",
+    difficulty: "Medium",
 
-        difficulty: "Medium",
+    layout: "standard",
 
-        layout: "standard",
-
-        title:
-            "Employee and Developer",
+    title:
+        "Employee and Developer",
 
 
-        description: `
-            <p>
-                Create two classes:
-            </p>
+    description: `
+        <p>
+            Create two classes:
+        </p>
 
-            <pre>class Employee:
+        <pre>class Employee:
     pass
 
 class Developer(Employee):
     pass</pre>
 
-            <p>
-                <strong>Employee</strong> must accept
-                <code>name</code> and <code>salary</code>
-                in its constructor and store both values.
-            </p>
+        <p>
+            <strong>Employee</strong> must accept
+            <code>name</code> and <code>salary</code>
+            in its constructor.
+        </p>
 
-            <p>
-                It must provide a method
-                <code>describe()</code>.
-            </p>
+        <p>
+            Store these values in the instance attributes
+            <code>self.name</code> and
+            <code>self.salary</code>.
+        </p>
 
-            <pre>Employee("Alex", 30000).describe()
+        <p>
+            Employee must provide a method
+            <code>describe()</code>.
+        </p>
+
+        <pre>Employee("Alex", 30000).describe()
 → "Alex earns 30000"</pre>
 
-            <p>
-                <strong>Developer</strong> must inherit from
-                <code>Employee</code>.
-            </p>
+        <p>
+            <strong>Developer</strong> must inherit from
+            <code>Employee</code>.
+        </p>
 
-            <p>
-                Its constructor must additionally accept
-                <code>language</code>.
-            </p>
+        <p>
+            Its constructor must additionally accept
+            <code>language</code>.
+        </p>
 
-            <p>
-                Developer should reuse the parent class
-                initialization for <code>name</code> and
-                <code>salary</code>, then store its own
-                <code>language</code>.
-            </p>
+        <p>
+            Developer must reuse the parent class
+            initialization for <code>name</code> and
+            <code>salary</code>, then store
+            <code>language</code> in
+            <code>self.language</code>.
+        </p>
 
-            <p>
-                Override <code>describe()</code> so that:
-            </p>
+        <p>
+            Developer must override
+            <code>describe()</code> so that:
+        </p>
 
-            <pre>Developer("Sam", 40000, "Python").describe()
+        <pre>Developer("Sam", 40000, "Python").describe()
 → "Sam earns 40000 and codes in Python"</pre>
-        `,
+
+        <p>
+            Your implementation does not need to match
+            a predefined solution, but the inheritance,
+            parent initialization and method override
+            requirements must be respected.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `class Employee:
     pass
 
@@ -2265,7 +2440,7 @@ developer = Developer("Sam", 40000, "Python")
 print(developer.describe())`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -2288,7 +2463,14 @@ try:
     tests_ok = True
 
 
-    if not isinstance(Employee, type):
+    # =========================================
+    # CLASS EXISTENCE
+    # =========================================
+
+    if not isinstance(
+        Employee,
+        type
+    ):
 
         fail(
             "You must define a class called Employee."
@@ -2297,7 +2479,13 @@ try:
         tests_ok = False
 
 
-    if tests_ok and not isinstance(Developer, type):
+    if (
+        tests_ok
+        and not isinstance(
+            Developer,
+            type
+        )
+    ):
 
         fail(
             "You must define a class called Developer."
@@ -2313,9 +2501,16 @@ try:
         )
 
 
-    if tests_ok and not issubclass(
-        Developer,
-        Employee
+    # =========================================
+    # INHERITANCE
+    # =========================================
+
+    if (
+        tests_ok
+        and not issubclass(
+            Developer,
+            Employee
+        )
     ):
 
         fail(
@@ -2324,6 +2519,10 @@ try:
 
         tests_ok = False
 
+
+    # =========================================
+    # EMPLOYEE CONSTRUCTION
+    # =========================================
 
     if tests_ok:
 
@@ -2344,6 +2543,10 @@ try:
             tests_ok = False
 
 
+    # =========================================
+    # EMPLOYEE ATTRIBUTES
+    # =========================================
+
     if tests_ok:
 
         if getattr(
@@ -2353,10 +2556,11 @@ try:
         ) != "Alex":
 
             fail(
-                "Employee must store the name attribute."
+                "Employee must store name in self.name."
             )
 
             tests_ok = False
+
 
         elif getattr(
             employee,
@@ -2365,11 +2569,15 @@ try:
         ) != 30000:
 
             fail(
-                "Employee must store the salary attribute."
+                "Employee must store salary in self.salary."
             )
 
             tests_ok = False
 
+
+    # =========================================
+    # EMPLOYEE DESCRIBE
+    # =========================================
 
     if tests_ok:
 
@@ -2379,7 +2587,10 @@ try:
             None
         )
 
-        if not callable(describe):
+
+        if not callable(
+            describe
+        ):
 
             fail(
                 "Employee must define describe()."
@@ -2387,7 +2598,11 @@ try:
 
             tests_ok = False
 
-        elif describe() != "Alex earns 30000":
+
+        elif (
+            describe()
+            != "Alex earns 30000"
+        ):
 
             fail(
                 "Employee.describe() returned an incorrect result.\\n"
@@ -2397,6 +2612,10 @@ try:
 
             tests_ok = False
 
+
+    # =========================================
+    # DEVELOPER CONSTRUCTION
+    # =========================================
 
     if tests_ok:
 
@@ -2418,6 +2637,10 @@ try:
             tests_ok = False
 
 
+    # =========================================
+    # DEVELOPER ATTRIBUTES
+    # =========================================
+
     if tests_ok:
 
         if getattr(
@@ -2427,10 +2650,11 @@ try:
         ) != "Sam":
 
             fail(
-                "Developer must correctly initialize name."
+                "Developer must correctly initialize self.name."
             )
 
             tests_ok = False
+
 
         elif getattr(
             developer,
@@ -2439,10 +2663,11 @@ try:
         ) != 40000:
 
             fail(
-                "Developer must correctly initialize salary."
+                "Developer must correctly initialize self.salary."
             )
 
             tests_ok = False
+
 
         elif getattr(
             developer,
@@ -2451,11 +2676,33 @@ try:
         ) != "Python":
 
             fail(
-                "Developer must store the language attribute."
+                "Developer must store language in self.language."
             )
 
             tests_ok = False
 
+
+    # =========================================
+    # TRUE METHOD OVERRIDE
+    # =========================================
+
+    if tests_ok:
+
+        if (
+            "describe"
+            not in Developer.__dict__
+        ):
+
+            fail(
+                "Developer must override describe()."
+            )
+
+            tests_ok = False
+
+
+    # =========================================
+    # DEVELOPER DESCRIBE
+    # =========================================
 
     if tests_ok:
 
@@ -2465,7 +2712,10 @@ try:
             None
         )
 
-        if not callable(describe):
+
+        if not callable(
+            describe
+        ):
 
             fail(
                 "Developer must provide describe()."
@@ -2473,7 +2723,11 @@ try:
 
             tests_ok = False
 
-        elif describe() != "Sam earns 40000 and codes in Python":
+
+        elif (
+            describe()
+            != "Sam earns 40000 and codes in Python"
+        ):
 
             fail(
                 "Developer.describe() returned an incorrect result.\\n"
@@ -2483,6 +2737,10 @@ try:
 
             tests_ok = False
 
+
+    # =========================================
+    # DIFFERENT VALUES
+    # =========================================
 
     if tests_ok:
 
@@ -2498,22 +2756,35 @@ try:
         )
 
 
-        if employee2.describe() != "Maya earns 52000":
+        if (
+            employee2.describe()
+            != "Maya earns 52000"
+        ):
 
             fail(
-                "Employee.describe() does not work correctly with different values."
+                "Employee.describe() does not work correctly "
+                "with different values."
             )
 
             tests_ok = False
 
-        elif developer2.describe() != "Luca earns 61000 and codes in JavaScript":
+
+        elif (
+            developer2.describe()
+            != "Luca earns 61000 and codes in JavaScript"
+        ):
 
             fail(
-                "Developer.describe() does not work correctly with different values."
+                "Developer.describe() does not work correctly "
+                "with different values."
             )
 
             tests_ok = False
 
+
+    # =========================================
+    # PARENT INITIALIZATION MUST BE REUSED
+    # =========================================
 
     if tests_ok:
 
@@ -2521,7 +2792,10 @@ try:
             "value": False
         }
 
-        original_init = Employee.__init__
+
+        original_init = (
+            Employee.__init__
+        )
 
 
         def tracked_init(
@@ -2530,7 +2804,10 @@ try:
             salary
         ):
 
-            parent_init_called["value"] = True
+            parent_init_called[
+                "value"
+            ] = True
+
 
             original_init(
                 self,
@@ -2539,7 +2816,9 @@ try:
             )
 
 
-        Employee.__init__ = tracked_init
+        Employee.__init__ = (
+            tracked_init
+        )
 
 
         try:
@@ -2552,17 +2831,26 @@ try:
 
         finally:
 
-            Employee.__init__ = original_init
+            Employee.__init__ = (
+                original_init
+            )
 
 
-        if not parent_init_called["value"]:
+        if not parent_init_called[
+            "value"
+        ]:
 
             fail(
-                "Developer should reuse Employee's initialization for name and salary."
+                "Developer must reuse Employee's "
+                "initialization for name and salary."
             )
 
             tests_ok = False
 
+
+    # =========================================
+    # SUCCESS
+    # =========================================
 
     if tests_ok:
 
@@ -2583,7 +2871,11 @@ try:
         )
 
         success(
-            "describe() is overridden correctly"
+            "Developer correctly overrides describe()"
+        )
+
+        success(
+            "describe() returns the expected results"
         )
 
 
@@ -2595,109 +2887,107 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
+/* =====================================================
+   CHALLENGE 011
+   Read Valid Integers From a File
+===================================================== */
+
+11: {
+
+    chapter: 6,
+
+    number: "011",
+
+    difficulty: "Medium",
+
+    layout: "standard",
+
+    title:
+        "Read Valid Integers From a File",
 
 
-        /* =====================================================
-       CHALLENGE 011
-       Read Valid Integers From a File
-    ===================================================== */
+    description: `
+        <p>
+            Write a function
+            <code>read_valid_integers(filename)</code>.
+        </p>
 
-    11: {
+        <p>
+            The file contains one value per line.
+        </p>
 
-        chapter: 6,
+        <p>
+            Your function must:
+        </p>
 
-        number: "011",
+        <ul>
+            <li>
+                open the file in text mode using UTF-8;
+            </li>
 
-        difficulty: "Medium",
+            <li>
+                process the file line by line;
+            </li>
 
-        layout: "standard",
+            <li>
+                remove surrounding whitespace from each line;
+            </li>
 
-        title:
-            "Read Valid Integers From a File",
+            <li>
+                attempt to convert each line to an integer;
+            </li>
 
+            <li>
+                ignore lines that cannot be converted;
+            </li>
 
-        description: `
-            <p>
-                Write a function
-                <code>read_valid_integers(filename)</code>.
-            </p>
+            <li>
+                return a list containing only valid integers;
+            </li>
 
-            <p>
-                The file contains one value per line.
-            </p>
+            <li>
+                return an empty list if the file does not exist;
+            </li>
 
-            <p>
-                Your function must:
-            </p>
+            <li>
+                not modify the file.
+            </li>
+        </ul>
 
-            <ul>
-                <li>
-                    open the file in text mode using UTF-8;
-                </li>
+        <p>
+            Example file:
+        </p>
 
-                <li>
-                    process the file line by line;
-                </li>
-
-                <li>
-                    remove surrounding whitespace from each line;
-                </li>
-
-                <li>
-                    attempt to convert each line to an integer;
-                </li>
-
-                <li>
-                    ignore lines that cannot be converted;
-                </li>
-
-                <li>
-                    return a list containing only valid integers;
-                </li>
-
-                <li>
-                    return an empty list if the file does not exist;
-                </li>
-
-                <li>
-                    not modify the file.
-                </li>
-            </ul>
-
-            <p>
-                Example file:
-            </p>
-
-            <pre>10
+        <pre>10
 Python
 25
 3.5
 -7</pre>
 
-            <p>
-                Then:
-            </p>
+        <p>
+            Then:
+        </p>
 
-            <pre>read_valid_integers("numbers.txt")
+        <pre>read_valid_integers("numbers.txt")
 → [10, 25, -7]</pre>
 
-            <p>
-                For this challenge, you only need to handle
-                <code>FileNotFoundError</code> and
-                <code>ValueError</code>.
-            </p>
+        <p>
+            For this challenge, you only need to handle
+            <code>FileNotFoundError</code> and
+            <code>ValueError</code>.
+        </p>
 
-            <p>
-                Other file-system errors are outside the
-                required behavior.
-            </p>
-        `,
+        <p>
+            Other file-system errors are outside the
+            required behavior.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def read_valid_integers(filename):
     pass
 
@@ -2720,7 +3010,7 @@ print(
 )`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -2795,6 +3085,12 @@ try:
                 "__challenge_011_g.txt",
                 "1 2\\n3.0\\n-0\\n+12\\n",
                 [0, 12]
+            ),
+
+            (
+                "__challenge_011_h.txt",
+                "hello\\n3.14\\n   \\n\\t\\nPython\\n",
+                []
             )
 
         ]
@@ -3027,6 +3323,10 @@ try:
             )
 
             success(
+                "Files with no valid integers return an empty list"
+            )
+
+            success(
                 "Negative, signed and zero values are handled correctly"
             )
 
@@ -3055,65 +3355,62 @@ except Exception as error:
     )
 `
 
-    },
-
-
- 
+},
 
 
 
-    /* =====================================================
-       CHALLENGE 012
-       Parse Valid Numbers
-    ===================================================== */
+/* =====================================================
+   CHALLENGE 012
+   Parse Valid Numbers
+===================================================== */
 
-    12: {
+12: {
 
-        chapter: 6,
+    chapter: 6,
 
-        number: "012",
+    number: "012",
 
-        difficulty: "Easy",
+    difficulty: "Easy",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Parse Valid Numbers",
+    title:
+        "Parse Valid Numbers",
 
 
-        description: `
-            <p>
-                Write a function
-                <code>parse_numbers(values)</code>.
-            </p>
+    description: `
+        <p>
+            Write a function
+            <code>parse_numbers(values)</code>.
+        </p>
 
-            <p>
-                The function receives a list of strings.
-            </p>
+        <p>
+            The function receives a list of strings.
+        </p>
 
-            <p>
-                Try to convert every item to an integer.
-            </p>
+        <p>
+            Try to convert every item to an integer.
+        </p>
 
-            <p>
-                If a value cannot be converted, ignore it
-                instead of stopping the program.
-            </p>
+        <p>
+            If a value cannot be converted, ignore it
+            instead of stopping the program.
+        </p>
 
-            <p>
-                Return a <strong>new list</strong> containing
-                only successfully converted integers.
-            </p>
+        <p>
+            Return a <strong>new list</strong> containing
+            only successfully converted integers.
+        </p>
 
-            <p>
-                The original list must not be modified.
-            </p>
+        <p>
+            The original list must not be modified.
+        </p>
 
-            <p>
-                Example:
-            </p>
+        <p>
+            Example:
+        </p>
 
-            <pre>parse_numbers([
+        <pre>parse_numbers([
     "10",
     "Python",
     "25",
@@ -3123,20 +3420,20 @@ except Exception as error:
 
 → [10, 25, -7]</pre>
 
-            <p>
-                A string such as <code>"3.5"</code> is not
-                a valid integer for <code>int(...)</code>
-                and must therefore be ignored.
-            </p>
+        <p>
+            A string such as <code>"3.5"</code> is not
+            a valid integer for <code>int(...)</code>
+            and must therefore be ignored.
+        </p>
 
-            <p>
-                Different implementations are valid as long
-                as the required behavior is respected.
-            </p>
-        `,
+        <p>
+            Different implementations are valid as long
+            as the required behavior is respected.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def parse_numbers(values):
     pass
 
@@ -3150,7 +3447,7 @@ print(parse_numbers([
 ]))`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -3264,8 +3561,20 @@ try:
             ):
 
                 fail(
-                    "The function must return a list.\\\\n"
+                    "The function must return a list.\\n"
                     f"Returned type: {type(obtained).__name__}"
+                )
+
+                tests_ok = False
+
+                break
+
+
+            if obtained is value:
+
+                fail(
+                    "The function must return a new list, "
+                    "not the original input list."
                 )
 
                 tests_ok = False
@@ -3276,8 +3585,8 @@ try:
             if obtained != expected:
 
                 fail(
-                    f"Input: {original_input}\\\\n"
-                    f"Expected: {expected}\\\\n"
+                    f"Input: {original_input}\\n"
+                    f"Expected: {expected}\\n"
                     f"Obtained: {obtained}"
                 )
 
@@ -3289,8 +3598,8 @@ try:
             if value != original_input:
 
                 fail(
-                    "The original input list must not be modified.\\\\n"
-                    f"Before: {original_input}\\\\n"
+                    "The original input list must not be modified.\\n"
+                    f"Before: {original_input}\\n"
                     f"After: {value}"
                 )
 
@@ -3321,6 +3630,10 @@ try:
                 "The original list is not modified"
             )
 
+            success(
+                "A new list is returned"
+            )
+
 
 except Exception as error:
 
@@ -3330,7 +3643,10 @@ except Exception as error:
     )
 `
 
-    },
+},
+
+
+ 
 
 
         /* =====================================================
@@ -4042,78 +4358,77 @@ except Exception as error:
     },
 
 
-
     /* =====================================================
-       CHALLENGE 014
-       Count Repeated Paths
-    ===================================================== */
+   CHALLENGE 014
+   Count Repeated Paths
+===================================================== */
 
-    14: {
+14: {
 
-        chapter: 7,
+    chapter: 7,
 
-        number: "014",
+    number: "014",
 
-        difficulty: "Medium",
+    difficulty: "Medium",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Count Repeated Paths",
+    title:
+        "Count Repeated Paths",
 
 
-        description: `
-            <p>
-                Write a function
-                <code>count_paths(paths)</code>.
-            </p>
+    description: `
+        <p>
+            Write a function
+            <code>count_paths(paths)</code>.
+        </p>
 
-            <p>
-                The function receives a list of paths.
-            </p>
+        <p>
+            The function receives a list of paths.
+        </p>
 
-            <p>
-                Each path is represented by a list of
-                strings.
-            </p>
+        <p>
+            Each path is represented by a list of
+            strings.
+        </p>
 
-            <p>
-                Count how many times each distinct path
-                appears.
-            </p>
+        <p>
+            Count how many times each distinct path
+            appears.
+        </p>
 
-            <p>
-                Return a dictionary where:
-            </p>
+        <p>
+            Return a dictionary where:
+        </p>
 
-            <ul>
-                <li>
-                    each key is the path represented as a
-                    tuple;
-                </li>
+        <ul>
+            <li>
+                each key is the path represented as a
+                tuple;
+            </li>
 
-                <li>
-                    each value is the number of times that
-                    path appeared.
-                </li>
-            </ul>
+            <li>
+                each value is the number of times that
+                path appeared.
+            </li>
+        </ul>
 
-            <p>
-                Example:
-            </p>
+        <p>
+            Example:
+        </p>
 
-            <pre>paths = [
+        <pre>paths = [
     ["api", "users"],
     ["api", "posts"],
     ["api", "users"],
     ["admin", "users"]
 ]</pre>
 
-            <p>
-                Then:
-            </p>
+        <p>
+            Then:
+        </p>
 
-            <pre>count_paths(paths)
+        <pre>count_paths(paths)
 
 → {
     ("api", "users"): 2,
@@ -4121,41 +4436,41 @@ except Exception as error:
     ("admin", "users"): 1
 }</pre>
 
-            <p>
-                The original list and its inner path lists
-                must remain unchanged.
-            </p>
+        <p>
+            The original list and its inner path lists
+            must remain unchanged.
+        </p>
 
-            <p>
-                For this challenge, you may assume:
-            </p>
+        <p>
+            For this challenge, you may assume:
+        </p>
 
-            <ul>
-                <li>
-                    <code>paths</code> is a list;
-                </li>
+        <ul>
+            <li>
+                <code>paths</code> is a list;
+            </li>
 
-                <li>
-                    every direct element is a list;
-                </li>
+            <li>
+                every direct element is a list;
+            </li>
 
-                <li>
-                    every path contains only strings;
-                </li>
+            <li>
+                every path contains only strings;
+            </li>
 
-                <li>
-                    input validation is not required.
-                </li>
-            </ul>
+            <li>
+                input validation is not required.
+            </li>
+        </ul>
 
-            <p>
-                Remember that dictionary keys must be
-                hashable.
-            </p>
-        `,
+        <p>
+            Remember that dictionary keys must be
+            hashable.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def count_paths(paths):
     pass
 
@@ -4167,12 +4482,13 @@ paths = [
     ["admin", "users"]
 ]
 
+
 print(
     count_paths(paths)
 )`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -4302,6 +4618,25 @@ try:
 
                     (
                         "a",
+                    ): 1
+                }
+            ),
+
+            (
+                [
+                    ["api", "users"],
+                    ["users", "api"],
+                    ["api", "users"]
+                ],
+                {
+                    (
+                        "api",
+                        "users"
+                    ): 2,
+
+                    (
+                        "users",
+                        "api"
                     ): 1
                 }
             ),
@@ -4492,6 +4827,10 @@ try:
             )
 
             success(
+                "Path order is preserved when determining distinct paths"
+            )
+
+            success(
                 "Dictionary keys are tuples"
             )
 
@@ -4516,9 +4855,7 @@ except Exception as error:
     )
 `
 
-    },
-
-
+},
 
 
 
@@ -5220,53 +5557,50 @@ except Exception as error:
 
 
 
-
-
-
     /* =====================================================
-       CHALLENGE 016
-       Read Valid Integers Lazily
-    ===================================================== */
+   CHALLENGE 016
+   Read Valid Integers Lazily
+===================================================== */
 
-    16: {
+16: {
 
-        chapter: 8,
+    chapter: 8,
 
-        number: "016",
+    number: "016",
 
-        difficulty: "Medium",
+    difficulty: "Medium",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Read Valid Integers Lazily",
+    title:
+        "Read Valid Integers Lazily",
 
 
-        description: `
-            <p>
-                Write a function
-                <code>valid_integers(values)</code>.
-            </p>
+    description: `
+        <p>
+            Write a function
+            <code>valid_integers(values)</code>.
+        </p>
 
-            <p>
-                The function receives an
-                <strong>iterable of strings</strong>.
-            </p>
+        <p>
+            The function receives an
+            <strong>iterable of strings</strong>.
+        </p>
 
-            <p>
-                It must lazily produce only the values that
-                can successfully be converted to integers.
-            </p>
+        <p>
+            It must lazily produce only the values that
+            can successfully be converted to integers.
+        </p>
 
-            <p>
-                Invalid integer strings must be ignored.
-            </p>
+        <p>
+            Invalid integer strings must be ignored.
+        </p>
 
-            <p>
-                Example:
-            </p>
+        <p>
+            Example:
+        </p>
 
-            <pre>result = valid_integers([
+        <pre>result = valid_integers([
     "10",
     "Python",
     "25",
@@ -5277,30 +5611,35 @@ except Exception as error:
 list(result)
 → [10, 25, -4]</pre>
 
-            <p>
-                You may assume that every input item is a
-                string.
-            </p>
+        <p>
+            You may assume that every input item is a
+            string.
+        </p>
 
-            <p>
-                Therefore the conversion failure you need to
-                handle is <code>ValueError</code>.
-            </p>
+        <p>
+            Therefore the conversion failure you need to
+            handle is <code>ValueError</code>.
+        </p>
 
-            <p>
-                <strong>Important:</strong>
-                the result must be produced lazily.
-            </p>
+        <p>
+            <strong>Important:</strong>
+            <code>valid_integers()</code> must return a
+            generator object.
+        </p>
 
-            <p>
-                The function must not first construct a
-                complete list of converted values and only
-                then return or iterate over that list.
-            </p>
-        `,
+        <p>
+            The result must be produced lazily.
+        </p>
+
+        <p>
+            The function must not first construct a
+            complete list of converted values and only
+            then return or iterate over that list.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def valid_integers(values):
     pass
 
@@ -5313,12 +5652,13 @@ result = valid_integers([
     "-4"
 ])
 
+
 print(
     list(result)
 )`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -5510,6 +5850,7 @@ try:
 
             class TrackingIterable:
 
+
                 def __init__(
                     self,
                     values
@@ -5697,63 +6038,64 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
-        /* =====================================================
-       CHALLENGE 017
-       Build a Ranked Student Report
-    ===================================================== */
 
-    17: {
+/* =====================================================
+   CHALLENGE 017
+   Build a Ranked Student Report
+===================================================== */
 
-        chapter: 9,
+17: {
 
-        number: "017",
+    chapter: 9,
 
-        difficulty: "Medium",
+    number: "017",
 
-        layout: "standard",
+    difficulty: "Medium",
 
-        title:
-            "Build a Ranked Student Report",
+    layout: "standard",
+
+    title:
+        "Build a Ranked Student Report",
 
 
-        description: `
-            <p>
-                Write a function
-                <code>ranked_report(names, scores)</code>.
-            </p>
+    description: `
+        <p>
+            Write a function
+            <code>ranked_report(names, scores)</code>.
+        </p>
 
-            <p>
-                The function receives two sequences:
-                <code>names</code> and <code>scores</code>.
-            </p>
+        <p>
+            The function receives two sequences:
+            <code>names</code> and <code>scores</code>.
+        </p>
 
-            <p>
-                Each name corresponds to the score at the
-                same position.
-            </p>
+        <p>
+            Each name corresponds to the score at the
+            same position.
+        </p>
 
-            <p>
-                Return a new list of strings ranking the
-                students from the highest score to the
-                lowest.
-            </p>
+        <p>
+            Return a new list of strings ranking the
+            students from the highest score to the
+            lowest.
+        </p>
 
-            <p>
-                Each line must use this format:
-            </p>
+        <p>
+            Each line must use this format:
+        </p>
 
-            <pre>1. Sam: 95
+        <pre>1. Sam: 95
 2. Maya: 90
 3. Alex: 80</pre>
 
-            <p>
-                Example:
-            </p>
+        <p>
+            Example:
+        </p>
 
-            <pre>ranked_report(
+        <pre>ranked_report(
     [
         "Alex",
         "Sam",
@@ -5775,70 +6117,70 @@ except Exception as error:
     "4. Leo: 70"
 ]</pre>
 
-            <p>
-                Requirements:
-            </p>
+        <p>
+            Requirements:
+        </p>
 
-            <ul>
-                <li>
-                    use <code>zip()</code> to associate
-                    names with scores;
-                </li>
+        <ul>
+            <li>
+                use <code>zip()</code> to associate
+                names with scores;
+            </li>
 
-                <li>
-                    use <code>sorted()</code> to create the
-                    ranking;
-                </li>
+            <li>
+                use <code>sorted()</code> to create the
+                ranking;
+            </li>
 
-                <li>
-                    use
-                    <code>enumerate(..., start=1)</code>
-                    to create the displayed positions;
-                </li>
+            <li>
+                use
+                <code>enumerate(..., start=1)</code>
+                to create the displayed positions;
+            </li>
 
-                <li>
-                    sort from highest score to lowest score;
-                </li>
+            <li>
+                sort from highest score to lowest score;
+            </li>
 
-                <li>
-                    if two students have the same score,
-                    preserve their original relative order;
-                </li>
+            <li>
+                if two students have the same score,
+                preserve their original relative order;
+            </li>
 
-                <li>
-                    do not modify either input sequence.
-                </li>
-            </ul>
+            <li>
+                do not modify either input sequence.
+            </li>
+        </ul>
 
-            <p>
-                You may assume:
-            </p>
+        <p>
+            You may assume:
+        </p>
 
-            <ul>
-                <li>
-                    <code>names</code> and
-                    <code>scores</code> have the same
-                    length;
-                </li>
+        <ul>
+            <li>
+                <code>names</code> and
+                <code>scores</code> have the same
+                length;
+            </li>
 
-                <li>
-                    all values are already valid;
-                </li>
+            <li>
+                all values are already valid;
+            </li>
 
-                <li>
-                    input validation is not required.
-                </li>
-            </ul>
+            <li>
+                input validation is not required.
+            </li>
+        </ul>
 
-            <p>
-                Different clear implementations are valid,
-                as long as the required Python tools are
-                used appropriately.
-            </p>
-        `,
+        <p>
+            Different clear implementations are valid,
+            as long as the required Python tools are
+            used appropriately.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def ranked_report(names, scores):
     pass
 
@@ -5857,6 +6199,7 @@ scores = [
     70
 ]
 
+
 print(
     ranked_report(
         names,
@@ -5865,7 +6208,7 @@ print(
 )`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -6206,6 +6549,22 @@ try:
 
 
             # -----------------------------------------
+            # NEW LIST REQUIREMENT
+            # -----------------------------------------
+
+            if obtained is names:
+
+                fail(
+                    "The function must return a new list, "
+                    "not the original names sequence."
+                )
+
+                tests_ok = False
+
+                break
+
+
+            # -----------------------------------------
             # EXACT RESULT
             # -----------------------------------------
 
@@ -6290,6 +6649,10 @@ try:
         )
 
         success(
+            "A new list is returned"
+        )
+
+        success(
             "The original input sequences remain unchanged"
         )
 
@@ -6302,60 +6665,60 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
 
-        /* =====================================================
-       CHALLENGE 018
-       Analyze Student Performance
-    ===================================================== */
+/* =====================================================
+   CHALLENGE 018
+   Analyze Student Performance
+===================================================== */
 
-    18: {
+18: {
 
-        chapter: 9,
+    chapter: 9,
 
-        number: "018",
+    number: "018",
 
-        difficulty: "Medium",
+    difficulty: "Medium",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Analyze Student Performance",
+    title:
+        "Analyze Student Performance",
 
 
-        description: `
-            <p>
-                Write a function
-                <code>analyze_students(students)</code>.
-            </p>
+    description: `
+        <p>
+            Write a function
+            <code>analyze_students(students)</code>.
+        </p>
 
-            <p>
-                The function receives a list of student
-                dictionaries.
-            </p>
+        <p>
+            The function receives a list of student
+            dictionaries.
+        </p>
 
-            <p>
-                Each student has:
-            </p>
+        <p>
+            Each student has:
+        </p>
 
-            <ul>
-                <li>
-                    a <code>"name"</code>;
-                </li>
+        <ul>
+            <li>
+                a <code>"name"</code>;
+            </li>
 
-                <li>
-                    a non-empty list of
-                    <code>"scores"</code>.
-                </li>
-            </ul>
+            <li>
+                a non-empty list of
+                <code>"scores"</code>.
+            </li>
+        </ul>
 
-            <p>
-                Example input:
-            </p>
+        <p>
+            Example input:
+        </p>
 
-            <pre>[
+        <pre>[
     {
         "name": "Alex",
         "scores": [80, 70, 90]
@@ -6370,47 +6733,47 @@ except Exception as error:
     }
 ]</pre>
 
-            <p>
-                Return a dictionary containing:
-            </p>
+        <p>
+            Return a dictionary containing:
+        </p>
 
-            <ul>
-                <li>
-                    <code>"top_student"</code>:
-                    the name of the student with the highest
-                    average;
-                </li>
+        <ul>
+            <li>
+                <code>"top_student"</code>:
+                the name of the student with the highest
+                average;
+            </li>
 
-                <li>
-                    <code>"class_average"</code>:
-                    the average of the students'
-                    individual averages;
-                </li>
+            <li>
+                <code>"class_average"</code>:
+                the average of the students'
+                individual averages;
+            </li>
 
-                <li>
-                    <code>"all_passed"</code>:
-                    whether every student has every score
-                    greater than or equal to <code>60</code>;
-                </li>
+            <li>
+                <code>"all_passed"</code>:
+                whether every student has every score
+                greater than or equal to <code>60</code>;
+            </li>
 
-                <li>
-                    <code>"any_perfect"</code>:
-                    whether at least one score anywhere in
-                    the class is exactly <code>100</code>;
-                </li>
+            <li>
+                <code>"any_perfect"</code>:
+                whether at least one score anywhere in
+                the class is exactly <code>100</code>;
+            </li>
 
-                <li>
-                    <code>"ranking"</code>:
-                    a list of student names ordered by
-                    average from highest to lowest.
-                </li>
-            </ul>
+            <li>
+                <code>"ranking"</code>:
+                a list of student names ordered by
+                average from highest to lowest.
+            </li>
+        </ul>
 
-            <p>
-                For the example above, the result is:
-            </p>
+        <p>
+            For the example above, the result is:
+        </p>
 
-            <pre>{
+        <pre>{
     "top_student": "Sam",
     "class_average": 80.0,
     "all_passed": True,
@@ -6422,72 +6785,79 @@ except Exception as error:
     ]
 }</pre>
 
-            <p>
-                Important details:
-            </p>
+        <p>
+            Important details:
+        </p>
 
-            <ul>
-                <li>
-                    calculate each student's average from
-                    their own scores;
-                </li>
+        <ul>
+            <li>
+                calculate each student's average from
+                their own scores;
+            </li>
 
-                <li>
-                    <code>class_average</code> is the
-                    average of those student averages,
-                    not necessarily the average of every
-                    individual score combined;
-                </li>
+            <li>
+                <code>class_average</code> is the
+                average of those student averages,
+                not necessarily the average of every
+                individual score combined;
+            </li>
 
-                <li>
-                    if students have equal averages,
-                    preserve their original relative order;
-                </li>
+            <li>
+                if students have equal averages,
+                preserve their original relative order;
+            </li>
 
-                <li>
-                    the original input structure must not
-                    be modified.
-                </li>
-            </ul>
+            <li>
+                if multiple students share the highest
+                average, <code>top_student</code> must
+                be the first of them in the original
+                input order;
+            </li>
 
-            <p>
-                Use the appropriate Python built-ins:
-                <code>sum()</code>,
-                <code>all()</code>,
-                <code>any()</code> and
-                <code>sorted()</code>.
-            </p>
+            <li>
+                the original input structure must not
+                be modified.
+            </li>
+        </ul>
 
-            <p>
-                Avoid unnecessarily calculating the same
-                student's average multiple times.
-            </p>
+        <p>
+            Use the appropriate Python built-ins:
+            <code>sum()</code>,
+            <code>all()</code>,
+            <code>any()</code> and
+            <code>sorted()</code>.
+        </p>
 
-            <p>
-                You may assume:
-            </p>
+        <p>
+            Avoid unnecessarily calculating the same
+            student's average multiple times.
+        </p>
 
-            <ul>
-                <li>
-                    there is at least one student;
-                </li>
+        <p>
+            You may assume:
+        </p>
 
-                <li>
-                    every student has at least one score;
-                </li>
+        <ul>
+            <li>
+                there is at least one student;
+            </li>
 
-                <li>
-                    all names and scores are already valid;
-                </li>
+            <li>
+                every student has at least one score;
+            </li>
 
-                <li>
-                    input validation is not required.
-                </li>
-            </ul>
-        `,
+            <li>
+                all names and scores are already valid;
+            </li>
+
+            <li>
+                input validation is not required.
+            </li>
+        </ul>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def analyze_students(students):
     pass
 
@@ -6507,12 +6877,13 @@ students = [
     }
 ]
 
+
 print(
     analyze_students(students)
 )`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -6821,6 +7192,41 @@ try:
                     "One"
                 ]
             }
+        ),
+
+        (
+            [
+                {
+                    "name": "Zoe",
+                    "scores": [
+                        90,
+                        90
+                    ]
+                },
+                {
+                    "name": "Amy",
+                    "scores": [
+                        90
+                    ]
+                },
+                {
+                    "name": "Bob",
+                    "scores": [
+                        80
+                    ]
+                }
+            ],
+            {
+                "top_student": "Zoe",
+                "class_average": 86.66666666666667,
+                "all_passed": True,
+                "any_perfect": False,
+                "ranking": [
+                    "Zoe",
+                    "Amy",
+                    "Bob"
+                ]
+            }
         )
 
     ]
@@ -6922,14 +7328,27 @@ try:
                 break
 
 
-            if type(
-                obtained[
-                    "class_average"
-                ]
-            ) is not float:
+            class_average = obtained[
+                "class_average"
+            ]
+
+
+            if (
+                not isinstance(
+                    class_average,
+                    (
+                        int,
+                        float
+                    )
+                )
+                or isinstance(
+                    class_average,
+                    bool
+                )
+            ):
 
                 fail(
-                    "class_average must be a float."
+                    "class_average must be a numeric value."
                 )
 
                 tests_ok = False
@@ -7170,6 +7589,10 @@ try:
         )
 
         success(
+            "Tied top students preserve their original relative order"
+        )
+
+        success(
             "all() is used for passing conditions"
         )
 
@@ -7194,50 +7617,50 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
-        /* =====================================================
-       CHALLENGE 019
-       Most Frequent Value, First on Ties
-    ===================================================== */
+/* =====================================================
+   CHALLENGE 019
+   Most Frequent Value, First on Ties
+===================================================== */
 
-    19: {
+19: {
 
-        chapter: 10,
+    chapter: 10,
 
-        number: "019",
+    number: "019",
 
-        difficulty: "Medium",
+    difficulty: "Medium",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Most Frequent Value, First on Ties",
+    title:
+        "Most Frequent Value, First on Ties",
 
 
-        description: `
-            <p>
-                Write a function
-                <code>most_frequent(values)</code>.
-            </p>
+    description: `
+        <p>
+            Write a function
+            <code>most_frequent(values)</code>.
+        </p>
 
-            <p>
-                Return the value that appears most
-                frequently.
-            </p>
+        <p>
+            Return the value that appears most
+            frequently.
+        </p>
 
-            <p>
-                If two or more values share the highest
-                frequency, return the one that appeared
-                first in the original input.
-            </p>
+        <p>
+            If two or more values share the highest
+            frequency, return the one that appeared
+            first in the original input.
+        </p>
 
-            <p>
-                Example:
-            </p>
+        <p>
+            Example:
+        </p>
 
-            <pre>most_frequent([
+        <pre>most_frequent([
     "python",
     "java",
     "java",
@@ -7247,76 +7670,76 @@ except Exception as error:
 
 → "python"</pre>
 
-            <p>
-                Both <code>"python"</code> and
-                <code>"java"</code> appear twice, but
-                <code>"python"</code> appeared first.
-            </p>
+        <p>
+            Both <code>"python"</code> and
+            <code>"java"</code> appear twice, but
+            <code>"python"</code> appeared first.
+        </p>
 
-            <p>
-                Requirements:
-            </p>
+        <p>
+            Requirements:
+        </p>
 
-            <ul>
-                <li>
-                    build a frequency table using a
-                    dictionary;
-                </li>
+        <ul>
+            <li>
+                build a frequency table using a
+                dictionary;
+            </li>
 
-                <li>
-                    do not repeatedly scan the complete
-                    input for every value;
-                </li>
+            <li>
+                do not repeatedly scan the complete
+                input for every value;
+            </li>
 
-                <li>
-                    do not sort the input to determine the
-                    answer;
-                </li>
+            <li>
+                do not sort the input to determine the
+                answer;
+            </li>
 
-                <li>
-                    preserve the original input;
-                </li>
+            <li>
+                preserve the original input;
+            </li>
 
-                <li>
-                    aim for
-                    <code>O(n)</code> average time.
-                </li>
-            </ul>
+            <li>
+                aim for
+                <code>O(n)</code> average time.
+            </li>
+        </ul>
 
-            <p>
-                Two separate linear passes are completely
-                acceptable:
-                <code>O(n) + O(n)</code> is still
-                <code>O(n)</code>.
-            </p>
+        <p>
+            Two separate linear passes are completely
+            acceptable:
+            <code>O(n) + O(n)</code> is still
+            <code>O(n)</code>.
+        </p>
 
-            <p>
-                You may assume:
-            </p>
+        <p>
+            You may assume:
+        </p>
 
-            <ul>
-                <li>
-                    <code>values</code> is not empty;
-                </li>
+        <ul>
+            <li>
+                <code>values</code> is not empty;
+            </li>
 
-                <li>
-                    every value is hashable;
-                </li>
+            <li>
+                every value is hashable;
+            </li>
 
-                <li>
-                    input validation is not required.
-                </li>
-            </ul>
+            <li>
+                input validation is not required.
+            </li>
+        </ul>
 
-            <p>
-                Build the frequency table yourself using a
-                regular dictionary. Do not use
-                <code>collections.Counter</code>.
-            </p>
-        `,
+        <p>
+            Build the frequency table yourself using a
+            regular dictionary. Do not use
+            <code>collections.Counter</code>.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def most_frequent(values):
     pass
 
@@ -7329,12 +7752,13 @@ values = [
     "sql"
 ]
 
+
 print(
     most_frequent(values)
 )`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -7401,7 +7825,8 @@ try:
             function_node
         ):
 
-            # Dictionary literal or comprehension
+
+            # Dictionary literal or comprehension.
             if isinstance(
                 node,
                 (
@@ -7413,7 +7838,7 @@ try:
                 uses_dictionary = True
 
 
-            # Function calls
+            # Function calls.
             if isinstance(
                 node,
                 ast.Call
@@ -7459,7 +7884,21 @@ try:
                         uses_counter = True
 
 
-            # Detect nested explicit loops
+                    elif (
+                        node.func.attr
+                        == "fromkeys"
+                        and isinstance(
+                            node.func.value,
+                            ast.Name
+                        )
+                        and node.func.value.id
+                        == "dict"
+                    ):
+
+                        uses_dictionary = True
+
+
+            # Detect nested explicit loops.
             if isinstance(
                 node,
                 (
@@ -7762,151 +8201,148 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
+/* =====================================================
+   CHALLENGE 020
+   Two Sum with Efficient Lookup
+===================================================== */
+
+20: {
+
+    chapter: 10,
+
+    number: "020",
+
+    difficulty: "Medium",
+
+    layout: "standard",
+
+    title:
+        "Two Sum with Efficient Lookup",
 
 
+    description: `
+        <p>
+            Write a function
+            <code>two_sum(numbers, target)</code>.
+        </p>
 
-        /* =====================================================
-       CHALLENGE 020
-       Two Sum with Efficient Lookup
-    ===================================================== */
+        <p>
+            Return a <strong>list</strong> containing the
+            indexes of two different elements whose values
+            add up to <code>target</code>.
+        </p>
 
-    20: {
+        <p>
+            Example:
+        </p>
 
-        chapter: 10,
-
-        number: "020",
-
-        difficulty: "Medium",
-
-        layout: "standard",
-
-        title:
-            "Two Sum with Efficient Lookup",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>two_sum(numbers, target)</code>.
-            </p>
-
-            <p>
-                Return the indexes of two different elements
-                whose values add up to
-                <code>target</code>.
-            </p>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>two_sum(
+        <pre>two_sum(
     [2, 7, 11, 15],
     9
 )
 
 → [0, 1]</pre>
 
-            <p>
-                because:
-            </p>
+        <p>
+            because:
+        </p>
 
-            <pre>2 + 7 = 9</pre>
+        <pre>2 + 7 = 9</pre>
 
-            <p>
-                Another example:
-            </p>
+        <p>
+            Another example:
+        </p>
 
-            <pre>two_sum(
+        <pre>two_sum(
     [3, 2, 4],
     6
 )
 
 → [1, 2]</pre>
 
-            <p>
-                Requirements:
-            </p>
+        <p>
+            Requirements:
+        </p>
 
-            <ul>
-                <li>
-                    use a dictionary for efficient lookup;
-                </li>
+        <ul>
+            <li>
+                use a dictionary for efficient lookup;
+            </li>
 
-                <li>
-                    avoid comparing every possible pair;
-                </li>
+            <li>
+                avoid comparing every possible pair;
+            </li>
 
-                <li>
-                    aim for
-                    <code>O(n)</code> average time;
-                </li>
+            <li>
+                aim for
+                <code>O(n)</code> average time;
+            </li>
 
-                <li>
-                    do not use the same list position twice;
-                </li>
+            <li>
+                do not use the same list position twice;
+            </li>
 
-                <li>
-                    return the two indexes in increasing
-                    order;
-                </li>
+            <li>
+                return the two indexes in increasing
+                order;
+            </li>
 
-                <li>
-                    do not modify the original input.
-                </li>
-            </ul>
+            <li>
+                do not modify the original input.
+            </li>
+        </ul>
 
-            <p>
-                Think about the current number:
-            </p>
+        <p>
+            Think about the current number:
+        </p>
 
-            <pre>number</pre>
+        <pre>number</pre>
 
-            <p>
-                and the value still needed:
-            </p>
+        <p>
+            and the value still needed:
+        </p>
 
-            <pre>needed = target - number</pre>
+        <pre>needed = target - number</pre>
 
-            <p>
-                A dictionary can remember values and their
-                indexes so that you do not need to scan the
-                list again for every element.
-            </p>
+        <p>
+            A dictionary can remember values and their
+            indexes so that you do not need to scan the
+            list again for every element.
+        </p>
 
-            <p>
-                You may assume:
-            </p>
+        <p>
+            You may assume:
+        </p>
 
-            <ul>
-                <li>
-                    <code>numbers</code> contains numeric
-                    values;
-                </li>
+        <ul>
+            <li>
+                <code>numbers</code> contains numeric
+                values;
+            </li>
 
-                <li>
-                    there is exactly one valid solution;
-                </li>
+            <li>
+                there is exactly one valid solution;
+            </li>
 
-                <li>
-                    input validation is not required.
-                </li>
-            </ul>
+            <li>
+                input validation is not required.
+            </li>
+        </ul>
 
-            <p>
-                A nested-loop
-                <code>O(n²)</code> solution may be a useful
-                first idea during an interview, but it does
-                not satisfy the final requirement of this
-                challenge.
-            </p>
-        `,
+        <p>
+            A nested-loop
+            <code>O(n²)</code> solution may be a useful
+            first idea during an interview, but it does
+            not satisfy the final requirement of this
+            challenge.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def two_sum(numbers, target):
     pass
 
@@ -7918,6 +8354,7 @@ numbers = [
     15
 ]
 
+
 print(
     two_sum(
         numbers,
@@ -7926,7 +8363,7 @@ print(
 )`,
 
 
-        checker:
+    checker:
 `
 namespace = {}
 
@@ -7984,7 +8421,7 @@ try:
 
         uses_dictionary = False
         nested_loops = False
-        uses_sorting = False
+        sorts_input = False
         uses_index_method = False
         repeated_list_membership = False
 
@@ -7993,7 +8430,8 @@ try:
             function_node
         ):
 
-            # Dictionary literal or comprehension
+
+            # Dictionary literal or comprehension.
             if isinstance(
                 node,
                 (
@@ -8005,6 +8443,7 @@ try:
                 uses_dictionary = True
 
 
+            # Function and method calls.
             if isinstance(
                 node,
                 ast.Call
@@ -8020,9 +8459,18 @@ try:
                         uses_dictionary = True
 
 
-                    elif node.func.id == "sorted":
+                    elif (
+                        node.func.id == "sorted"
+                        and node.args
+                        and isinstance(
+                            node.args[0],
+                            ast.Name
+                        )
+                        and node.args[0].id
+                        == "numbers"
+                    ):
 
-                        uses_sorting = True
+                        sorts_input = True
 
 
                 elif isinstance(
@@ -8030,9 +8478,17 @@ try:
                     ast.Attribute
                 ):
 
-                    if node.func.attr == "sort":
+                    if (
+                        node.func.attr == "sort"
+                        and isinstance(
+                            node.func.value,
+                            ast.Name
+                        )
+                        and node.func.value.id
+                        == "numbers"
+                    ):
 
-                        uses_sorting = True
+                        sorts_input = True
 
 
                     elif node.func.attr == "index":
@@ -8040,7 +8496,7 @@ try:
                         uses_index_method = True
 
 
-            # Detect explicit nested loops
+            # Detect explicit nested loops.
             if isinstance(
                 node,
                 (
@@ -8123,11 +8579,11 @@ try:
             tests_ok = False
 
 
-        elif uses_sorting:
+        elif sorts_input:
 
             fail(
-                "Sorting is not required for Two Sum and would increase "
-                "the time complexity unnecessarily."
+                "Do not sort the original numbers list "
+                "to solve this challenge."
             )
 
             tests_ok = False
@@ -8493,6 +8949,10 @@ try:
         )
 
         success(
+            "Numeric decimal values are handled correctly"
+        )
+
+        success(
             "The same position is never used twice"
         )
 
@@ -8521,11 +8981,10 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
-
-    /* =====================================================
+/* =====================================================
    CHALLENGE 021
    Transaction Audit Pipeline
 ===================================================== */
@@ -8542,6 +9001,7 @@ except Exception as error:
 
     title:
         "Transaction Audit Pipeline",
+
 
     description: `
         <p>
@@ -8663,6 +9123,11 @@ T002,Sam,withdraw,40</pre>
             <strong>lazily</strong>.
             Do not load the complete file before producing the first
             valid transaction.
+        </p>
+
+        <p>
+            As soon as a valid transaction is found, yield it before
+            reading any later line from the file.
         </p>
 
         <h3>Part 2 — build_transaction_report()</h3>
@@ -8848,6 +9313,7 @@ T002,Sam,withdraw,40</pre>
         </p>
     `,
 
+
     starterCode:
 `def iter_transactions(filename):
     pass
@@ -8858,6 +9324,7 @@ def build_transaction_report(filename):
 
 
 example_filename = "__example_transactions_021.txt"
+
 
 with open(
     example_filename,
@@ -8881,6 +9348,7 @@ print(
         example_filename
     )
 )`,
+
 
     checker:
 `
@@ -8973,7 +9441,6 @@ if tree is not None:
         # =============================================
 
         uses_yield = any(
-
             isinstance(
                 node,
                 (
@@ -8981,7 +9448,6 @@ if tree is not None:
                     ast.YieldFrom
                 )
             )
-
             for node in ast.walk(
                 iter_node
             )
@@ -9099,28 +9565,21 @@ if tree is not None:
         # =============================================
 
         uses_set = any(
-
             isinstance(
                 node,
                 ast.Set
             )
-
             or (
-
                 isinstance(
                     node,
                     ast.Call
                 )
-
                 and isinstance(
                     node.func,
                     ast.Name
                 )
-
                 and node.func.id == "set"
-
             )
-
             for node in ast.walk(
                 report_node
             )
@@ -9714,16 +10173,24 @@ if tree is not None:
                     "alex": 75,
                     "sam": 40
                 },
+
                 "ranking": [
                     "alex",
                     "sam"
                 ],
+
                 "top_user": "alex",
+
                 "total_deposits": 180,
+
                 "total_withdrawals": 65,
+
                 "processed_transactions": 4,
+
                 "duplicate_transactions": 1,
+
                 "all_balances_non_negative": True,
+
                 "any_negative_balance": False
             }
 
@@ -9756,16 +10223,24 @@ if tree is not None:
                     "alice smith": 40,
                     "bob": -15
                 },
+
                 "ranking": [
                     "alice smith",
                     "bob"
                 ],
+
                 "top_user": "alice smith",
+
                 "total_deposits": 50,
+
                 "total_withdrawals": 25,
+
                 "processed_transactions": 3,
+
                 "duplicate_transactions": 0,
+
                 "all_balances_non_negative": False,
+
                 "any_negative_balance": True
             }
 
@@ -9797,17 +10272,25 @@ if tree is not None:
                     "adam": 50,
                     "mia": 50
                 },
+
                 "ranking": [
                     "zoe",
                     "adam",
                     "mia"
                 ],
+
                 "top_user": "zoe",
+
                 "total_deposits": 150,
+
                 "total_withdrawals": 0,
+
                 "processed_transactions": 4,
+
                 "duplicate_transactions": 1,
+
                 "all_balances_non_negative": True,
+
                 "any_negative_balance": False
             }
 
@@ -9836,13 +10319,21 @@ if tree is not None:
 
             expected_report_4 = {
                 "balances": {},
+
                 "ranking": [],
+
                 "top_user": None,
+
                 "total_deposits": 0,
+
                 "total_withdrawals": 0,
+
                 "processed_transactions": 0,
+
                 "duplicate_transactions": 0,
+
                 "all_balances_non_negative": True,
+
                 "any_negative_balance": False
             }
 
@@ -9871,16 +10362,24 @@ if tree is not None:
                     "alex": 10,
                     "sam": 5
                 },
+
                 "ranking": [
                     "alex",
                     "sam"
                 ],
+
                 "top_user": "alex",
+
                 "total_deposits": 15,
+
                 "total_withdrawals": 0,
+
                 "processed_transactions": 2,
+
                 "duplicate_transactions": 0,
+
                 "all_balances_non_negative": True,
+
                 "any_negative_balance": False
             }
 
@@ -9907,15 +10406,69 @@ if tree is not None:
                 "balances": {
                     "alex": 0
                 },
+
                 "ranking": [
                     "alex"
                 ],
+
                 "top_user": "alex",
+
                 "total_deposits": 10,
+
                 "total_withdrawals": 10,
+
                 "processed_transactions": 2,
+
                 "duplicate_transactions": 0,
+
                 "all_balances_non_negative": True,
+
+                "any_negative_balance": False
+            }
+
+
+            # =========================================
+            # REPORT TEST 7 — DUPLICATE WITH NEW USER
+            # =========================================
+
+            report_filename_7 = (
+                "__challenge021_report_7.txt"
+            )
+
+
+            write_test_file(
+                report_filename_7,
+                [
+                    "D1,Alex,deposit,10",
+                    "D2,Sam,deposit,5",
+                    "D1,Ghost,withdraw,999"
+                ]
+            )
+
+
+            expected_report_7 = {
+                "balances": {
+                    "alex": 10,
+                    "sam": 5
+                },
+
+                "ranking": [
+                    "alex",
+                    "sam"
+                ],
+
+                "top_user": "alex",
+
+                "total_deposits": 15,
+
+                "total_withdrawals": 0,
+
+                "processed_transactions": 2,
+
+                "duplicate_transactions": 1,
+
+                "all_balances_non_negative": True,
+
                 "any_negative_balance": False
             }
 
@@ -9948,6 +10501,10 @@ if tree is not None:
                 (
                     report_filename_6,
                     expected_report_6
+                ),
+                (
+                    report_filename_7,
+                    expected_report_7
                 )
             ]
 
@@ -10064,13 +10621,21 @@ if tree is not None:
 
             empty_report = {
                 "balances": {},
+
                 "ranking": [],
+
                 "top_user": None,
+
                 "total_deposits": 0,
+
                 "total_withdrawals": 0,
+
                 "processed_transactions": 0,
+
                 "duplicate_transactions": 0,
+
                 "all_balances_non_negative": True,
+
                 "any_negative_balance": False
             }
 
@@ -10128,12 +10693,19 @@ if tree is not None:
                             filename
                         )
 
+
                 except Exception:
 
                     pass
 `
 
 },
+
+
+
+
+
+
 
 
 /* =====================================================
@@ -12867,17 +13439,6 @@ if tree is not None:
 `
 
 },
-
-
-
-
-
-
-
-
-
-
-
 
 
 
