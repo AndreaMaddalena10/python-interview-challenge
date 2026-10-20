@@ -19,7 +19,7 @@
 
     <link
         rel="stylesheet"
-        href="../assets/style.css"
+        href="../assets/style.css?v=1"
     >
 
 
@@ -272,6 +272,131 @@
         </section>
 
 
+
+        <!-- =================================================
+             POSSIBLE SOLUTION
+        ================================================== -->
+
+        <section
+            id="solutionArea"
+            class="solution-area"
+            hidden
+        >
+
+
+            <!-- =============================================
+                 SOLUTION BUTTON
+            ============================================== -->
+
+            <div class="solution-toggle-container">
+
+                <button
+                    id="solutionToggleButton"
+                    class="button solution-toggle-button"
+                    type="button"
+                >
+                    View Possible Solution
+                </button>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 SOLUTION PANEL
+            ============================================== -->
+
+            <div
+                id="solutionPanel"
+                class="solution-panel"
+                hidden
+            >
+
+
+                <div class="solution-header">
+
+                    <div>
+
+                        <span class="solution-label">
+                            POSSIBLE SOLUTION
+                        </span>
+
+                        <h2>
+                            One Possible Approach
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     MAIN SOLUTION
+                ========================================== -->
+
+                <div class="solution-section">
+
+                    <h3>
+                        Solution
+                    </h3>
+
+                    <pre class="solution-code-block"><code id="solutionCode"></code></pre>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     EXPLANATION
+                ========================================== -->
+
+                <div class="solution-section">
+
+                    <h3>
+                        How It Works
+                    </h3>
+
+                    <div
+                        id="solutionExplanation"
+                        class="solution-explanation"
+                    ></div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     ALTERNATIVE SOLUTION
+                ========================================== -->
+
+                <div
+                    id="alternativeSolutionSection"
+                    class="solution-section alternative-solution"
+                    hidden
+                >
+
+                    <h3>
+                        Alternative Solution
+                    </h3>
+
+                    <pre class="solution-code-block"><code id="alternativeSolutionCode"></code></pre>
+
+
+                    <div
+                        id="alternativeSolutionExplanation"
+                        class="solution-explanation"
+                    ></div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
     </main>
 
 
@@ -318,7 +443,7 @@
          EXERCISES
     ====================================================== -->
 
-    <script src="exercises.js?v=4"></script>
+    <script src="exercises.js?v=5"></script>
 
 
 
@@ -326,7 +451,7 @@
          SHARED APPLICATION
     ====================================================== -->
 
-    <script src="../assets/app.js"></script>
+    <script src="../assets/app.js?v=1"></script>
 
 
 </body>

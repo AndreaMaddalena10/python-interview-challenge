@@ -44,7 +44,6 @@ function clearLayoutClasses() {
 }
 
 
-
 /* =====================================================
    CODE EDITOR
 ===================================================== */
@@ -126,7 +125,6 @@ function initEditor() {
 }
 
 
-
 function getEditorCode() {
 
     if (!editor) {
@@ -135,7 +133,6 @@ function getEditorCode() {
 
     return editor.getValue();
 }
-
 
 
 function setEditorCode(code) {
@@ -168,6 +165,222 @@ function setEditorCode(code) {
     );
 }
 
+
+/* =====================================================
+   POSSIBLE SOLUTION
+===================================================== */
+
+function setupSolutionArea() {
+
+    const solutionArea =
+        document.getElementById(
+            "solutionArea"
+        );
+
+    const solutionPanel =
+        document.getElementById(
+            "solutionPanel"
+        );
+
+    const solutionToggleButton =
+        document.getElementById(
+            "solutionToggleButton"
+        );
+
+    const solutionCode =
+        document.getElementById(
+            "solutionCode"
+        );
+
+    const solutionExplanation =
+        document.getElementById(
+            "solutionExplanation"
+        );
+
+    const alternativeSolutionSection =
+        document.getElementById(
+            "alternativeSolutionSection"
+        );
+
+    const alternativeSolutionCode =
+        document.getElementById(
+            "alternativeSolutionCode"
+        );
+
+    const alternativeSolutionExplanation =
+        document.getElementById(
+            "alternativeSolutionExplanation"
+        );
+
+
+    if (
+        !solutionArea
+        || !solutionPanel
+        || !solutionToggleButton
+        || !solutionCode
+        || !solutionExplanation
+        || !alternativeSolutionSection
+        || !alternativeSolutionCode
+        || !alternativeSolutionExplanation
+    ) {
+
+        return;
+    }
+
+
+    /*
+        Reset the solution area every time
+        an exercise is loaded.
+    */
+
+    solutionArea.hidden = true;
+
+    solutionPanel.hidden = true;
+
+
+    solutionToggleButton.innerText =
+        "View Possible Solution";
+
+
+    solutionToggleButton.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+
+    solutionCode.textContent = "";
+
+    solutionExplanation.innerHTML = "";
+
+
+    alternativeSolutionSection.hidden = true;
+
+    alternativeSolutionCode.textContent = "";
+
+    alternativeSolutionExplanation.innerHTML = "";
+
+
+    /*
+        If the exercise does not have a
+        possible solution yet, keep the
+        entire section hidden.
+    */
+
+    if (
+        !currentExercise
+        || typeof currentExercise.solutionCode !== "string"
+        || currentExercise.solutionCode.trim() === ""
+    ) {
+
+        return;
+    }
+
+
+    /*
+        Main solution
+    */
+
+    solutionCode.textContent =
+        currentExercise
+            .solutionCode
+            .trim();
+
+
+    solutionExplanation.innerHTML =
+        currentExercise.solutionExplanation
+        || "";
+
+
+    /*
+        Alternative solution
+    */
+
+    const hasAlternativeSolution =
+
+        typeof currentExercise
+            .alternativeSolutionCode === "string"
+
+        && currentExercise
+            .alternativeSolutionCode
+            .trim() !== "";
+
+
+    if (hasAlternativeSolution) {
+
+        alternativeSolutionCode.textContent =
+            currentExercise
+                .alternativeSolutionCode
+                .trim();
+
+
+        alternativeSolutionExplanation.innerHTML =
+            currentExercise
+                .alternativeSolutionExplanation
+            || "";
+
+
+        alternativeSolutionSection.hidden = false;
+    }
+
+
+    /*
+        The exercise has a solution,
+        so show the button.
+        The solution panel itself
+        remains closed.
+    */
+
+    solutionArea.hidden = false;
+}
+
+
+function toggleSolution() {
+
+    const solutionPanel =
+        document.getElementById(
+            "solutionPanel"
+        );
+
+    const solutionToggleButton =
+        document.getElementById(
+            "solutionToggleButton"
+        );
+
+
+    if (
+        !solutionPanel
+        || !solutionToggleButton
+    ) {
+
+        return;
+    }
+
+
+    const willOpen =
+        solutionPanel.hidden;
+
+
+    solutionPanel.hidden =
+        !solutionPanel.hidden;
+
+
+    solutionToggleButton.innerText =
+
+        willOpen
+
+        ? "Hide Possible Solution"
+
+        : "View Possible Solution";
+
+
+    solutionToggleButton.setAttribute(
+        "aria-expanded",
+
+        willOpen
+            ? "true"
+            : "false"
+    );
+}
 
 
 /* =====================================================
@@ -216,9 +429,11 @@ function loadExercise() {
         );
 
 
+        setupSolutionArea();
+
+
         return false;
     }
-
 
 
     /* -------------------------
@@ -236,7 +451,6 @@ function loadExercise() {
     document.body.classList.add(
         "layout-" + layout
     );
-
 
 
     /* -------------------------
@@ -257,7 +471,6 @@ function loadExercise() {
         + formatExerciseNumber(
             currentExercise.number
         );
-
 
 
     /* -------------------------
@@ -286,7 +499,6 @@ function loadExercise() {
     );
 
 
-
     /* -------------------------
        TITLE
     ------------------------- */
@@ -295,7 +507,6 @@ function loadExercise() {
         "exerciseTitle"
     ).innerText =
         currentExercise.title;
-
 
 
     /* -------------------------
@@ -308,7 +519,6 @@ function loadExercise() {
         currentExercise.description;
 
 
-
     /* -------------------------
        STARTER CODE
     ------------------------- */
@@ -317,6 +527,12 @@ function loadExercise() {
         currentExercise.starterCode
     );
 
+
+    /* -------------------------
+       POSSIBLE SOLUTION
+    ------------------------- */
+
+    setupSolutionArea();
 
 
     /* -------------------------
@@ -332,7 +548,9 @@ function loadExercise() {
         () => {
 
             if (editor) {
+
                 editor.refresh();
+
             }
 
         }
@@ -341,7 +559,6 @@ function loadExercise() {
 
     return true;
 }
-
 
 
 /* =====================================================
@@ -400,7 +617,6 @@ async function initPython() {
         );
     }
 }
-
 
 
 /* =====================================================
@@ -517,7 +733,6 @@ buffer.getvalue()
 }
 
 
-
 /* =====================================================
    CHECK SOLUTION
 ===================================================== */
@@ -593,7 +808,6 @@ report = {
 }
 
 
-
 def success(message):
 
     report["checks"].append({
@@ -603,7 +817,6 @@ def success(message):
         "message": str(message)
 
     })
-
 
 
 def fail(message):
@@ -619,7 +832,6 @@ def fail(message):
     })
 
 
-
 # =====================================================
 # CHECK USER CODE SYNTAX
 # =====================================================
@@ -632,18 +844,25 @@ try:
 except SyntaxError as error:
 
     line_number = (
+
         error.lineno
+
         if error.lineno is not None
+
         else "?"
+
     )
 
 
     fail(
-        f"Errore di sintassi alla riga "
-        f"{line_number}: "
-        f"{error.msg}"
-    )
 
+        f"Errore di sintassi alla riga "
+
+        f"{line_number}: "
+
+        f"{error.msg}"
+
+    )
 
 
 # =====================================================
@@ -653,21 +872,28 @@ except SyntaxError as error:
 else:
 
     clean_checker_code = (
+
         textwrap
+
         .dedent(checker_code)
+
         .strip()
+
     )
 
 
     checker_environment = {
 
         "user_code":
+
             user_code,
 
         "success":
+
             success,
 
         "fail":
+
             fail
 
     }
@@ -677,22 +903,26 @@ else:
 
         hidden_output = io.StringIO()
 
-
         with redirect_stdout(hidden_output), redirect_stderr(hidden_output):
 
             exec(
+
                 clean_checker_code,
+
                 checker_environment
+
             )
 
 
     except Exception:
 
         fail(
-            "Errore durante il controllo:\\n"
-            + traceback.format_exc()
-        )
 
+            "Errore durante il controllo:\\n"
+
+            + traceback.format_exc()
+
+        )
 
 
 json.dumps(report)
@@ -723,7 +953,6 @@ json.dumps(report)
                 + check.message
                 + "\n";
         }
-
 
 
         if (
@@ -776,7 +1005,6 @@ json.dumps(report)
 }
 
 
-
 /* =====================================================
    RESET
 ===================================================== */
@@ -812,7 +1040,6 @@ function resetCode() {
 }
 
 
-
 /* =====================================================
    BUTTON EVENTS
 ===================================================== */
@@ -846,6 +1073,15 @@ document
         resetCode
     );
 
+
+document
+    .getElementById(
+        "solutionToggleButton"
+    )
+    .addEventListener(
+        "click",
+        toggleSolution
+    );
 
 
 /* =====================================================

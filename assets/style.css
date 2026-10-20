@@ -47,16 +47,21 @@
     --shadow:
         0 10px 35px
         rgba(15, 23, 42, 0.07);
+
 }
 
 
 * {
+
     box-sizing: border-box;
+
 }
 
 
 html {
+
     -webkit-text-size-adjust: 100%;
+
 }
 
 
@@ -74,6 +79,14 @@ body {
         "Segoe UI",
         Arial,
         sans-serif;
+
+}
+
+
+[hidden] {
+
+    display: none !important;
+
 }
 
 
@@ -99,6 +112,7 @@ body {
     justify-content: space-between;
 
     gap: 20px;
+
 }
 
 
@@ -109,6 +123,7 @@ body {
     align-items: center;
 
     gap: 12px;
+
 }
 
 
@@ -135,6 +150,7 @@ body {
     font-weight: 700;
 
     font-size: 17px;
+
 }
 
 
@@ -143,12 +159,14 @@ body {
     display: flex;
 
     flex-direction: column;
+
 }
 
 
 .brand-text strong {
 
     font-size: 15px;
+
 }
 
 
@@ -159,6 +177,7 @@ body {
     color: var(--text-secondary);
 
     font-size: 12px;
+
 }
 
 
@@ -186,6 +205,7 @@ body {
     background: var(--surface-soft);
 
     color: var(--text-secondary);
+
 }
 
 
@@ -198,6 +218,7 @@ body {
     border-radius: 50%;
 
     background: #f59e0b;
+
 }
 
 
@@ -206,12 +227,14 @@ body {
     color: var(--success-text);
 
     background: var(--success-bg);
+
 }
 
 
 .python-status.ready .status-dot {
 
     background: #22c55e;
+
 }
 
 
@@ -220,12 +243,14 @@ body {
     color: var(--error-text);
 
     background: var(--error-bg);
+
 }
 
 
 .python-status.error .status-dot {
 
     background: #ef4444;
+
 }
 
 
@@ -239,30 +264,35 @@ body {
     width: calc(100% - 32px);
 
     margin: 36px auto 60px;
+
 }
 
 
 .layout-compact .exercise-shell {
 
     max-width: 900px;
+
 }
 
 
 .layout-standard .exercise-shell {
 
     max-width: 1080px;
+
 }
 
 
 .layout-large .exercise-shell {
 
     max-width: 1280px;
+
 }
 
 
 .layout-macro .exercise-shell {
 
     max-width: 1450px;
+
 }
 
 
@@ -284,6 +314,7 @@ body {
     box-shadow: var(--shadow);
 
     margin-bottom: 22px;
+
 }
 
 
@@ -304,12 +335,14 @@ body {
     font-size: 13px;
 
     font-weight: 600;
+
 }
 
 
 .meta-separator {
 
     opacity: 0.5;
+
 }
 
 
@@ -326,6 +359,7 @@ body {
     text-transform: uppercase;
 
     letter-spacing: 0.04em;
+
 }
 
 
@@ -334,6 +368,7 @@ body {
     background: #ecfdf3;
 
     color: #15803d;
+
 }
 
 
@@ -342,6 +377,7 @@ body {
     background: #fff7ed;
 
     color: #c2410c;
+
 }
 
 
@@ -350,6 +386,7 @@ body {
     background: #fef2f2;
 
     color: #b91c1c;
+
 }
 
 
@@ -362,6 +399,7 @@ body {
     line-height: 1.2;
 
     letter-spacing: -0.02em;
+
 }
 
 
@@ -372,12 +410,14 @@ body {
     line-height: 1.7;
 
     font-size: 15px;
+
 }
 
 
 .exercise-description p {
 
     margin: 10px 0;
+
 }
 
 
@@ -392,6 +432,7 @@ body {
     color: #0f172a;
 
     font-family: monospace;
+
 }
 
 
@@ -408,6 +449,7 @@ body {
     border-radius: 8px;
 
     font-family: monospace;
+
 }
 
 
@@ -423,6 +465,7 @@ body {
     grid-template-columns: 1fr;
 
     gap: 22px;
+
 }
 
 
@@ -434,6 +477,7 @@ body {
         minmax(330px, 0.75fr);
 
     align-items: stretch;
+
 }
 
 
@@ -455,6 +499,7 @@ body {
     border-radius: var(--radius-large);
 
     box-shadow: var(--shadow);
+
 }
 
 
@@ -471,6 +516,7 @@ body {
     justify-content: space-between;
 
     border-bottom: 1px solid var(--border);
+
 }
 
 
@@ -483,6 +529,7 @@ body {
     text-transform: uppercase;
 
     letter-spacing: 0.04em;
+
 }
 
 
@@ -499,6 +546,7 @@ body {
     color: var(--text-secondary);
 
     font-size: 11px;
+
 }
 
 
@@ -510,6 +558,7 @@ body {
 .editor-panel {
 
     overflow: hidden;
+
 }
 
 
@@ -528,48 +577,56 @@ body {
     font-size: 15px;
 
     line-height: 1.65;
+
 }
 
 
 .CodeMirror-scroll {
 
     min-height: inherit;
+
 }
 
 
 .CodeMirror-gutters {
 
     border-right: 1px solid #263244;
+
 }
 
 
 .CodeMirror-linenumber {
 
     padding: 0 10px 0 6px;
+
 }
 
 
 .layout-compact .CodeMirror {
 
     height: 280px;
+
 }
 
 
 .layout-standard .CodeMirror {
 
     height: 360px;
+
 }
 
 
 .layout-large .CodeMirror {
 
     height: 500px;
+
 }
 
 
 .layout-macro .CodeMirror {
 
     height: 680px;
+
 }
 
 
@@ -589,6 +646,7 @@ body {
     gap: 9px;
 
     border-top: 1px solid var(--border);
+
 }
 
 
@@ -609,12 +667,14 @@ body {
     transition:
         background 0.15s ease,
         transform 0.05s ease;
+
 }
 
 
 .button:active:not(:disabled) {
 
     transform: translateY(1px);
+
 }
 
 
@@ -623,6 +683,7 @@ body {
     opacity: 0.45;
 
     cursor: not-allowed;
+
 }
 
 
@@ -631,12 +692,14 @@ body {
     background: var(--primary);
 
     color: white;
+
 }
 
 
 .button-primary:hover:not(:disabled) {
 
     background: var(--primary-hover);
+
 }
 
 
@@ -645,12 +708,14 @@ body {
     background: #e2e8f0;
 
     color: #1e293b;
+
 }
 
 
 .button-secondary:hover:not(:disabled) {
 
     background: #cbd5e1;
+
 }
 
 
@@ -661,12 +726,14 @@ body {
     background: transparent;
 
     color: var(--text-secondary);
+
 }
 
 
 .button-ghost:hover {
 
     background: #f1f5f9;
+
 }
 
 
@@ -680,6 +747,7 @@ body {
     display: flex;
 
     flex-direction: column;
+
 }
 
 
@@ -702,6 +770,7 @@ body {
     line-height: 1.6;
 
     white-space: pre-wrap;
+
 }
 
 
@@ -710,6 +779,7 @@ body {
     min-height: 190px;
 
     max-height: 350px;
+
 }
 
 
@@ -718,6 +788,7 @@ body {
     min-height: 300px;
 
     max-height: 500px;
+
 }
 
 
@@ -743,6 +814,7 @@ body {
     line-height: 1.6;
 
     font-size: 14px;
+
 }
 
 
@@ -751,6 +823,7 @@ body {
 .checker-box.neutral {
 
     display: block;
+
 }
 
 
@@ -761,6 +834,7 @@ body {
     border-color: var(--success-border);
 
     color: var(--success-text);
+
 }
 
 
@@ -771,6 +845,7 @@ body {
     border-color: var(--error-border);
 
     color: var(--error-text);
+
 }
 
 
@@ -781,6 +856,284 @@ body {
     border-color: var(--neutral-border);
 
     color: var(--neutral-text);
+
+}
+
+
+
+/* =====================================================
+   POSSIBLE SOLUTION
+===================================================== */
+
+.solution-area {
+
+    margin-top: 22px;
+
+}
+
+
+.solution-toggle-container {
+
+    display: flex;
+
+    justify-content: center;
+
+}
+
+
+.solution-toggle-button {
+
+    padding: 11px 18px;
+
+    background: var(--surface);
+
+    color: var(--primary);
+
+    border: 1px solid #bfdbfe;
+
+    box-shadow:
+        0 4px 15px
+        rgba(15, 23, 42, 0.05);
+
+}
+
+
+.solution-toggle-button:hover {
+
+    background: #eff6ff;
+
+    border-color: #93c5fd;
+
+}
+
+
+
+/* =====================================================
+   SOLUTION PANEL
+===================================================== */
+
+.solution-panel {
+
+    margin-top: 14px;
+
+    overflow: hidden;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-large);
+
+    box-shadow: var(--shadow);
+
+}
+
+
+
+/* =====================================================
+   SOLUTION HEADER
+===================================================== */
+
+.solution-header {
+
+    padding: 24px 28px;
+
+    background: var(--surface-soft);
+
+    border-bottom: 1px solid var(--border);
+
+}
+
+
+.solution-label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--primary);
+
+    font-size: 11px;
+
+    font-weight: 750;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+}
+
+
+.solution-header h2 {
+
+    margin: 0;
+
+    color: var(--text-main);
+
+    font-size: 24px;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.02em;
+
+}
+
+
+
+/* =====================================================
+   SOLUTION SECTIONS
+===================================================== */
+
+.solution-section {
+
+    padding: 24px 28px;
+
+}
+
+
+.solution-section + .solution-section {
+
+    border-top: 1px solid var(--border);
+
+}
+
+
+.solution-section h3 {
+
+    margin: 0 0 14px;
+
+    color: var(--text-main);
+
+    font-size: 16px;
+
+    line-height: 1.3;
+
+}
+
+
+
+/* =====================================================
+   SOLUTION CODE
+===================================================== */
+
+.solution-code-block {
+
+    margin: 0;
+
+    padding: 18px 20px;
+
+    overflow-x: auto;
+
+    background: var(--editor-bg);
+
+    color: #e5e7eb;
+
+    border-radius: var(--radius-medium);
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+
+    white-space: pre;
+
+    tab-size: 4;
+
+}
+
+
+.solution-code-block code {
+
+    padding: 0;
+
+    background: transparent;
+
+    color: inherit;
+
+    font: inherit;
+
+}
+
+
+
+/* =====================================================
+   SOLUTION EXPLANATION
+===================================================== */
+
+.solution-explanation {
+
+    color: #475569;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
+}
+
+
+.solution-explanation p {
+
+    margin: 10px 0;
+
+}
+
+
+.solution-explanation p:first-child {
+
+    margin-top: 0;
+
+}
+
+
+.solution-explanation p:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+.solution-explanation code {
+
+    padding: 2px 6px;
+
+    border-radius: 5px;
+
+    background: #f1f5f9;
+
+    color: #0f172a;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 0.95em;
+
+}
+
+
+
+/* =====================================================
+   ALTERNATIVE SOLUTION
+===================================================== */
+
+.alternative-solution {
+
+    background: #fbfdff;
+
+}
+
+
+.alternative-solution .solution-explanation {
+
+    margin-top: 18px;
+
 }
 
 
@@ -798,6 +1151,7 @@ body {
     color: #94a3b8;
 
     font-size: 12px;
+
 }
 
 
@@ -812,18 +1166,21 @@ body {
     .layout-macro .workspace {
 
         grid-template-columns: 1fr;
+
     }
 
 
     .layout-large .CodeMirror {
 
         height: 440px;
+
     }
 
 
     .layout-macro .CodeMirror {
 
         height: 520px;
+
     }
 
 }
@@ -843,12 +1200,14 @@ body {
         min-height: 68px;
 
         padding: 12px 15px;
+
     }
 
 
     .brand-text span {
 
         display: none;
+
     }
 
 
@@ -857,6 +1216,7 @@ body {
         padding: 6px 8px;
 
         font-size: 11px;
+
     }
 
 
@@ -865,6 +1225,7 @@ body {
         width: calc(100% - 20px);
 
         margin-top: 18px;
+
     }
 
 
@@ -873,24 +1234,28 @@ body {
         padding: 22px 18px;
 
         border-radius: 12px;
+
     }
 
 
     .exercise-card h1 {
 
         font-size: 24px;
+
     }
 
 
     .panel {
 
         border-radius: 12px;
+
     }
 
 
     .CodeMirror {
 
         font-size: 14px;
+
     }
 
 
@@ -898,18 +1263,21 @@ body {
     .layout-standard .CodeMirror {
 
         height: 340px;
+
     }
 
 
     .layout-large .CodeMirror {
 
         height: 420px;
+
     }
 
 
     .layout-macro .CodeMirror {
 
         height: 480px;
+
     }
 
 
@@ -920,35 +1288,108 @@ body {
         grid-template-columns:
             1fr
             1fr;
+
     }
 
 
     .button {
 
         width: 100%;
+
     }
 
 
     .button-ghost {
 
         margin-left: 0;
+
+    }
+
+
+    /* =============================================
+       POSSIBLE SOLUTION — MOBILE
+    ============================================== */
+
+    .solution-toggle-container {
+
+        display: block;
+
+    }
+
+
+    .solution-toggle-button {
+
+        width: 100%;
+
+    }
+
+
+    .solution-panel {
+
+        border-radius: 12px;
+
+    }
+
+
+    .solution-header {
+
+        padding: 20px 18px;
+
+    }
+
+
+    .solution-header h2 {
+
+        font-size: 21px;
+
+    }
+
+
+    .solution-section {
+
+        padding: 20px 18px;
+
+    }
+
+
+    .solution-code-block {
+
+        padding: 15px;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+    }
+
+
+    .solution-explanation {
+
+        font-size: 14px;
+
     }
 
 }
 
 
 
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
 @media (max-width: 420px) {
 
     .controls {
 
         grid-template-columns: 1fr;
+
     }
 
 
     .brand-text strong {
 
         font-size: 13px;
+
     }
 
 }

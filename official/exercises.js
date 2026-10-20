@@ -5,6 +5,11 @@ const exercises = {
    Remove Duplicates While Preserving Order
 ===================================================== */
 
+/* =====================================================
+   CHALLENGE 001
+   Remove Duplicates While Preserving Order
+===================================================== */
+
 1: {
 
     chapter: 1,
@@ -57,6 +62,112 @@ const exercises = {
 
 
 print(remove_duplicates([1, 2, 2, 3, 1]))`,
+
+
+    solutionCode:
+`def remove_duplicates(items):
+
+    seen = set()
+    result = []
+
+    for item in items:
+
+        if item not in seen:
+
+            seen.add(item)
+            result.append(item)
+
+    return result`,
+
+
+    solutionExplanation: `
+        <p>
+            This solution uses two data structures with
+            different purposes.
+        </p>
+
+        <p>
+            <code>seen</code> is a set that remembers
+            which values have already appeared.
+        </p>
+
+        <p>
+            Checking whether a value is already inside
+            a set is efficient, with
+            <code>O(1)</code> average lookup time.
+        </p>
+
+        <p>
+            <code>result</code> is the new list that
+            stores the values in the order in which
+            they first appear.
+        </p>
+
+        <p>
+            For every item, the function checks whether
+            it has already been seen.
+        </p>
+
+        <p>
+            If not, the item is added both to
+            <code>seen</code> and to
+            <code>result</code>.
+        </p>
+
+        <p>
+            Because the function creates and returns a
+            separate <code>result</code> list, it always
+            returns a new list rather than reusing the
+            original input.
+        </p>
+
+        <p>
+            This approach runs in
+            <code>O(n)</code> average time.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def remove_duplicates(items):
+
+    return list(
+        dict.fromkeys(items)
+    )`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            This is a shorter alternative.
+        </p>
+
+        <p>
+            <code>dict.fromkeys(items)</code> creates
+            dictionary keys from the input values.
+        </p>
+
+        <p>
+            Dictionary keys are unique, so duplicate
+            values are removed automatically.
+        </p>
+
+        <p>
+            Python dictionaries preserve insertion
+            order, so the first appearance of each value
+            is preserved.
+        </p>
+
+        <p>
+            Finally, <code>list(...)</code> converts the
+            dictionary keys into a new list.
+        </p>
+
+        <p>
+            Both approaches rely on the challenge
+            requirement that every value inside
+            <code>items</code> is hashable.
+        </p>
+    `,
 
 
     checker:
@@ -265,6 +376,106 @@ except Exception as error:
 
 
 print(count_words(["python", "java", "python"]))`,
+
+
+    solutionCode:
+`def count_words(words):
+
+    counts = {}
+
+    for word in words:
+
+        counts[word] = counts.get(
+            word,
+            0
+        ) + 1
+
+    return counts`,
+
+
+    solutionExplanation: `
+        <p>
+            This solution uses a dictionary to keep track
+            of how many times each word appears.
+        </p>
+
+        <p>
+            The function starts with an empty dictionary
+            called <code>counts</code>.
+        </p>
+
+        <p>
+            For each word, <code>counts.get(word, 0)</code>
+            returns its current count.
+        </p>
+
+        <p>
+            If the word is not yet present in the
+            dictionary, <code>get()</code> returns
+            <code>0</code>.
+        </p>
+
+        <p>
+            The function then adds <code>1</code> and
+            stores the updated count back in the
+            dictionary.
+        </p>
+
+        <p>
+            For example, after processing:
+        </p>
+
+        <pre>["python", "java", "python"]</pre>
+
+        <p>
+            the dictionary becomes:
+        </p>
+
+        <pre>{"python": 2, "java": 1}</pre>
+
+        <p>
+            The algorithm processes the list once, so its
+            average time complexity is <code>O(n)</code>.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`from collections import Counter
+
+
+def count_words(words):
+
+    return dict(
+        Counter(words)
+    )`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            Python also provides
+            <code>Counter</code> in the
+            <code>collections</code> module.
+        </p>
+
+        <p>
+            <code>Counter(words)</code> automatically
+            counts how many times each value appears.
+        </p>
+
+        <p>
+            Since <code>Counter</code> is a specialized
+            dictionary subclass, wrapping it with
+            <code>dict(...)</code> produces a regular
+            dictionary.
+        </p>
+
+        <p>
+            This solution is shorter, but the first
+            approach is useful for understanding how
+            frequency dictionaries work internally.
+        </p>
+    `,
 
 
     checker:
@@ -493,6 +704,117 @@ except Exception as error:
 
 
 print(final_price(100, discount=20, tax=10))`,
+
+
+    solutionCode:
+`def final_price(price, discount=0, tax=0):
+
+    discounted_price = (
+        price * (1 - discount / 100)
+    )
+
+    final = (
+        discounted_price * (1 + tax / 100)
+    )
+
+    return round(final, 2)`,
+
+
+    solutionExplanation: `
+        <p>
+            The calculation happens in two steps.
+        </p>
+
+        <p>
+            First, the discount is applied to the
+            original price.
+        </p>
+
+        <pre>discounted_price = price * (1 - discount / 100)</pre>
+
+        <p>
+            For example, a <code>20%</code> discount
+            on <code>100</code> produces:
+        </p>
+
+        <pre>100 × 0.80 = 80</pre>
+
+        <p>
+            The tax must then be applied to the
+            discounted price, not to the original one.
+        </p>
+
+        <pre>final = discounted_price * (1 + tax / 100)</pre>
+
+        <p>
+            With a <code>10%</code> tax:
+        </p>
+
+        <pre>80 × 1.10 = 88</pre>
+
+        <p>
+            Finally, <code>round(final, 2)</code>
+            rounds the completed calculation to two
+            decimal places.
+        </p>
+
+        <p>
+            The rounding should happen only after both
+            the discount and the tax have been applied.
+            Rounding an intermediate value may change
+            the final result for some prices and
+            percentages.
+        </p>
+
+        <p>
+            Since the function performs a fixed number
+            of arithmetic operations regardless of the
+            input values, its time complexity is
+            <code>O(1)</code>.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def final_price(price, discount=0, tax=0):
+
+    return round(
+        price
+        * (1 - discount / 100)
+        * (1 + tax / 100),
+        2
+    )`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            The same calculation can be written in a
+            more compact form.
+        </p>
+
+        <p>
+            The first multiplier applies the discount:
+        </p>
+
+        <pre>1 - discount / 100</pre>
+
+        <p>
+            The second multiplier applies the tax:
+        </p>
+
+        <pre>1 + tax / 100</pre>
+
+        <p>
+            Both operations are completed before
+            <code>round(..., 2)</code> is called.
+        </p>
+
+        <p>
+            This version is shorter, while the first
+            solution makes the two calculation steps
+            easier to read separately.
+        </p>
+    `,
 
 
     checker:
@@ -774,6 +1096,163 @@ print(
 )`,
 
 
+    solutionCode:
+`def merge_settings(defaults, **overrides):
+
+    result = defaults.copy()
+
+    result.update(overrides)
+
+    return result`,
+
+
+    solutionExplanation: `
+        <p>
+            The function first creates a copy of the
+            original <code>defaults</code> dictionary.
+        </p>
+
+        <pre>result = defaults.copy()</pre>
+
+        <p>
+            This is important because the challenge
+            requires the original dictionary to remain
+            unchanged.
+        </p>
+
+        <p>
+            The function then applies the values from
+            <code>overrides</code>:
+        </p>
+
+        <pre>result.update(overrides)</pre>
+
+        <p>
+            If a key already exists, its value is
+            replaced.
+        </p>
+
+        <p>
+            If the key does not already exist, it is
+            added to the new dictionary.
+        </p>
+
+        <p>
+            Values such as <code>False</code>,
+            <code>0</code>, and <code>""</code> are
+            still normal values.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>defaults = {
+    "debug": True,
+    "timeout": 30
+}
+
+merge_settings(
+    defaults,
+    debug=False,
+    timeout=0
+)</pre>
+
+        <p>
+            produces:
+        </p>
+
+        <pre>{
+    "debug": False,
+    "timeout": 0
+}</pre>
+
+        <p>
+            The function does not check whether an
+            override value is truthy or falsy.
+            Every supplied override is applied.
+        </p>
+
+        <p>
+            <code>copy()</code> creates a shallow copy,
+            which is enough for this challenge because
+            only the top-level dictionary must remain
+            independent.
+        </p>
+
+        <p>
+            If there are <code>n</code> default settings
+            and <code>m</code> overrides, the overall
+            time complexity is approximately
+            <code>O(n + m)</code>.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def merge_settings(defaults, **overrides):
+
+    return {
+        **defaults,
+        **overrides
+    }`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            Dictionary unpacking provides a more compact
+            way to produce the same result.
+        </p>
+
+        <p>
+            The values from <code>defaults</code> are
+            inserted first:
+        </p>
+
+        <pre>**defaults</pre>
+
+        <p>
+            The values from <code>overrides</code> are
+            inserted afterward:
+        </p>
+
+        <pre>**overrides</pre>
+
+        <p>
+            If the same key appears in both dictionaries,
+            the later value replaces the earlier one.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>{
+    **{"theme": "light"},
+    **{"theme": "dark"}
+}</pre>
+
+        <p>
+            produces:
+        </p>
+
+        <pre>{
+    "theme": "dark"
+}</pre>
+
+        <p>
+            This syntax also creates a new dictionary,
+            so the original <code>defaults</code>
+            dictionary is not modified.
+        </p>
+
+        <p>
+            Like the first solution, this is a shallow
+            merge rather than a deep copy.
+        </p>
+    `,
+
+
     checker:
 `
 namespace = {}
@@ -1012,69 +1491,68 @@ except Exception as error:
 },
 
 
-
 /* =====================================================
-       CHALLENGE 005
-       Find the First Duplicate
-    ===================================================== */
+   CHALLENGE 005
+   Find the First Duplicate
+===================================================== */
 
-    5: {
+5: {
 
-        chapter: 3,
+    chapter: 3,
 
-        number: "005",
+    number: "005",
 
-        difficulty: "Easy",
+    difficulty: "Easy",
 
-        layout: "standard",
+    layout: "standard",
 
-        title:
-            "Find the First Duplicate",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>first_duplicate(items)</code>.
-            </p>
-
-            <p>
-                Return the first value that appears for a
-                second time while reading the input from
-                left to right.
-            </p>
-
-            <p>
-                If there are no duplicates, return
-                <code>None</code>.
-            </p>
-
-            <p>
-                You may assume that every element inside
-                <code>items</code> is <strong>hashable</strong>.
-            </p>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>first_duplicate([1, 2, 3, 2, 1]) → 2</pre>
-
-            <p>
-                The value <code>2</code> is returned because
-                its second occurrence appears before the
-                second occurrence of <code>1</code>.
-            </p>
-
-            <p>
-                Your implementation does not need to match
-                a predefined solution. Only the required
-                behavior matters.
-            </p>
-        `,
+    title:
+        "Find the First Duplicate",
 
 
-        starterCode:
+    description: `
+        <p>
+            Write a function
+            <code>first_duplicate(items)</code>.
+        </p>
+
+        <p>
+            Return the first value that appears for a
+            second time while reading the input from
+            left to right.
+        </p>
+
+        <p>
+            If there are no duplicates, return
+            <code>None</code>.
+        </p>
+
+        <p>
+            You may assume that every element inside
+            <code>items</code> is <strong>hashable</strong>.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>first_duplicate([1, 2, 3, 2, 1]) → 2</pre>
+
+        <p>
+            The value <code>2</code> is returned because
+            its second occurrence appears before the
+            second occurrence of <code>1</code>.
+        </p>
+
+        <p>
+            Your implementation does not need to match
+            a predefined solution. Only the required
+            behavior matters.
+        </p>
+    `,
+
+
+    starterCode:
 `def first_duplicate(items):
     pass
 
@@ -1082,7 +1560,150 @@ except Exception as error:
 print(first_duplicate([1, 2, 3, 2, 1]))`,
 
 
-        checker:
+    solutionCode:
+`def first_duplicate(items):
+
+    seen = set()
+
+    for item in items:
+
+        if item in seen:
+            return item
+
+        seen.add(item)
+
+    return None`,
+
+
+    solutionExplanation: `
+        <p>
+            The function scans the input from left to
+            right and uses a set called
+            <code>seen</code> to remember the values
+            that have already appeared.
+        </p>
+
+        <p>
+            For every item, the function first checks:
+        </p>
+
+        <pre>if item in seen:</pre>
+
+        <p>
+            If the value is already present, this means
+            that the current occurrence is its second
+            appearance.
+        </p>
+
+        <p>
+            Because the input is processed from left to
+            right, the first value detected this way is
+            exactly the duplicate whose second
+            occurrence appears earliest.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>[1, 2, 3, 2, 1]</pre>
+
+        <p>
+            The values <code>1</code>,
+            <code>2</code>, and <code>3</code> are first
+            added to <code>seen</code>.
+        </p>
+
+        <p>
+            When the second <code>2</code> is reached,
+            <code>2</code> is already inside the set,
+            so the function immediately returns it.
+        </p>
+
+        <p>
+            The later second occurrence of
+            <code>1</code> is never reached because the
+            correct answer has already been found.
+        </p>
+
+        <p>
+            If the loop finishes without finding any
+            repeated value, the function returns
+            <code>None</code>.
+        </p>
+
+        <p>
+            Set membership and insertion are typically
+            <code>O(1)</code> on average, so the overall
+            average time complexity is
+            <code>O(n)</code>.
+        </p>
+
+        <p>
+            In the worst case, the set may contain all
+            input values, so the additional space is
+            <code>O(n)</code>.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def first_duplicate(items):
+
+    occurrences = {}
+
+    for item in items:
+
+        occurrences[item] = (
+            occurrences.get(item, 0) + 1
+        )
+
+        if occurrences[item] == 2:
+            return item
+
+    return None`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            A dictionary can also be used to track how
+            many times each value has appeared.
+        </p>
+
+        <p>
+            Each time an item is processed, its count is
+            increased:
+        </p>
+
+        <pre>occurrences[item] = occurrences.get(item, 0) + 1</pre>
+
+        <p>
+            As soon as the count becomes
+            <code>2</code>, the item is returned.
+        </p>
+
+        <p>
+            Since the input is still scanned from left
+            to right, this also returns the value whose
+            second occurrence appears first.
+        </p>
+
+        <p>
+            This approach is correct, but the set-based
+            version is simpler because the challenge
+            only needs to know whether a value has
+            already appeared, not its total frequency.
+        </p>
+
+        <p>
+            This solution also runs in
+            <code>O(n)</code> average time and uses up
+            to <code>O(n)</code> additional space.
+        </p>
+    `,
+
+
+    checker:
 `
 namespace = {}
 
@@ -1209,10 +1830,10 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
-    /* =====================================================
+/* =====================================================
    CHALLENGE 006
    Square Only the Even Numbers
 ===================================================== */
@@ -1283,6 +1904,158 @@ except Exception as error:
 
 
 print(square_evens([1, 2, 3, 4, 5, 6]))`,
+
+
+    solutionCode:
+`def square_evens(numbers):
+
+    result = []
+
+    for number in numbers:
+
+        if number % 2 == 0:
+            result.append(
+                number ** 2
+            )
+
+    return result`,
+
+
+    solutionExplanation: `
+        <p>
+            The function creates a new empty list called
+            <code>result</code>.
+        </p>
+
+        <p>
+            It then scans the original list from left
+            to right.
+        </p>
+
+        <p>
+            For each number, this condition checks
+            whether it is even:
+        </p>
+
+        <pre>number % 2 == 0</pre>
+
+        <p>
+            The modulo operator <code>%</code> returns
+            the remainder of a division.
+        </p>
+
+        <p>
+            An integer is even when dividing it by
+            <code>2</code> leaves a remainder of
+            <code>0</code>.
+        </p>
+
+        <p>
+            If the number is even, its square is added
+            to the new list:
+        </p>
+
+        <pre>result.append(number ** 2)</pre>
+
+        <p>
+            Because the input is processed from left to
+            right, the order of the selected values is
+            preserved.
+        </p>
+
+        <p>
+            The original <code>numbers</code> list is
+            never changed. All results are stored in a
+            separate list.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>[1, 2, 3, 4, 5, 6]</pre>
+
+        <p>
+            selects:
+        </p>
+
+        <pre>[2, 4, 6]</pre>
+
+        <p>
+            and returns their squares:
+        </p>
+
+        <pre>[4, 16, 36]</pre>
+
+        <p>
+            The function scans the input once, so its
+            time complexity is <code>O(n)</code>.
+        </p>
+
+        <p>
+            The returned list may contain up to
+            <code>n</code> values, so the additional
+            space is <code>O(n)</code>.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def square_evens(numbers):
+
+    return [
+        number ** 2
+        for number in numbers
+        if number % 2 == 0
+    ]`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            The same logic can be expressed more
+            compactly with a list comprehension.
+        </p>
+
+        <p>
+            The expression:
+        </p>
+
+        <pre>number ** 2</pre>
+
+        <p>
+            determines the value that will be added to
+            the new list.
+        </p>
+
+        <p>
+            The condition:
+        </p>
+
+        <pre>if number % 2 == 0</pre>
+
+        <p>
+            filters the input so that only even numbers
+            are included.
+        </p>
+
+        <p>
+            The list comprehension still processes the
+            values from left to right, so the original
+            order is preserved.
+        </p>
+
+        <p>
+            It also creates a new list and does not
+            modify the original input.
+        </p>
+
+        <p>
+            Its time complexity is also
+            <code>O(n)</code>, with up to
+            <code>O(n)</code> additional space for the
+            returned list.
+        </p>
+    `,
 
 
     checker:
@@ -1455,67 +2228,66 @@ except Exception as error:
 
 
 
+/* =====================================================
+   CHALLENGE 007
+   First Non-Repeating Character
+===================================================== */
 
-        /* =====================================================
-       CHALLENGE 007
-       First Non-Repeating Character
-    ===================================================== */
+7: {
 
-    7: {
+    chapter: 4,
 
-        chapter: 4,
+    number: "007",
 
-        number: "007",
+    difficulty: "Easy",
 
-        difficulty: "Easy",
+    layout: "standard",
 
-        layout: "standard",
-
-        title:
-            "First Non-Repeating Character",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>first_unique_character(text)</code>.
-            </p>
-
-            <p>
-                Return the first character that appears
-                exactly once in the string.
-            </p>
-
-            <p>
-                If no character appears exactly once,,
-                return <code>None</code>.
-            </p>
-
-            <p>
-                The comparison is
-                <strong>case-sensitive</strong>.
-            </p>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>first_unique_character("swiss") → "w"</pre>
-
-            <p>
-                Lowercase and uppercase characters are
-                considered different.
-            </p>
-
-            <p>
-                Your implementation does not need to match
-                a predefined solution. Only the required
-                behavior matters.
-            </p>
-        `,
+    title:
+        "First Non-Repeating Character",
 
 
-        starterCode:
+    description: `
+        <p>
+            Write a function
+            <code>first_unique_character(text)</code>.
+        </p>
+
+        <p>
+            Return the first character that appears
+            exactly once in the string.
+        </p>
+
+        <p>
+            If no character appears exactly once,
+            return <code>None</code>.
+        </p>
+
+        <p>
+            The comparison is
+            <strong>case-sensitive</strong>.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>first_unique_character("swiss") → "w"</pre>
+
+        <p>
+            Lowercase and uppercase characters are
+            considered different.
+        </p>
+
+        <p>
+            Your implementation does not need to match
+            a predefined solution. Only the required
+            behavior matters.
+        </p>
+    `,
+
+
+    starterCode:
 `def first_unique_character(text):
     pass
 
@@ -1523,7 +2295,156 @@ except Exception as error:
 print(first_unique_character("swiss"))`,
 
 
-        checker:
+    solutionCode:
+`def first_unique_character(text):
+
+    counts = {}
+
+    for character in text:
+
+        counts[character] = (
+            counts.get(character, 0) + 1
+        )
+
+    for character in text:
+
+        if counts[character] == 1:
+            return character
+
+    return None`,
+
+
+    solutionExplanation: `
+        <p>
+            This solution uses two passes through the
+            string.
+        </p>
+
+        <p>
+            The first pass counts how many times each
+            character appears.
+        </p>
+
+        <pre>counts[character] = counts.get(character, 0) + 1</pre>
+
+        <p>
+            For example, for:
+        </p>
+
+        <pre>"swiss"</pre>
+
+        <p>
+            the dictionary becomes approximately:
+        </p>
+
+        <pre>{
+    "s": 3,
+    "w": 1,
+    "i": 1
+}</pre>
+
+        <p>
+            The second pass reads the original string
+            again from left to right.
+        </p>
+
+        <pre>if counts[character] == 1:
+    return character</pre>
+
+        <p>
+            The function returns the first character
+            whose total count is exactly
+            <code>1</code>.
+        </p>
+
+        <p>
+            For <code>"swiss"</code>, both
+            <code>"w"</code> and <code>"i"</code>
+            appear once, but <code>"w"</code> appears
+            first in the original string, so it is
+            returned.
+        </p>
+
+        <p>
+            If no character has a count of
+            <code>1</code>, the function reaches the
+            end and returns <code>None</code>.
+        </p>
+
+        <p>
+            The comparison is naturally case-sensitive.
+            For example, <code>"a"</code> and
+            <code>"A"</code> are different dictionary
+            keys.
+        </p>
+
+        <p>
+            Although the string is scanned twice, the
+            overall average time complexity is still
+            <code>O(n)</code>.
+        </p>
+
+        <p>
+            The dictionary may store up to
+            <code>n</code> distinct characters, so the
+            additional space is <code>O(n)</code>.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`from collections import Counter
+
+
+def first_unique_character(text):
+
+    counts = Counter(text)
+
+    for character in text:
+
+        if counts[character] == 1:
+            return character
+
+    return None`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            Python's <code>Counter</code> can perform
+            the frequency-counting step automatically.
+        </p>
+
+        <pre>counts = Counter(text)</pre>
+
+        <p>
+            The function still needs to scan the
+            original string afterward.
+        </p>
+
+        <p>
+            This second pass is important because the
+            challenge asks for the
+            <strong>first</strong> character that
+            appears exactly once.
+        </p>
+
+        <p>
+            Returning a character directly from the
+            frequency dictionary would not express that
+            requirement as clearly as scanning the
+            original string from left to right.
+        </p>
+
+        <p>
+            This approach also runs in
+            <code>O(n)</code> average time and uses
+            <code>O(n)</code> additional space in the
+            worst case.
+        </p>
+    `,
+
+
+    checker:
 `
 namespace = {}
 
@@ -1649,90 +2570,89 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
+/* =====================================================
+   CHALLENGE 008
+   Normalize a Username
+===================================================== */
 
-    /* =====================================================
-       CHALLENGE 008
-       Normalize a Username
-    ===================================================== */
+8: {
 
-    8: {
+    chapter: 4,
 
-        chapter: 4,
+    number: "008",
 
-        number: "008",
+    difficulty: "Easy",
 
-        difficulty: "Easy",
+    layout: "standard",
 
-        layout: "standard",
-
-        title:
-            "Normalize a Username",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>normalize_username(name)</code>.
-            </p>
-
-            <p>
-                The function must:
-            </p>
-
-            <ul>
-                <li>
-                    remove whitespace from the beginning
-                    and end;
-                </li>
-
-                <li>
-                    convert the string to lowercase;
-                </li>
-
-                <li>
-                    replace every internal regular space
-                    <code>" "</code> with an underscore;
-                </li>
-
-                <li>
-                    return the resulting string.
-                </li>
-            </ul>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>normalize_username("   John Smith   ") → "john_smith"</pre>
-
-            <p>
-                Multiple internal spaces must be replaced
-                individually.
-            </p>
-
-            <p>
-                For example:
-            </p>
-
-            <pre>normalize_username("John  Smith") → "john__smith"</pre>
-
-            <p>
-                You do not need to collapse repeated spaces
-                or normalize internal tabs.
-            </p>
-
-            <p>
-                The platform evaluates the returned behavior,
-                not whether your source code matches a
-                predefined solution.
-            </p>
-        `,
+    title:
+        "Normalize a Username",
 
 
-        starterCode:
+    description: `
+        <p>
+            Write a function
+            <code>normalize_username(name)</code>.
+        </p>
+
+        <p>
+            The function must:
+        </p>
+
+        <ul>
+            <li>
+                remove whitespace from the beginning
+                and end;
+            </li>
+
+            <li>
+                convert the string to lowercase;
+            </li>
+
+            <li>
+                replace every internal regular space
+                <code>" "</code> with an underscore;
+            </li>
+
+            <li>
+                return the resulting string.
+            </li>
+        </ul>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>normalize_username("   John Smith   ") → "john_smith"</pre>
+
+        <p>
+            Multiple internal spaces must be replaced
+            individually.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>normalize_username("John  Smith") → "john__smith"</pre>
+
+        <p>
+            You do not need to collapse repeated spaces
+            or normalize internal tabs.
+        </p>
+
+        <p>
+            The platform evaluates the returned behavior,
+            not whether your source code matches a
+            predefined solution.
+        </p>
+    `,
+
+
+    starterCode:
 `def normalize_username(name):
     pass
 
@@ -1740,7 +2660,170 @@ except Exception as error:
 print(normalize_username("   John Smith   "))`,
 
 
-        checker:
+    solutionCode:
+`def normalize_username(name):
+
+    normalized = name.strip()
+
+    normalized = normalized.lower()
+
+    normalized = normalized.replace(
+        " ",
+        "_"
+    )
+
+    return normalized`,
+
+
+    solutionExplanation: `
+        <p>
+            The function performs the normalization in
+            three separate steps.
+        </p>
+
+        <p>
+            First:
+        </p>
+
+        <pre>name.strip()</pre>
+
+        <p>
+            removes whitespace from the beginning and
+            end of the string.
+        </p>
+
+        <p>
+            This includes surrounding spaces, tabs, and
+            newline characters.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>"   John Smith   " → "John Smith"</pre>
+
+        <p>
+            The second step:
+        </p>
+
+        <pre>normalized.lower()</pre>
+
+        <p>
+            converts all letters to lowercase:
+        </p>
+
+        <pre>"John Smith" → "john smith"</pre>
+
+        <p>
+            Finally:
+        </p>
+
+        <pre>normalized.replace(" ", "_")</pre>
+
+        <p>
+            replaces every regular space character with
+            an underscore:
+        </p>
+
+        <pre>"john smith" → "john_smith"</pre>
+
+        <p>
+            <code>replace()</code> processes every
+            occurrence individually.
+        </p>
+
+        <p>
+            This means:
+        </p>
+
+        <pre>"John  Smith" → "john__smith"</pre>
+
+        <p>
+            because the two regular spaces become two
+            underscores.
+        </p>
+
+        <p>
+            Notice that only the regular space
+            <code>" "</code> is replaced inside the
+            string.
+        </p>
+
+        <p>
+            An internal tab such as:
+        </p>
+
+        <pre>"Python\tDev"</pre>
+
+        <p>
+            remains a tab and becomes:
+        </p>
+
+        <pre>"python\tdev"</pre>
+
+        <p>
+            Each string operation processes at most the
+            length of the input, so the overall time
+            complexity is <code>O(n)</code>.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def normalize_username(name):
+
+    return (
+        name
+        .strip()
+        .lower()
+        .replace(" ", "_")
+    )`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            The same three operations can be chained
+            together.
+        </p>
+
+        <p>
+            Python evaluates them from left to right:
+        </p>
+
+        <pre>strip() → lower() → replace(" ", "_")</pre>
+
+        <p>
+            The result of each method becomes the input
+            for the next one.
+        </p>
+
+        <p>
+            This version is shorter while producing the
+            same behavior as the first solution.
+        </p>
+
+        <p>
+            It is important to use:
+        </p>
+
+        <pre>replace(" ", "_")</pre>
+
+        <p>
+            rather than a broader whitespace
+            normalization technique, because the
+            challenge specifically requires only
+            regular internal spaces to be replaced.
+        </p>
+
+        <p>
+            This approach also has
+            <code>O(n)</code> time complexity.
+        </p>
+    `,
+
+
+    checker:
 `
 namespace = {}
 
@@ -1890,11 +2973,9 @@ except Exception as error:
     )
 `
 
-    },
+},
 
-
-
-    /* =====================================================
+/* =====================================================
    CHALLENGE 009
    Build a Bank Account
 ===================================================== */
@@ -1985,6 +3066,121 @@ account = BankAccount(100)
 account.deposit(50)
 
 print(account.get_balance())`,
+
+
+    solutionCode:
+`class BankAccount:
+
+    def __init__(self, balance):
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+
+    def withdraw(self, amount):
+
+        if amount <= self.balance:
+            self.balance -= amount
+            return True
+
+        return False
+
+    def get_balance(self):
+        return self.balance`,
+
+
+    solutionExplanation: `
+        <p>
+            Each <code>BankAccount</code> object stores
+            its own balance.
+        </p>
+
+        <p>
+            The constructor receives the initial value
+            and saves it on the instance:
+        </p>
+
+        <pre>self.balance = balance</pre>
+
+        <p>
+            Because the balance belongs to
+            <code>self</code>, every account instance
+            maintains its own independent state.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>first = BankAccount(100)
+second = BankAccount(50)</pre>
+
+        <p>
+            Changing the balance of
+            <code>first</code> does not change the
+            balance of <code>second</code>.
+        </p>
+
+        <p>
+            The <code>deposit()</code> method simply
+            increases the current balance:
+        </p>
+
+        <pre>self.balance += amount</pre>
+
+        <p>
+            The <code>withdraw()</code> method first
+            checks whether enough money is available:
+        </p>
+
+        <pre>if amount <= self.balance:</pre>
+
+        <p>
+            Using <code>&lt;=</code> is important.
+            A withdrawal equal to the entire available
+            balance is valid and should leave the
+            account with a balance of <code>0</code>.
+        </p>
+
+        <p>
+            When sufficient funds are available, the
+            amount is subtracted and the method returns
+            <code>True</code>.
+        </p>
+
+        <pre>self.balance -= amount
+return True</pre>
+
+        <p>
+            If there is not enough money, the balance
+            is never modified and the method returns
+            <code>False</code>.
+        </p>
+
+        <p>
+            Finally, <code>get_balance()</code> simply
+            returns the current value stored by the
+            object.
+        </p>
+
+        <p>
+            The same implementation works with both
+            integer and decimal numeric balances.
+        </p>
+
+        <p>
+            Creating an account with a balance of
+            <code>0</code> is also valid.
+        </p>
+
+        <p>
+            Each operation performs a fixed amount of
+            work, so <code>deposit()</code>,
+            <code>withdraw()</code>, and
+            <code>get_balance()</code> all run in
+            <code>O(1)</code> time.
+        </p>
+    `,
 
 
     checker:
@@ -2341,7 +3537,6 @@ except Exception as error:
 
 },
 
-
 /* =====================================================
    CHALLENGE 010
    Employee and Developer
@@ -2438,6 +3633,218 @@ class Developer(Employee):
 
 developer = Developer("Sam", 40000, "Python")
 print(developer.describe())`,
+
+
+    solutionCode:
+`class Employee:
+
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    def describe(self):
+        return f"{self.name} earns {self.salary}"
+
+
+class Developer(Employee):
+
+    def __init__(self, name, salary, language):
+
+        super().__init__(
+            name,
+            salary
+        )
+
+        self.language = language
+
+    def describe(self):
+
+        return (
+            f"{super().describe()} "
+            f"and codes in {self.language}"
+        )`,
+
+
+    solutionExplanation: `
+        <p>
+            This challenge demonstrates inheritance,
+            parent initialization, and method
+            overriding.
+        </p>
+
+        <p>
+            The <code>Employee</code> constructor stores
+            the two required values directly on the
+            instance:
+        </p>
+
+        <pre>self.name = name
+self.salary = salary</pre>
+
+        <p>
+            Its <code>describe()</code> method uses
+            those attributes to build the required
+            string:
+        </p>
+
+        <pre>return f"{self.name} earns {self.salary}"</pre>
+
+        <p>
+            <code>Developer</code> inherits from
+            <code>Employee</code>:
+        </p>
+
+        <pre>class Developer(Employee):</pre>
+
+        <p>
+            This means a Developer can reuse behavior
+            defined by Employee.
+        </p>
+
+        <p>
+            The Developer constructor needs one
+            additional value:
+            <code>language</code>.
+        </p>
+
+        <p>
+            Instead of repeating the initialization of
+            <code>name</code> and <code>salary</code>,
+            it calls the parent constructor:
+        </p>
+
+        <pre>super().__init__(name, salary)</pre>
+
+        <p>
+            This initializes:
+        </p>
+
+        <pre>self.name
+self.salary</pre>
+
+        <p>
+            using the logic already defined in
+            <code>Employee</code>.
+        </p>
+
+        <p>
+            Developer then stores its own additional
+            attribute:
+        </p>
+
+        <pre>self.language = language</pre>
+
+        <p>
+            Developer also defines its own
+            <code>describe()</code> method.
+        </p>
+
+        <p>
+            Because the method has the same name as the
+            parent version, it overrides
+            <code>Employee.describe()</code> for
+            Developer objects.
+        </p>
+
+        <p>
+            In this implementation, the parent method
+            is reused:
+        </p>
+
+        <pre>super().describe()</pre>
+
+        <p>
+            For:
+        </p>
+
+        <pre>Developer("Sam", 40000, "Python")</pre>
+
+        <p>
+            the parent method first produces:
+        </p>
+
+        <pre>"Sam earns 40000"</pre>
+
+        <p>
+            and the Developer method adds:
+        </p>
+
+        <pre>" and codes in Python"</pre>
+
+        <p>
+            producing:
+        </p>
+
+        <pre>"Sam earns 40000 and codes in Python"</pre>
+
+        <p>
+            Using <code>super()</code> avoids
+            duplicating logic from the parent class and
+            makes the relationship between the two
+            classes explicit.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`class Employee:
+
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    def describe(self):
+        return f"{self.name} earns {self.salary}"
+
+
+class Developer(Employee):
+
+    def __init__(self, name, salary, language):
+
+        Employee.__init__(
+            self,
+            name,
+            salary
+        )
+
+        self.language = language
+
+    def describe(self):
+
+        return (
+            f"{self.name} earns {self.salary} "
+            f"and codes in {self.language}"
+        )`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            The parent constructor can also be called
+            explicitly:
+        </p>
+
+        <pre>Employee.__init__(self, name, salary)</pre>
+
+        <p>
+            This still reuses the initialization logic
+            defined by <code>Employee</code>.
+        </p>
+
+        <p>
+            The Developer version of
+            <code>describe()</code> can also build the
+            complete string directly instead of calling
+            <code>super().describe()</code>.
+        </p>
+
+        <p>
+            This implementation satisfies the same
+            requirements, but <code>super()</code> is
+            generally preferable because it expresses
+            inheritance more cleanly and works better
+            with more complex class hierarchies.
+        </p>
+    `,
 
 
     checker:
@@ -2889,7 +4296,6 @@ except Exception as error:
 
 },
 
-
 /* =====================================================
    CHALLENGE 011
    Read Valid Integers From a File
@@ -2998,6 +4404,7 @@ with open(
     "w",
     encoding="utf-8"
 ) as file:
+
     file.write(
         "10\\nPython\\n25\\n3.5\\n-7\\n"
     )
@@ -3008,6 +4415,164 @@ print(
         "__example_numbers.txt"
     )
 )`,
+
+
+    solutionCode:
+`def read_valid_integers(filename):
+
+    numbers = []
+
+    try:
+
+        with open(
+            filename,
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            for line in file:
+
+                value = line.strip()
+
+                try:
+                    number = int(value)
+
+                except ValueError:
+                    continue
+
+                numbers.append(number)
+
+    except FileNotFoundError:
+        return []
+
+    return numbers`,
+
+
+    solutionExplanation: `
+        <p>
+            The function starts by creating an empty
+            list that will contain the valid integers.
+        </p>
+
+        <pre>numbers = []</pre>
+
+        <p>
+            The file is opened in read mode using
+            UTF-8:
+        </p>
+
+        <pre>with open(
+    filename,
+    "r",
+    encoding="utf-8"
+) as file:</pre>
+
+        <p>
+            Using <code>with</code> ensures that the
+            file is closed automatically when the
+            operation finishes.
+        </p>
+
+        <p>
+            The file is processed one line at a time:
+        </p>
+
+        <pre>for line in file:</pre>
+
+        <p>
+            Each line is cleaned with:
+        </p>
+
+        <pre>value = line.strip()</pre>
+
+        <p>
+            This removes surrounding spaces, tabs, and
+            newline characters before the conversion is
+            attempted.
+        </p>
+
+        <p>
+            The function then tries to convert the
+            cleaned value using:
+        </p>
+
+        <pre>number = int(value)</pre>
+
+        <p>
+            Valid strings such as:
+        </p>
+
+        <pre>"10"
+"-7"
+"+5"
+"003"</pre>
+
+        <p>
+            can all be converted to integers.
+        </p>
+
+        <p>
+            Values such as:
+        </p>
+
+        <pre>"Python"
+"3.5"
+""</pre>
+
+        <p>
+            cause <code>int()</code> to raise a
+            <code>ValueError</code>.
+        </p>
+
+        <p>
+            That exception is caught and the function
+            simply continues with the next line:
+        </p>
+
+        <pre>except ValueError:
+    continue</pre>
+
+        <p>
+            Successfully converted values are added to
+            the result:
+        </p>
+
+        <pre>numbers.append(number)</pre>
+
+        <p>
+            The outer
+            <code>FileNotFoundError</code> handler
+            covers the case where the requested file
+            does not exist.
+        </p>
+
+        <pre>except FileNotFoundError:
+    return []</pre>
+
+        <p>
+            The file is opened only in
+            <code>"r"</code> mode, so the function does
+            not modify its contents.
+        </p>
+
+        <p>
+            The file is processed progressively rather
+            than being loaded entirely into memory
+            before the loop begins.
+        </p>
+
+        <p>
+            The running time grows linearly with the
+            amount of file content processed, so it is
+            approximately <code>O(n)</code>.
+        </p>
+
+        <p>
+            The returned list requires space
+            proportional to the number of valid
+            integers found.
+        </p>
+    `,
 
 
     checker:
@@ -3358,7 +4923,6 @@ except Exception as error:
 },
 
 
-
 /* =====================================================
    CHALLENGE 012
    Parse Valid Numbers
@@ -3445,6 +5009,130 @@ print(parse_numbers([
     "3.5",
     "-7"
 ]))`,
+
+
+    solutionCode:
+`def parse_numbers(values):
+
+    numbers = []
+
+    for value in values:
+
+        try:
+            number = int(value)
+
+        except ValueError:
+            continue
+
+        numbers.append(number)
+
+    return numbers`,
+
+
+    solutionExplanation: `
+        <p>
+            The function creates a new empty list that
+            will contain only the successfully converted
+            integers.
+        </p>
+
+        <pre>numbers = []</pre>
+
+        <p>
+            It then processes each string in the input
+            list one at a time.
+        </p>
+
+        <pre>for value in values:</pre>
+
+        <p>
+            For each value, the function attempts to
+            convert it using:
+        </p>
+
+        <pre>number = int(value)</pre>
+
+        <p>
+            Strings such as:
+        </p>
+
+        <pre>"10"
+"-7"
+"+4"
+"003"
+"   8   "</pre>
+
+        <p>
+            can be converted successfully by
+            <code>int()</code>.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>int("003") → 3
+int("+4") → 4
+int("   8   ") → 8</pre>
+
+        <p>
+            Other strings, such as:
+        </p>
+
+        <pre>"Python"
+"3.5"
+""</pre>
+
+        <p>
+            cannot be converted to integers and cause
+            <code>int()</code> to raise a
+            <code>ValueError</code>.
+        </p>
+
+        <p>
+            The exception is caught:
+        </p>
+
+        <pre>except ValueError:
+    continue</pre>
+
+        <p>
+            <code>continue</code> skips the rest of the
+            current iteration and moves directly to the
+            next value.
+        </p>
+
+        <p>
+            Successfully converted values are added to
+            the new list:
+        </p>
+
+        <pre>numbers.append(number)</pre>
+
+        <p>
+            The original <code>values</code> list is
+            never modified.
+        </p>
+
+        <p>
+            The function always returns the separate
+            <code>numbers</code> list, even when the
+            input is empty or when no value can be
+            converted.
+        </p>
+
+        <p>
+            The input list is scanned once, so the time
+            complexity is <code>O(n)</code>.
+        </p>
+
+        <p>
+            In the worst case, every value is valid and
+            the returned list contains <code>n</code>
+            integers, so the additional space is
+            <code>O(n)</code>.
+        </p>
+    `,
 
 
     checker:
@@ -3646,78 +5334,75 @@ except Exception as error:
 },
 
 
- 
+/* =====================================================
+   CHALLENGE 013
+   Copy Nested Records Independently
+===================================================== */
+
+13: {
+
+    chapter: 7,
+
+    number: "013",
+
+    difficulty: "Medium",
+
+    layout: "standard",
+
+    title:
+        "Copy Nested Records Independently",
 
 
-        /* =====================================================
-       CHALLENGE 013
-       Copy Nested Records Independently
-    ===================================================== */
+    description: `
+        <p>
+            Write a function
+            <code>copy_records(records)</code>.
+        </p>
 
-    13: {
+        <p>
+            The function receives a list of dictionaries.
+        </p>
 
-        chapter: 7,
+        <p>
+            Every dictionary represents a record and
+            contains a <code>"skills"</code> key whose
+            value is a list.
+        </p>
 
-        number: "013",
+        <p>
+            Return a new structure where:
+        </p>
 
-        difficulty: "Medium",
+        <ul>
+            <li>
+                the outer list is a new object;
+            </li>
 
-        layout: "standard",
+            <li>
+                every record dictionary is a new object;
+            </li>
 
-        title:
-            "Copy Nested Records Independently",
+            <li>
+                every <code>"skills"</code> list is a
+                new object;
+            </li>
 
+            <li>
+                the values remain equal to the original
+                structure;
+            </li>
 
-        description: `
-            <p>
-                Write a function
-                <code>copy_records(records)</code>.
-            </p>
+            <li>
+                modifying the returned records or skills
+                must not modify the original data.
+            </li>
+        </ul>
 
-            <p>
-                The function receives a list of dictionaries.
-            </p>
+        <p>
+            Example:
+        </p>
 
-            <p>
-                Every dictionary represents a record and
-                contains a <code>"skills"</code> key whose
-                value is a list.
-            </p>
-
-            <p>
-                Return a new structure where:
-            </p>
-
-            <ul>
-                <li>
-                    the outer list is a new object;
-                </li>
-
-                <li>
-                    every record dictionary is a new object;
-                </li>
-
-                <li>
-                    every <code>"skills"</code> list is a
-                    new object;
-                </li>
-
-                <li>
-                    the values remain equal to the original
-                    structure;
-                </li>
-
-                <li>
-                    modifying the returned records or skills
-                    must not modify the original data.
-                </li>
-            </ul>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>records = [
+        <pre>records = [
     {
         "name": "Alex",
         "skills": ["Python", "SQL"]
@@ -3732,67 +5417,67 @@ copied = copy_records(records)
 
 copied[0]["skills"].append("Git")</pre>
 
-            <p>
-                After the modification,
-                <code>copied[0]["skills"]</code> should be:
-            </p>
+        <p>
+            After the modification,
+            <code>copied[0]["skills"]</code> should be:
+        </p>
 
-            <pre>["Python", "SQL", "Git"]</pre>
+        <pre>["Python", "SQL", "Git"]</pre>
 
-            <p>
-                while:
-            </p>
+        <p>
+            while:
+        </p>
 
-            <pre>records[0]["skills"]</pre>
+        <pre>records[0]["skills"]</pre>
 
-            <p>
-                must still be:
-            </p>
+        <p>
+            must still be:
+        </p>
 
-            <pre>["Python", "SQL"]</pre>
+        <pre>["Python", "SQL"]</pre>
 
-            <p>
-                You may assume:
-            </p>
+        <p>
+            You may assume:
+        </p>
 
-            <ul>
-                <li>
-                    <code>records</code> is a list;
-                </li>
+        <ul>
+            <li>
+                <code>records</code> is a list;
+            </li>
 
-                <li>
-                    every direct element is a dictionary;
-                </li>
+            <li>
+                every direct element is a dictionary;
+            </li>
 
-                <li>
-                    every dictionary contains a
-                    <code>"skills"</code> list;
-                </li>
+            <li>
+                every dictionary contains a
+                <code>"skills"</code> list;
+            </li>
 
-                <li>
-                    all other dictionary values are
-                    immutable;
-                </li>
+            <li>
+                all other dictionary values are
+                immutable;
+            </li>
 
-                <li>
-                    no deeper mutable structures need to be
-                    copied.
-                </li>
-            </ul>
+            <li>
+                no deeper mutable structures need to be
+                copied.
+            </li>
+        </ul>
 
-            <p>
-                <strong>Important:</strong>
-                do not use <code>copy.deepcopy()</code>.
-            </p>
+        <p>
+            <strong>Important:</strong>
+            do not use <code>copy.deepcopy()</code>.
+        </p>
 
-            <p>
-                The goal is to decide which levels of the
-                structure actually need to be copied.
-            </p>
-        `,
+        <p>
+            The goal is to decide which levels of the
+            structure actually need to be copied.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def copy_records(records):
     pass
 
@@ -3808,12 +5493,209 @@ records = [
     }
 ]
 
+
 print(
     copy_records(records)
 )`,
 
 
-        checker:
+    solutionCode:
+`def copy_records(records):
+
+    copied_records = []
+
+    for record in records:
+
+        copied_record = record.copy()
+
+        copied_record["skills"] = (
+            record["skills"].copy()
+        )
+
+        copied_records.append(
+            copied_record
+        )
+
+    return copied_records`,
+
+
+    solutionExplanation: `
+        <p>
+            This challenge is about understanding which
+            parts of a nested structure need to become
+            independent objects.
+        </p>
+
+        <p>
+            The function first creates a new outer list:
+        </p>
+
+        <pre>copied_records = []</pre>
+
+        <p>
+            It then processes every record individually.
+        </p>
+
+        <p>
+            The dictionary itself is copied with:
+        </p>
+
+        <pre>copied_record = record.copy()</pre>
+
+        <p>
+            This creates a new dictionary containing the
+            same key-value pairs as the original record.
+        </p>
+
+        <p>
+            However, <code>dict.copy()</code> is a
+            shallow copy.
+        </p>
+
+        <p>
+            That means mutable objects stored inside the
+            dictionary are still shared at this point.
+        </p>
+
+        <p>
+            In particular, the copied dictionary would
+            initially contain the same
+            <code>"skills"</code> list as the original
+            record.
+        </p>
+
+        <p>
+            To make that list independent as well, the
+            function explicitly copies it:
+        </p>
+
+        <pre>copied_record["skills"] = record["skills"].copy()</pre>
+
+        <p>
+            At this point there are three independent
+            levels:
+        </p>
+
+        <pre>new outer list
+new record dictionary
+new skills list</pre>
+
+        <p>
+            The other values do not need additional
+            copying because the challenge guarantees
+            that they are immutable.
+        </p>
+
+        <p>
+            For example, changing:
+        </p>
+
+        <pre>copied[0]["name"] = "Changed"</pre>
+
+        <p>
+            changes only the copied dictionary.
+        </p>
+
+        <p>
+            Similarly:
+        </p>
+
+        <pre>copied[0]["skills"].append("Git")</pre>
+
+        <p>
+            modifies only the copied skills list.
+        </p>
+
+        <p>
+            The original structure remains unchanged.
+        </p>
+
+        <p>
+            A full <code>deepcopy()</code> would also
+            create independent nested objects, but it
+            would copy more levels than this challenge
+            actually requires.
+        </p>
+
+        <p>
+            If there are <code>n</code> records and
+            <code>k</code> total skill values, the time
+            complexity is approximately
+            <code>O(n + k)</code>.
+        </p>
+
+        <p>
+            The additional space is also
+            <code>O(n + k)</code> because the required
+            parts of the structure are recreated.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def copy_records(records):
+
+    return [
+        {
+            **record,
+            "skills": record["skills"].copy()
+        }
+        for record in records
+    ]`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            The same selective copy can be written with
+            a list comprehension and dictionary
+            unpacking.
+        </p>
+
+        <p>
+            For each record:
+        </p>
+
+        <pre>{
+    **record,
+    "skills": record["skills"].copy()
+}</pre>
+
+        <p>
+            creates a new dictionary containing all the
+            original key-value pairs.
+        </p>
+
+        <p>
+            The <code>"skills"</code> key is then
+            supplied again with a copied list.
+        </p>
+
+        <p>
+            Because later dictionary entries replace
+            earlier entries with the same key, the
+            copied skills list replaces the original
+            shared reference.
+        </p>
+
+        <p>
+            The surrounding list comprehension also
+            creates a new outer list.
+        </p>
+
+        <p>
+            This version is more compact, while the
+            first solution makes the different copy
+            levels easier to see step by step.
+        </p>
+
+        <p>
+            Neither solution uses
+            <code>copy.deepcopy()</code>.
+        </p>
+    `,
+
+
+    checker:
 `
 namespace = {}
 
@@ -4355,10 +6237,10 @@ except Exception as error:
     )
 `
 
-    },
+},
 
 
-    /* =====================================================
+/* =====================================================
    CHALLENGE 014
    Count Repeated Paths
 ===================================================== */
@@ -4486,6 +6368,188 @@ paths = [
 print(
     count_paths(paths)
 )`,
+
+
+    solutionCode:
+`def count_paths(paths):
+
+    counts = {}
+
+    for path in paths:
+
+        path_key = tuple(path)
+
+        counts[path_key] = (
+            counts.get(path_key, 0) + 1
+        )
+
+    return counts`,
+
+
+    solutionExplanation: `
+        <p>
+            The main difficulty in this challenge is
+            that each path initially arrives as a list.
+        </p>
+
+        <p>
+            Lists are mutable, so they cannot be used
+            directly as dictionary keys.
+        </p>
+
+        <p>
+            The function therefore converts each path
+            into a tuple:
+        </p>
+
+        <pre>path_key = tuple(path)</pre>
+
+        <p>
+            A tuple is hashable when its elements are
+            hashable, so it can be used as a dictionary
+            key.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>["api", "users"]</pre>
+
+        <p>
+            becomes:
+        </p>
+
+        <pre>("api", "users")</pre>
+
+        <p>
+            The order of the elements is preserved.
+            This means:
+        </p>
+
+        <pre>("api", "users")</pre>
+
+        <p>
+            and:
+        </p>
+
+        <pre>("users", "api")</pre>
+
+        <p>
+            are two different dictionary keys and
+            therefore represent two distinct paths.
+        </p>
+
+        <p>
+            The function then updates the count using:
+        </p>
+
+        <pre>counts[path_key] = counts.get(path_key, 0) + 1</pre>
+
+        <p>
+            If the path has not been seen before,
+            <code>get(..., 0)</code> returns
+            <code>0</code>.
+        </p>
+
+        <p>
+            If it has already appeared, the existing
+            count is increased by one.
+        </p>
+
+        <p>
+            Empty paths are handled naturally:
+        </p>
+
+        <pre>[] → ()</pre>
+
+        <p>
+            The empty tuple is a valid dictionary key,
+            so repeated empty paths can also be counted.
+        </p>
+
+        <p>
+            The original inner lists are never changed.
+            Calling <code>tuple(path)</code> creates a
+            new tuple representation without modifying
+            <code>path</code>.
+        </p>
+
+        <p>
+            If <code>k</code> represents the total
+            number of path components processed across
+            all paths, the average time complexity is
+            approximately <code>O(k)</code>.
+        </p>
+
+        <p>
+            The additional space depends on the number
+            and total size of the distinct tuple keys
+            stored in the dictionary.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`from collections import Counter
+
+
+def count_paths(paths):
+
+    return dict(
+        Counter(
+            tuple(path)
+            for path in paths
+        )
+    )`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            The same operation can also be expressed
+            using <code>Counter</code>.
+        </p>
+
+        <p>
+            This generator expression:
+        </p>
+
+        <pre>tuple(path)
+for path in paths</pre>
+
+        <p>
+            converts each list path into its tuple
+            representation.
+        </p>
+
+        <p>
+            <code>Counter</code> then counts how many
+            times each tuple appears.
+        </p>
+
+        <p>
+            Finally:
+        </p>
+
+        <pre>dict(...)</pre>
+
+        <p>
+            converts the Counter into a regular
+            dictionary.
+        </p>
+
+        <p>
+            The result is equivalent to the first
+            solution.
+        </p>
+
+        <p>
+            The manual dictionary version is useful
+            because it makes the counting logic
+            explicit, while the Counter version is a
+            concise Python-specific alternative.
+        </p>
+    `,
 
 
     checker:
@@ -4858,60 +6922,58 @@ except Exception as error:
 },
 
 
+/* =====================================================
+   CHALLENGE 015
+   Chunk an Iterable Lazily
+===================================================== */
+
+15: {
+
+    chapter: 8,
+
+    number: "015",
+
+    difficulty: "Medium",
+
+    layout: "standard",
+
+    title:
+        "Chunk an Iterable Lazily",
 
 
-        /* =====================================================
-       CHALLENGE 015
-       Chunk an Iterable Lazily
-    ===================================================== */
+    description: `
+        <p>
+            Write a function
+            <code>lazy_chunks(values, size)</code>.
+        </p>
 
-    15: {
+        <p>
+            The function receives an
+            <strong>iterable</strong> and must lazily
+            produce lists containing at most
+            <code>size</code> elements each.
+        </p>
 
-        chapter: 8,
+        <p>
+            The original order of the values must be
+            preserved.
+        </p>
 
-        number: "015",
+        <p>
+            Every complete chunk should contain exactly
+            <code>size</code> elements.
+        </p>
 
-        difficulty: "Medium",
+        <p>
+            The final chunk may contain fewer elements
+            if the iterable is exhausted.
+        </p>
 
-        layout: "standard",
+        <p>
+            Example:
+        </p>
 
-        title:
-            "Chunk an Iterable Lazily",
-
-
-        description: `
-            <p>
-                Write a function
-                <code>lazy_chunks(values, size)</code>.
-            </p>
-
-            <p>
-                The function receives an
-                <strong>iterable</strong> and must lazily
-                produce lists containing at most
-                <code>size</code> elements each.
-            </p>
-
-            <p>
-                The original order of the values must be
-                preserved.
-            </p>
-
-            <p>
-                Every complete chunk should contain exactly
-                <code>size</code> elements.
-            </p>
-
-            <p>
-                The final chunk may contain fewer elements
-                if the iterable is exhausted.
-            </p>
-
-            <p>
-                Example:
-            </p>
-
-            <pre>list(
+        <pre>list(
     lazy_chunks(
         [1, 2, 3, 4, 5],
         2
@@ -4924,11 +6986,11 @@ except Exception as error:
     [5]
 ]</pre>
 
-            <p>
-                Another example:
-            </p>
+        <p>
+            Another example:
+        </p>
 
-            <pre>list(
+        <pre>list(
     lazy_chunks(
         ["a", "b", "c", "d"],
         3
@@ -4940,50 +7002,50 @@ except Exception as error:
     ["d"]
 ]</pre>
 
-            <p>
-                For this challenge, you may assume:
-            </p>
+        <p>
+            For this challenge, you may assume:
+        </p>
 
-            <ul>
-                <li>
-                    <code>size</code> is an integer greater
-                    than <code>0</code>;
-                </li>
+        <ul>
+            <li>
+                <code>size</code> is an integer greater
+                than <code>0</code>;
+            </li>
 
-                <li>
-                    <code>values</code> can be any iterable;
-                </li>
+            <li>
+                <code>values</code> can be any iterable;
+            </li>
 
-                <li>
-                    input validation is not required.
-                </li>
-            </ul>
+            <li>
+                input validation is not required.
+            </li>
+        </ul>
 
-            <p>
-                <strong>Important:</strong>
-                the function must be a generator function.
-            </p>
+        <p>
+            <strong>Important:</strong>
+            the function must be a generator function.
+        </p>
 
-            <p>
-                It must process the input lazily.
-                It must not convert the complete iterable
-                into a list before producing the first
-                chunk.
-            </p>
+        <p>
+            It must process the input lazily.
+            It must not convert the complete iterable
+            into a list before producing the first
+            chunk.
+        </p>
 
-            <p>
-                When one chunk is requested, the function
-                should consume only the values needed to
-                build that chunk.
-            </p>
+        <p>
+            When one chunk is requested, the function
+            should consume only the values needed to
+            build that chunk.
+        </p>
 
-            <p>
-                Each produced chunk must be a new list.
-            </p>
-        `,
+        <p>
+            Each produced chunk must be a new list.
+        </p>
+    `,
 
 
-        starterCode:
+    starterCode:
 `def lazy_chunks(values, size):
     pass
 
@@ -4993,12 +7055,238 @@ result = lazy_chunks(
     2
 )
 
+
 print(
     list(result)
 )`,
 
 
-        checker:
+    solutionCode:
+`def lazy_chunks(values, size):
+
+    chunk = []
+
+    for value in values:
+
+        chunk.append(value)
+
+        if len(chunk) == size:
+
+            yield chunk
+
+            chunk = []
+
+    if chunk:
+        yield chunk`,
+
+
+    solutionExplanation: `
+        <p>
+            Because this function contains
+            <code>yield</code>, calling it creates a
+            generator object instead of immediately
+            executing the entire function.
+        </p>
+
+        <p>
+            The generator starts with an empty list:
+        </p>
+
+        <pre>chunk = []</pre>
+
+        <p>
+            Values are read from the input iterable one
+            at a time:
+        </p>
+
+        <pre>for value in values:</pre>
+
+        <p>
+            Each value is added to the current chunk.
+        </p>
+
+        <pre>chunk.append(value)</pre>
+
+        <p>
+            Once the chunk reaches the requested size,
+            it is produced with:
+        </p>
+
+        <pre>yield chunk</pre>
+
+        <p>
+            At this point execution pauses immediately.
+            The generator does not continue reading
+            values that belong to later chunks.
+        </p>
+
+        <p>
+            For example, with:
+        </p>
+
+        <pre>lazy_chunks(
+    [10, 20, 30, 40, 50, 60],
+    3
+)</pre>
+
+        <p>
+            requesting the first chunk consumes only:
+        </p>
+
+        <pre>10
+20
+30</pre>
+
+        <p>
+            and yields:
+        </p>
+
+        <pre>[10, 20, 30]</pre>
+
+        <p>
+            The values <code>40</code>,
+            <code>50</code>, and <code>60</code> are
+            not consumed until the generator is resumed.
+        </p>
+
+        <p>
+            When execution resumes after a complete
+            chunk, a new empty list is created:
+        </p>
+
+        <pre>chunk = []</pre>
+
+        <p>
+            This is important because every yielded
+            chunk must be a separate list object.
+        </p>
+
+        <p>
+            If the iterable ends before the final chunk
+            reaches the requested size, the remaining
+            values are yielded here:
+        </p>
+
+        <pre>if chunk:
+    yield chunk</pre>
+
+        <p>
+            If there are no remaining values, nothing
+            else is produced.
+        </p>
+
+        <p>
+            The solution works with lists, tuples,
+            iterators, generators, and other iterables
+            because it never relies on indexing or
+            slicing.
+        </p>
+
+        <p>
+            It also never converts the complete input
+            into a list, so the processing remains
+            lazy.
+        </p>
+
+        <p>
+            Across a complete iteration, every input
+            value is processed once, giving
+            <code>O(n)</code> total time.
+        </p>
+
+        <p>
+            At any moment, the generator only needs to
+            store the current chunk, so its working
+            memory is <code>O(size)</code>.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`from itertools import islice
+
+
+def lazy_chunks(values, size):
+
+    iterator = iter(values)
+
+    while True:
+
+        chunk = list(
+            islice(
+                iterator,
+                size
+            )
+        )
+
+        if not chunk:
+            return
+
+        yield chunk`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            A second approach uses
+            <code>itertools.islice()</code>.
+        </p>
+
+        <p>
+            First, the input is converted to an
+            iterator:
+        </p>
+
+        <pre>iterator = iter(values)</pre>
+
+        <p>
+            This does not load the values into memory.
+            It simply provides an iterator over the
+            existing iterable.
+        </p>
+
+        <p>
+            Then:
+        </p>
+
+        <pre>islice(iterator, size)</pre>
+
+        <p>
+            consumes at most <code>size</code> values
+            from the iterator.
+        </p>
+
+        <p>
+            Those values are converted into the list
+            that represents the current chunk.
+        </p>
+
+        <p>
+            If the resulting list is empty, the input
+            has been exhausted and the generator ends.
+        </p>
+
+        <pre>if not chunk:
+    return</pre>
+
+        <p>
+            Otherwise the chunk is yielded.
+        </p>
+
+        <p>
+            This implementation is also lazy:
+            requesting one chunk consumes only the
+            values required for that chunk.
+        </p>
+
+        <p>
+            It is more compact, while the first solution
+            makes the mechanics of building and yielding
+            each chunk easier to understand.
+        </p>
+    `,
+
+
+    checker:
 `
 namespace = {}
 
@@ -5315,6 +7603,7 @@ try:
 
             class TrackingIterable:
 
+
                 def __init__(
                     self,
                     values
@@ -5553,11 +7842,9 @@ except Exception as error:
     )
 `
 
-    },
+},
 
-
-
-    /* =====================================================
+/* =====================================================
    CHALLENGE 016
    Read Valid Integers Lazily
 ===================================================== */
@@ -5656,6 +7943,153 @@ result = valid_integers([
 print(
     list(result)
 )`,
+
+
+    solutionCode:
+`def valid_integers(values):
+
+    for value in values:
+
+        try:
+            number = int(value)
+
+        except ValueError:
+            continue
+
+        yield number`,
+
+
+    solutionExplanation: `
+        <p>
+            The function processes the input iterable
+            one value at a time.
+        </p>
+
+        <pre>for value in values:</pre>
+
+        <p>
+            For each string, it attempts to convert the
+            value using:
+        </p>
+
+        <pre>number = int(value)</pre>
+
+        <p>
+            Strings such as:
+        </p>
+
+        <pre>"10"
+"-4"
+"+7"
+"003"
+"   8   "</pre>
+
+        <p>
+            can be converted successfully.
+        </p>
+
+        <p>
+            Invalid integer strings such as:
+        </p>
+
+        <pre>"Python"
+"3.5"
+""</pre>
+
+        <p>
+            cause <code>int()</code> to raise a
+            <code>ValueError</code>.
+        </p>
+
+        <p>
+            The exception is caught and the current
+            value is skipped:
+        </p>
+
+        <pre>except ValueError:
+    continue</pre>
+
+        <p>
+            Valid integers are produced with:
+        </p>
+
+        <pre>yield number</pre>
+
+        <p>
+            Because the function uses
+            <code>yield</code>, calling it returns a
+            generator object.
+        </p>
+
+        <p>
+            The body of the function does not process
+            the complete iterable immediately.
+            Execution advances only when the caller
+            requests another value from the generator.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>result = valid_integers([
+    "10",
+    "20",
+    "Python",
+    "30"
+])</pre>
+
+        <p>
+            creating <code>result</code> does not yet
+            consume the input values.
+        </p>
+
+        <p>
+            When:
+        </p>
+
+        <pre>next(result)</pre>
+
+        <p>
+            is requested, the generator processes only
+            enough input to find the next valid integer
+            and produces:
+        </p>
+
+        <pre>10</pre>
+
+        <p>
+            It then pauses at <code>yield</code>.
+            Later values are not processed until the
+            generator is resumed.
+        </p>
+
+        <p>
+            If invalid strings appear before the next
+            valid integer, they are consumed and skipped
+            only as needed.
+        </p>
+
+        <p>
+            This makes the function useful even with
+            large or potentially unbounded iterables,
+            because it does not need to store all
+            converted values in memory.
+        </p>
+
+        <p>
+            Over a complete iteration, each input value
+            is processed once, so the total time
+            complexity is <code>O(n)</code>.
+        </p>
+
+        <p>
+            Apart from the generator state and the
+            current value, the function does not build a
+            collection of results, so its additional
+            working space is <code>O(1)</code>.
+        </p>
+    `,
 
 
     checker:
@@ -5962,6 +8396,7 @@ try:
 
         # Test laziness when invalid values appear before
         # the first valid integer.
+
         if tests_ok:
 
             source = TrackingIterable(
@@ -6039,8 +8474,6 @@ except Exception as error:
 `
 
 },
-
-
 
 /* =====================================================
    CHALLENGE 017
@@ -6206,6 +8639,246 @@ print(
         scores
     )
 )`,
+
+
+    solutionCode:
+`def ranked_report(names, scores):
+
+    students = zip(
+        names,
+        scores
+    )
+
+    ranked_students = sorted(
+        students,
+        key=lambda student: student[1],
+        reverse=True
+    )
+
+    report = []
+
+    for position, (name, score) in enumerate(
+        ranked_students,
+        start=1
+    ):
+
+        report.append(
+            f"{position}. {name}: {score}"
+        )
+
+    return report`,
+
+
+    solutionExplanation: `
+        <p>
+            The solution can be understood as three
+            consecutive steps:
+        </p>
+
+        <pre>zip → sorted → enumerate</pre>
+
+        <p>
+            First, <code>zip()</code> associates every
+            student name with the score at the same
+            position.
+        </p>
+
+        <pre>students = zip(
+    names,
+    scores
+)</pre>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>names = ["Alex", "Sam", "Maya"]
+scores = [80, 95, 90]</pre>
+
+        <p>
+            conceptually produces:
+        </p>
+
+        <pre>[
+    ("Alex", 80),
+    ("Sam", 95),
+    ("Maya", 90)
+]</pre>
+
+        <p>
+            The pairs are then ranked using
+            <code>sorted()</code>.
+        </p>
+
+        <pre>ranked_students = sorted(
+    students,
+    key=lambda student: student[1],
+    reverse=True
+)</pre>
+
+        <p>
+            The key:
+        </p>
+
+        <pre>student[1]</pre>
+
+        <p>
+            tells Python to sort using the score rather
+            than the student's name.
+        </p>
+
+        <p>
+            <code>reverse=True</code> places the highest
+            scores first.
+        </p>
+
+        <p>
+            Python's sorting algorithm is stable.
+            This means that when two students have the
+            same score, their original relative order is
+            preserved.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>names = ["A", "B", "C"]
+scores = [90, 90, 80]</pre>
+
+        <p>
+            produces:
+        </p>
+
+        <pre>[
+    ("A", 90),
+    ("B", 90),
+    ("C", 80)
+]</pre>
+
+        <p>
+            <code>A</code> remains before
+            <code>B</code> because both have the same
+            score and <code>A</code> originally appeared
+            first.
+        </p>
+
+        <p>
+            Finally, <code>enumerate()</code> generates
+            the ranking positions.
+        </p>
+
+        <pre>enumerate(
+    ranked_students,
+    start=1
+)</pre>
+
+        <p>
+            Using <code>start=1</code> means that the
+            first displayed rank is <code>1</code>
+            instead of Python's usual index
+            <code>0</code>.
+        </p>
+
+        <p>
+            Each ranked entry is then formatted as:
+        </p>
+
+        <pre>f"{position}. {name}: {score}"</pre>
+
+        <p>
+            and appended to a new list.
+        </p>
+
+        <p>
+            Neither <code>names</code> nor
+            <code>scores</code> is modified.
+            <code>sorted()</code> creates a new ordered
+            collection instead of sorting either input
+            sequence in place.
+        </p>
+
+        <p>
+            If there are <code>n</code> students,
+            creating the pairs and report takes
+            <code>O(n)</code> time, while sorting takes
+            <code>O(n log n)</code>.
+        </p>
+
+        <p>
+            Therefore the overall time complexity is
+            <code>O(n log n)</code>.
+        </p>
+
+        <p>
+            The ranking and returned report require
+            <code>O(n)</code> additional space.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def ranked_report(names, scores):
+
+    ranked_students = sorted(
+        zip(names, scores),
+        key=lambda student: student[1],
+        reverse=True
+    )
+
+    return [
+        f"{position}. {name}: {score}"
+        for position, (name, score) in enumerate(
+            ranked_students,
+            start=1
+        )
+    ]`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            The same logic can be written more compactly
+            while still using all three required tools.
+        </p>
+
+        <p>
+            <code>zip()</code> associates names and
+            scores, and <code>sorted()</code> immediately
+            orders those pairs by score.
+        </p>
+
+        <p>
+            The list comprehension then uses:
+        </p>
+
+        <pre>enumerate(
+    ranked_students,
+    start=1
+)</pre>
+
+        <p>
+            to generate both the ranking position and
+            each student-score pair.
+        </p>
+
+        <p>
+            This produces the final list directly,
+            without creating an empty
+            <code>report</code> list and calling
+            <code>append()</code> manually.
+        </p>
+
+        <p>
+            The stable-sort behavior is unchanged:
+            students with equal scores remain in their
+            original relative order.
+        </p>
+
+        <p>
+            Both implementations have the same overall
+            <code>O(n log n)</code> time complexity.
+        </p>
+    `,
 
 
     checker:
@@ -6668,7 +9341,6 @@ except Exception as error:
 },
 
 
-
 /* =====================================================
    CHALLENGE 018
    Analyze Student Performance
@@ -6881,6 +9553,223 @@ students = [
 print(
     analyze_students(students)
 )`,
+
+
+    solutionCode:
+`def analyze_students(students):
+
+    student_averages = []
+
+    for student in students:
+
+        average = (
+            sum(student["scores"])
+            / len(student["scores"])
+        )
+
+        student_averages.append(
+            (
+                student["name"],
+                average
+            )
+        )
+
+    ranked_students = sorted(
+        student_averages,
+        key=lambda item: item[1],
+        reverse=True
+    )
+
+    class_average = (
+        sum(
+            average
+            for _, average in student_averages
+        )
+        / len(student_averages)
+    )
+
+    all_passed = all(
+        score >= 60
+        for student in students
+        for score in student["scores"]
+    )
+
+    any_perfect = any(
+        score == 100
+        for student in students
+        for score in student["scores"]
+    )
+
+    ranking = [
+        name
+        for name, _ in ranked_students
+    ]
+
+    return {
+        "top_student": ranking[0],
+        "class_average": class_average,
+        "all_passed": all_passed,
+        "any_perfect": any_perfect,
+        "ranking": ranking
+    }`,
+
+
+    solutionExplanation: `
+        <p>
+            The first step is to calculate each
+            student's average exactly once.
+        </p>
+
+        <pre>average = (
+    sum(student["scores"])
+    / len(student["scores"])
+)</pre>
+
+        <p>
+            Each student's name and calculated average
+            are stored together inside
+            <code>student_averages</code>.
+        </p>
+
+        <p>
+            Keeping these averages avoids calculating
+            the same value again for the ranking,
+            the top student, and the class average.
+        </p>
+
+        <p>
+            The students are then ranked with:
+        </p>
+
+        <pre>ranked_students = sorted(
+    student_averages,
+    key=lambda item: item[1],
+    reverse=True
+)</pre>
+
+        <p>
+            The sorting key is the average stored at
+            position <code>1</code> in each tuple.
+        </p>
+
+        <p>
+            <code>reverse=True</code> places the highest
+            averages first.
+        </p>
+
+        <p>
+            Python's <code>sorted()</code> is stable.
+            Therefore, if two students have the same
+            average, their original relative order is
+            preserved.
+        </p>
+
+        <p>
+            This also means that when multiple students
+            share the highest average, the first one in
+            the original input remains first in the
+            ranking and becomes
+            <code>top_student</code>.
+        </p>
+
+        <p>
+            The class average is calculated from the
+            individual student averages:
+        </p>
+
+        <pre>class_average = (
+    sum(
+        average
+        for _, average in student_averages
+    )
+    / len(student_averages)
+)</pre>
+
+        <p>
+            This is important because the challenge
+            does not ask for the average of every
+            individual score combined.
+        </p>
+
+        <p>
+            If students have different numbers of
+            scores, those two calculations can produce
+            different results.
+        </p>
+
+        <p>
+            The passing condition uses
+            <code>all()</code>:
+        </p>
+
+        <pre>all_passed = all(
+    score >= 60
+    for student in students
+    for score in student["scores"]
+)</pre>
+
+        <p>
+            The result is <code>True</code> only when
+            every score belonging to every student is
+            at least <code>60</code>.
+        </p>
+
+        <p>
+            The perfect-score condition uses
+            <code>any()</code>:
+        </p>
+
+        <pre>any_perfect = any(
+    score == 100
+    for student in students
+    for score in student["scores"]
+)</pre>
+
+        <p>
+            It becomes <code>True</code> when at least
+            one score equal to <code>100</code> exists
+            anywhere in the class.
+        </p>
+
+        <p>
+            Finally, the ranking extracts the names
+            from the sorted student-average pairs.
+        </p>
+
+        <pre>ranking = [
+    name
+    for name, _ in ranked_students
+]</pre>
+
+        <p>
+            The first name in this ranking is therefore
+            also the top student.
+        </p>
+
+        <p>
+            The original dictionaries and their score
+            lists are only read and are never modified.
+        </p>
+
+        <p>
+            If there are <code>n</code> students and
+            <code>s</code> total scores, calculating
+            averages and evaluating the score conditions
+            takes <code>O(s)</code> time.
+        </p>
+
+        <p>
+            Sorting the students requires
+            <code>O(n log n)</code> time.
+        </p>
+
+        <p>
+            The overall time complexity is therefore
+            <code>O(s + n log n)</code>, with
+            <code>O(n)</code> additional space for the
+            calculated averages and ranking.
+        </p>
+    `,
 
 
     checker:
@@ -7619,7 +10508,6 @@ except Exception as error:
 
 },
 
-
 /* =====================================================
    CHALLENGE 019
    Most Frequent Value, First on Ties
@@ -7756,6 +10644,237 @@ values = [
 print(
     most_frequent(values)
 )`,
+
+
+    solutionCode:
+`def most_frequent(values):
+
+    frequencies = {}
+
+    for value in values:
+
+        frequencies[value] = (
+            frequencies.get(value, 0) + 1
+        )
+
+    best = values[0]
+
+    for value in values:
+
+        if (
+            frequencies[value]
+            > frequencies[best]
+        ):
+            best = value
+
+    return best`,
+
+
+    solutionExplanation: `
+        <p>
+            The solution uses two linear passes through
+            the input.
+        </p>
+
+        <p>
+            The first pass builds a frequency table:
+        </p>
+
+        <pre>frequencies = {}
+
+for value in values:
+    frequencies[value] = (
+        frequencies.get(value, 0) + 1
+    )</pre>
+
+        <p>
+            For example, for:
+        </p>
+
+        <pre>[
+    "python",
+    "java",
+    "java",
+    "python",
+    "sql"
+]</pre>
+
+        <p>
+            the dictionary becomes:
+        </p>
+
+        <pre>{
+    "python": 2,
+    "java": 2,
+    "sql": 1
+}</pre>
+
+        <p>
+            Once every frequency is known, the function
+            starts with the first input value as the
+            current best candidate:
+        </p>
+
+        <pre>best = values[0]</pre>
+
+        <p>
+            The second pass reads the original input
+            from left to right.
+        </p>
+
+        <pre>for value in values:
+
+    if frequencies[value] > frequencies[best]:
+        best = value</pre>
+
+        <p>
+            Notice that the comparison uses
+            <strong>strictly greater than</strong>:
+        </p>
+
+        <pre>></pre>
+
+        <p>
+            rather than:
+        </p>
+
+        <pre>>=</pre>
+
+        <p>
+            This detail is what preserves the correct
+            tie behavior.
+        </p>
+
+        <p>
+            Suppose both <code>"python"</code> and
+            <code>"java"</code> have frequency
+            <code>2</code>.
+        </p>
+
+        <p>
+            Because <code>"python"</code> appears first,
+            it becomes the current best candidate first.
+        </p>
+
+        <p>
+            When <code>"java"</code> is encountered,
+            its frequency is equal rather than greater,
+            so <code>best</code> is not replaced.
+        </p>
+
+        <p>
+            Therefore the value that appeared first in
+            the original input wins every frequency tie.
+        </p>
+
+        <p>
+            This is also why calculating frequencies
+            first is useful. Trying to decide the final
+            winner before knowing all frequencies can
+            produce incorrect tie behavior.
+        </p>
+
+        <p>
+            The first pass takes
+            <code>O(n)</code> average time and the
+            second pass also takes
+            <code>O(n)</code>.
+        </p>
+
+        <p>
+            Therefore:
+        </p>
+
+        <pre>O(n) + O(n) = O(n)</pre>
+
+        <p>
+            on average.
+        </p>
+
+        <p>
+            If there are <code>u</code> distinct
+            values, the frequency dictionary uses
+            <code>O(u)</code> additional space.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def most_frequent(values):
+
+    frequencies = {}
+
+    for value in values:
+
+        frequencies[value] = (
+            frequencies.get(value, 0) + 1
+        )
+
+    return max(
+        frequencies,
+        key=frequencies.get
+    )`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            A more compact solution can use
+            <code>max()</code> after building the same
+            frequency dictionary.
+        </p>
+
+        <pre>max(
+    frequencies,
+    key=frequencies.get
+)</pre>
+
+        <p>
+            Iterating over a dictionary produces its
+            keys in insertion order.
+        </p>
+
+        <p>
+            Since each key is first inserted when its
+            value first appears in the original input,
+            that insertion order also represents the
+            order of first appearance.
+        </p>
+
+        <p>
+            The <code>key</code> function:
+        </p>
+
+        <pre>frequencies.get</pre>
+
+        <p>
+            tells <code>max()</code> to compare each
+            dictionary key using its frequency.
+        </p>
+
+        <p>
+            When multiple keys have the same maximum
+            frequency, <code>max()</code> keeps the
+            first maximum it encounters.
+        </p>
+
+        <p>
+            Therefore the dictionary's insertion order
+            automatically resolves ties in favor of the
+            value that appeared first.
+        </p>
+
+        <p>
+            This version is shorter, but the two-pass
+            solution makes the tie-breaking rule more
+            explicit and is therefore easier to reason
+            about in an interview.
+        </p>
+
+        <p>
+            Its average time complexity is also
+            <code>O(n)</code>.
+        </p>
+    `,
 
 
     checker:
@@ -8361,6 +11480,239 @@ print(
         9
     )
 )`,
+
+
+    solutionCode:
+`def two_sum(numbers, target):
+
+    seen = {}
+
+    for index, number in enumerate(numbers):
+
+        needed = target - number
+
+        if needed in seen:
+
+            return [
+                seen[needed],
+                index
+            ]
+
+        seen[number] = index`,
+
+
+    solutionExplanation: `
+        <p>
+            The goal is to avoid comparing the current
+            number with every other number in the list.
+        </p>
+
+        <p>
+            The dictionary:
+        </p>
+
+        <pre>seen = {}</pre>
+
+        <p>
+            remembers values that have already been
+            processed together with their indexes.
+        </p>
+
+        <p>
+            The list is scanned once using
+            <code>enumerate()</code>:
+        </p>
+
+        <pre>for index, number in enumerate(numbers):</pre>
+
+        <p>
+            For each number, the function calculates the
+            value required to reach the target:
+        </p>
+
+        <pre>needed = target - number</pre>
+
+        <p>
+            For example, if the target is
+            <code>9</code> and the current number is
+            <code>7</code>:
+        </p>
+
+        <pre>needed = 9 - 7
+needed = 2</pre>
+
+        <p>
+            The function then checks whether that value
+            has already been encountered:
+        </p>
+
+        <pre>if needed in seen:</pre>
+
+        <p>
+            Dictionary lookup is typically
+            <code>O(1)</code> on average.
+        </p>
+
+        <p>
+            If the needed value exists, its stored index
+            and the current index form the solution:
+        </p>
+
+        <pre>return [
+    seen[needed],
+    index
+]</pre>
+
+        <p>
+            The indexes are automatically in increasing
+            order because <code>seen</code> contains
+            only values encountered at earlier
+            positions.
+        </p>
+
+        <p>
+            If no match has been found yet, the current
+            value and its index are stored:
+        </p>
+
+        <pre>seen[number] = index</pre>
+
+        <p>
+            It is important to perform the lookup
+            <strong>before</strong> storing the current
+            value.
+        </p>
+
+        <p>
+            Consider:
+        </p>
+
+        <pre>two_sum(
+    [3, 3],
+    6
+)</pre>
+
+        <p>
+            When the first <code>3</code> is processed,
+            no previous <code>3</code> exists, so its
+            index <code>0</code> is stored.
+        </p>
+
+        <p>
+            When the second <code>3</code> is processed,
+            the dictionary already contains:
+        </p>
+
+        <pre>{
+    3: 0
+}</pre>
+
+        <p>
+            so the function returns:
+        </p>
+
+        <pre>[0, 1]</pre>
+
+        <p>
+            This ensures that two different list
+            positions are used.
+        </p>
+
+        <p>
+            The original <code>numbers</code> list is
+            only read and is never modified.
+        </p>
+
+        <p>
+            The list is scanned once and each dictionary
+            lookup is <code>O(1)</code> on average, so
+            the overall average time complexity is
+            <code>O(n)</code>.
+        </p>
+
+        <p>
+            In the worst case, the dictionary may store
+            up to <code>n</code> values, giving
+            <code>O(n)</code> additional space.
+        </p>
+    `,
+
+
+    alternativeSolutionCode:
+`def two_sum(numbers, target):
+
+    waiting_for = {}
+
+    for index, number in enumerate(numbers):
+
+        if number in waiting_for:
+
+            return [
+                waiting_for[number],
+                index
+            ]
+
+        needed = target - number
+
+        waiting_for[needed] = index`,
+
+
+    alternativeSolutionExplanation: `
+        <p>
+            A slightly different approach is to store
+            the values that future elements would need
+            to match.
+        </p>
+
+        <p>
+            Instead of storing:
+        </p>
+
+        <pre>number → index</pre>
+
+        <p>
+            the dictionary stores:
+        </p>
+
+        <pre>needed value → index that needs it</pre>
+
+        <p>
+            For example, with target
+            <code>9</code>, after processing the value
+            <code>2</code> at index <code>0</code>:
+        </p>
+
+        <pre>needed = 9 - 2</pre>
+
+        <p>
+            so the dictionary becomes:
+        </p>
+
+        <pre>{
+    7: 0
+}</pre>
+
+        <p>
+            If a later number is <code>7</code>, the
+            dictionary immediately tells us that the
+            value at index <code>0</code> forms the
+            required pair.
+        </p>
+
+        <p>
+            This solution has the same
+            <code>O(n)</code> average time and
+            <code>O(n)</code> additional-space
+            complexity.
+        </p>
+
+        <p>
+            The first version is generally the more
+            familiar Two Sum solution and makes the
+            idea of remembering previously seen values
+            especially clear.
+        </p>
+    `,
 
 
     checker:
@@ -9350,6 +12702,284 @@ print(
 )`,
 
 
+    solutionCode:
+`def iter_transactions(filename):
+
+    try:
+
+        with open(
+            filename,
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            for line in file:
+
+                parts = line.split(",")
+
+                if len(parts) != 4:
+                    continue
+
+                (
+                    transaction_id,
+                    user,
+                    transaction_type,
+                    amount_text
+                ) = (
+                    part.strip()
+                    for part in parts
+                )
+
+                user = user.lower()
+
+                transaction_type = (
+                    transaction_type.lower()
+                )
+
+                if not transaction_id or not user:
+                    continue
+
+                if transaction_type not in {
+                    "deposit",
+                    "withdraw"
+                }:
+                    continue
+
+                try:
+                    amount = int(amount_text)
+
+                except ValueError:
+                    continue
+
+                if amount < 0:
+                    continue
+
+                yield {
+                    "id": transaction_id,
+                    "user": user,
+                    "type": transaction_type,
+                    "amount": amount
+                }
+
+    except FileNotFoundError:
+        return
+
+
+def build_transaction_report(filename):
+
+    balances = {}
+    processed_ids = set()
+
+    total_deposits = 0
+    total_withdrawals = 0
+    processed_transactions = 0
+    duplicate_transactions = 0
+
+    for transaction in iter_transactions(
+        filename
+    ):
+
+        transaction_id = transaction["id"]
+
+        if transaction_id in processed_ids:
+
+            duplicate_transactions += 1
+            continue
+
+        processed_ids.add(
+            transaction_id
+        )
+
+        user = transaction["user"]
+        amount = transaction["amount"]
+
+        if user not in balances:
+            balances[user] = 0
+
+        if transaction["type"] == "deposit":
+
+            balances[user] += amount
+            total_deposits += amount
+
+        else:
+
+            balances[user] -= amount
+            total_withdrawals += amount
+
+        processed_transactions += 1
+
+    ranking = sorted(
+        balances,
+        key=balances.get,
+        reverse=True
+    )
+
+    top_user = (
+        ranking[0]
+        if ranking
+        else None
+    )
+
+    all_balances_non_negative = all(
+        balance >= 0
+        for balance in balances.values()
+    )
+
+    any_negative_balance = any(
+        balance < 0
+        for balance in balances.values()
+    )
+
+    return {
+        "balances": balances,
+        "ranking": ranking,
+        "top_user": top_user,
+        "total_deposits": total_deposits,
+        "total_withdrawals": total_withdrawals,
+        "processed_transactions": processed_transactions,
+        "duplicate_transactions": duplicate_transactions,
+        "all_balances_non_negative": all_balances_non_negative,
+        "any_negative_balance": any_negative_balance
+    }`,
+
+
+    solutionExplanation: `
+        <p>
+            This challenge combines lazy file processing,
+            validation, duplicate detection, aggregation,
+            sorting, and Boolean checks.
+        </p>
+
+        <h3>1. Read transactions lazily</h3>
+
+        <p>
+            <code>iter_transactions()</code> is a generator
+            because it uses <code>yield</code>.
+        </p>
+
+        <p>
+            The file is opened with UTF-8 encoding and
+            processed directly with <code>for line in file</code>.
+            The complete file is therefore never loaded into
+            memory before processing begins.
+        </p>
+
+        <p>
+            Each line is split into comma-separated fields.
+            A valid line must contain exactly four fields.
+            Each field is stripped, while the user and
+            transaction type are also converted to lowercase.
+        </p>
+
+        <p>
+            The amount is converted with <code>int()</code>.
+            Invalid integers, negative amounts, empty IDs,
+            empty users, and unsupported transaction types
+            are skipped.
+        </p>
+
+        <p>
+            As soon as a valid transaction is found, it is
+            yielded immediately. Execution pauses at
+            <code>yield</code>, so later lines are not read
+            until another transaction is requested.
+        </p>
+
+        <p>
+            A missing file is handled with
+            <code>FileNotFoundError</code>, causing the generator
+            to finish without producing transactions.
+        </p>
+
+        <h3>2. Track duplicate transaction IDs</h3>
+
+        <p>
+            <code>build_transaction_report()</code> keeps a
+            <code>set</code> of processed IDs. Set membership is
+            typically <code>O(1)</code> on average.
+        </p>
+
+        <p>
+            The duplicate check happens before balances or
+            users are updated. Therefore only the first valid
+            occurrence of an ID affects the report. Later valid
+            occurrences are ignored and counted as duplicates.
+        </p>
+
+        <p>
+            Invalid lines never reach this stage, so they do not
+            count as duplicates. A duplicate containing a new
+            user also cannot create that user in
+            <code>balances</code>.
+        </p>
+
+        <h3>3. Update balances and totals</h3>
+
+        <p>
+            A new user begins with balance <code>0</code>.
+            Deposits increase the balance and
+            <code>total_deposits</code>; withdrawals decrease the
+            balance and increase <code>total_withdrawals</code>.
+        </p>
+
+        <p>
+            Withdrawals are allowed to make a balance negative.
+            The report later detects that condition instead of
+            rejecting the transaction.
+        </p>
+
+        <p>
+            <code>processed_transactions</code> increases only
+            for valid, non-duplicate transactions.
+        </p>
+
+        <h3>4. Build a stable ranking</h3>
+
+        <p>
+            Users are ranked with <code>sorted()</code> using
+            their balances as the key and
+            <code>reverse=True</code>.
+        </p>
+
+        <p>
+            Dictionaries preserve insertion order and Python's
+            sorting is stable. Therefore users with equal
+            balances remain in the order in which they first
+            appeared among processed transactions.
+        </p>
+
+        <p>
+            The first ranked user becomes
+            <code>top_user</code>. If no valid transaction is
+            processed, the ranking is empty and
+            <code>top_user</code> is <code>None</code>.
+        </p>
+
+        <h3>5. Check the final balances</h3>
+
+        <p>
+            <code>all()</code> checks whether every balance is
+            greater than or equal to zero, while
+            <code>any()</code> checks whether at least one balance
+            is strictly negative.
+        </p>
+
+        <p>
+            With no users, <code>all()</code> returns
+            <code>True</code> and <code>any()</code> returns
+            <code>False</code>, matching the required empty report.
+        </p>
+
+        <p>
+            If the file contains <code>n</code> lines and
+            <code>u</code> distinct users are processed, parsing
+            and aggregation are linear in the input while ranking
+            costs <code>O(u log u)</code>. The overall complexity
+            is approximately <code>O(n + u log u)</code>.
+        </p>
+    `,
+
+
     checker:
 `
 import ast
@@ -9950,6 +13580,7 @@ if tree is not None:
             # =========================================
 
             class TrackingFile:
+
 
                 def __init__(
                     self,
@@ -10701,13 +14332,6 @@ if tree is not None:
 
 },
 
-
-
-
-
-
-
-
 /* =====================================================
    CHALLENGE 022
    Inventory & Order Fulfillment Engine
@@ -11327,6 +14951,761 @@ print(
         inventory.iter_available_products()
     )
 )`,
+
+
+
+    solutionCode:
+`class Inventory:
+
+    def __init__(self, products):
+
+        self.products = {
+            product["sku"]: product.copy()
+            for product in products
+        }
+
+
+    def process_orders(self, orders):
+
+        processed_ids = set()
+
+        accepted_orders = []
+        rejected_orders = []
+        duplicate_orders = 0
+
+        revenue = 0
+
+        sold_quantities = {
+            sku: 0
+            for sku in self.products
+        }
+
+        fulfillment_results = []
+
+        for order in orders:
+
+            order_id = order["id"]
+
+            if order_id in processed_ids:
+
+                duplicate_orders += 1
+                continue
+
+            processed_ids.add(
+                order_id
+            )
+
+            requested = {}
+            valid_order = True
+
+            for item in order["items"]:
+
+                sku = item["sku"]
+                quantity = item["quantity"]
+
+                if sku not in self.products:
+
+                    valid_order = False
+                    break
+
+                if type(quantity) is not int:
+
+                    valid_order = False
+                    break
+
+                if quantity <= 0:
+
+                    valid_order = False
+                    break
+
+                requested[sku] = (
+                    requested.get(
+                        sku,
+                        0
+                    )
+                    + quantity
+                )
+
+            if valid_order:
+
+                valid_order = all(
+                    self.products[
+                        sku
+                    ][
+                        "stock"
+                    ] >= quantity
+
+                    for (
+                        sku,
+                        quantity
+                    ) in requested.items()
+                )
+
+            if not valid_order:
+
+                rejected_orders.append(
+                    order_id
+                )
+
+                fulfillment_results.append(
+                    False
+                )
+
+                continue
+
+            accepted_orders.append(
+                order_id
+            )
+
+            fulfillment_results.append(
+                True
+            )
+
+            for (
+                sku,
+                quantity
+            ) in requested.items():
+
+                product = self.products[
+                    sku
+                ]
+
+                product[
+                    "stock"
+                ] -= quantity
+
+                sold_quantities[
+                    sku
+                ] += quantity
+
+                revenue += (
+                    product[
+                        "price"
+                    ]
+                    * quantity
+                )
+
+        remaining_stock = {
+            sku: product[
+                "stock"
+            ]
+
+            for (
+                sku,
+                product
+            ) in self.products.items()
+        }
+
+        ranking = sorted(
+            self.products,
+            key=sold_quantities.get,
+            reverse=True
+        )
+
+        top_product = (
+            ranking[0]
+            if ranking
+            else None
+        )
+
+        all_orders_fulfilled = all(
+            fulfillment_results
+        )
+
+        any_out_of_stock = any(
+            product[
+                "stock"
+            ] == 0
+
+            for product
+            in self.products.values()
+        )
+
+        return {
+            "accepted_orders":
+                accepted_orders,
+
+            "rejected_orders":
+                rejected_orders,
+
+            "duplicate_orders":
+                duplicate_orders,
+
+            "revenue":
+                revenue,
+
+            "remaining_stock":
+                remaining_stock,
+
+            "sold_quantities":
+                sold_quantities,
+
+            "top_product":
+                top_product,
+
+            "ranking":
+                ranking,
+
+            "all_orders_fulfilled":
+                all_orders_fulfilled,
+
+            "any_out_of_stock":
+                any_out_of_stock
+        }
+
+
+    def iter_available_products(self):
+
+        for product in self.products.values():
+
+            if product["stock"] > 0:
+
+                yield product.copy()`,
+
+
+    solutionExplanation: `
+        <p>
+            This challenge combines object state,
+            selective copying, validation, duplicate
+            detection, atomic updates, aggregation,
+            ranking, and generators.
+        </p>
+
+        <h3>
+            1. Build an Independent Internal Inventory
+        </h3>
+
+        <p>
+            The constructor creates
+            <code>self.products</code> as a dictionary
+            keyed by SKU:
+        </p>
+
+        <pre>self.products = {
+    product["sku"]: product.copy()
+    for product in products
+}</pre>
+
+        <p>
+            Each product dictionary is copied
+            individually.
+        </p>
+
+        <p>
+            This means that changing stock inside the
+            inventory does not modify the product
+            dictionaries originally passed to the
+            constructor.
+        </p>
+
+        <p>
+            A full <code>deepcopy()</code> is not
+            necessary because the challenge only
+            requires the product dictionaries
+            themselves to become independent.
+        </p>
+
+        <p>
+            The dictionary comprehension also preserves
+            the original product order.
+        </p>
+
+        <p>
+            That order becomes important later for
+            ranking ties and for
+            <code>iter_available_products()</code>.
+        </p>
+
+        <h3>
+            2. Track Duplicate Orders Per Batch
+        </h3>
+
+        <p>
+            Every call to
+            <code>process_orders()</code> creates a new
+            set:
+        </p>
+
+        <pre>processed_ids = set()</pre>
+
+        <p>
+            Therefore duplicate tracking belongs only
+            to the current batch.
+        </p>
+
+        <p>
+            If the same ID is used again in a future
+            call to <code>process_orders()</code>, it
+            can be evaluated normally again.
+        </p>
+
+        <p>
+            The first occurrence of an ID is added to
+            the set before the order is validated:
+        </p>
+
+        <pre>processed_ids.add(order_id)</pre>
+
+        <p>
+            This is important because the first
+            occurrence counts even when that order is
+            eventually rejected.
+        </p>
+
+        <p>
+            Any later occurrence of the same ID is
+            immediately ignored:
+        </p>
+
+        <pre>if order_id in processed_ids:
+    duplicate_orders += 1
+    continue</pre>
+
+        <p>
+            Because the duplicate is skipped before
+            validation, it cannot affect stock,
+            revenue, accepted orders, rejected orders,
+            sold quantities, or
+            <code>all_orders_fulfilled</code>.
+        </p>
+
+        <h3>
+            3. Validate Items and Aggregate Repeated SKUs
+        </h3>
+
+        <p>
+            Each non-duplicate order first builds a
+            temporary <code>requested</code>
+            dictionary.
+        </p>
+
+        <p>
+            Every item must reference an existing SKU.
+        </p>
+
+        <p>
+            Its quantity must also satisfy:
+        </p>
+
+        <pre>type(quantity) is int</pre>
+
+        <p>
+            and:
+        </p>
+
+        <pre>quantity > 0</pre>
+
+        <p>
+            Using:
+        </p>
+
+        <pre>type(quantity) is int</pre>
+
+        <p>
+            rather than only
+            <code>isinstance(quantity, int)</code> is
+            important here.
+        </p>
+
+        <p>
+            In Python, <code>True</code> and
+            <code>False</code> are subclasses of
+            <code>int</code>, but the challenge
+            explicitly says that Boolean quantities
+            are invalid.
+        </p>
+
+        <p>
+            Repeated SKUs are combined with:
+        </p>
+
+        <pre>requested[sku] = (
+    requested.get(sku, 0)
+    + quantity
+)</pre>
+
+        <p>
+            For example:
+        </p>
+
+        <pre>[
+    {
+        "sku": "P100",
+        "quantity": 2
+    },
+    {
+        "sku": "P100",
+        "quantity": 3
+    }
+]</pre>
+
+        <p>
+            becomes conceptually:
+        </p>
+
+        <pre>{
+    "P100": 5
+}</pre>
+
+        <p>
+            Stock is therefore checked against the
+            complete requested quantity.
+        </p>
+
+        <h3>
+            4. Keep Every Order Atomic
+        </h3>
+
+        <p>
+            The inventory is not modified while the
+            order is being validated.
+        </p>
+
+        <p>
+            After all valid items have been aggregated,
+            <code>all()</code> checks whether enough
+            stock exists for every requested product:
+        </p>
+
+        <pre>all(
+    self.products[sku]["stock"]
+    >= quantity
+
+    for sku, quantity
+    in requested.items()
+)</pre>
+
+        <p>
+            Only after the complete order passes this
+            check is stock actually changed.
+        </p>
+
+        <p>
+            If one item cannot be fulfilled, the whole
+            order is rejected and no partial stock
+            changes occur.
+        </p>
+
+        <p>
+            This is what makes the order processing
+            atomic.
+        </p>
+
+        <p>
+            An empty order naturally creates an empty
+            <code>requested</code> dictionary.
+        </p>
+
+        <p>
+            Since:
+        </p>
+
+        <pre>all([])</pre>
+
+        <p>
+            returns <code>True</code>, the empty order
+            is correctly accepted without changing
+            stock or revenue.
+        </p>
+
+        <h3>
+            5. Update Stock, Sales, and Revenue
+        </h3>
+
+        <p>
+            Once an order has been accepted, the
+            aggregated quantities are applied to the
+            inventory.
+        </p>
+
+        <p>
+            Stock decreases with:
+        </p>
+
+        <pre>product["stock"] -= quantity</pre>
+
+        <p>
+            The same quantity is added to the number
+            of units sold during the current batch:
+        </p>
+
+        <pre>sold_quantities[sku] += quantity</pre>
+
+        <p>
+            Revenue is calculated using:
+        </p>
+
+        <pre>product["price"] * quantity</pre>
+
+        <p>
+            Only accepted orders reach this section, so
+            rejected and duplicate orders cannot
+            contribute to revenue.
+        </p>
+
+        <p>
+            <code>sold_quantities</code> is initialized
+            with every product:
+        </p>
+
+        <pre>sold_quantities = {
+    sku: 0
+    for sku in self.products
+}</pre>
+
+        <p>
+            Products with zero sales therefore still
+            appear in the final report.
+        </p>
+
+        <h3>
+            6. Preserve Inventory State Between Calls
+        </h3>
+
+        <p>
+            The actual stock lives inside:
+        </p>
+
+        <pre>self.products</pre>
+
+        <p>
+            and is modified directly when accepted
+            orders are processed.
+        </p>
+
+        <p>
+            It is not recreated at the beginning of
+            <code>process_orders()</code>.
+        </p>
+
+        <p>
+            As a result, a second call continues from
+            the stock left by the first call.
+        </p>
+
+        <p>
+            By contrast, variables such as:
+        </p>
+
+        <pre>processed_ids
+accepted_orders
+rejected_orders
+sold_quantities
+revenue</pre>
+
+        <p>
+            are created again for every call because
+            they describe only the current batch.
+        </p>
+
+        <h3>
+            7. Build the Product Ranking
+        </h3>
+
+        <p>
+            Every product is ranked using the number of
+            units sold during the current batch:
+        </p>
+
+        <pre>ranking = sorted(
+    self.products,
+    key=sold_quantities.get,
+    reverse=True
+)</pre>
+
+        <p>
+            Products with more sales appear first.
+        </p>
+
+        <p>
+            Python's sorting algorithm is stable.
+        </p>
+
+        <p>
+            Because <code>self.products</code> preserves
+            the original inventory insertion order,
+            products with equal sold quantities remain
+            in their original inventory order.
+        </p>
+
+        <p>
+            The first SKU becomes:
+        </p>
+
+        <pre>top_product</pre>
+
+        <p>
+            If the inventory contains no products,
+            <code>ranking</code> is empty and
+            <code>top_product</code> becomes
+            <code>None</code>.
+        </p>
+
+        <h3>
+            8. Calculate all_orders_fulfilled
+        </h3>
+
+        <p>
+            The list:
+        </p>
+
+        <pre>fulfillment_results</pre>
+
+        <p>
+            receives exactly one Boolean for every
+            non-duplicate order that was evaluated.
+        </p>
+
+        <p>
+            Accepted orders add:
+        </p>
+
+        <pre>True</pre>
+
+        <p>
+            while rejected orders add:
+        </p>
+
+        <pre>False</pre>
+
+        <p>
+            Duplicate orders add nothing because they
+            must be ignored for this calculation.
+        </p>
+
+        <p>
+            The final result is:
+        </p>
+
+        <pre>all(
+    fulfillment_results
+)</pre>
+
+        <p>
+            If every evaluated order was accepted, the
+            result is <code>True</code>.
+        </p>
+
+        <p>
+            If at least one was rejected, the result is
+            <code>False</code>.
+        </p>
+
+        <p>
+            When no orders are evaluated,
+            <code>all([])</code> returns
+            <code>True</code>, exactly as required.
+        </p>
+
+        <h3>
+            9. Detect Products That Are Out of Stock
+        </h3>
+
+        <p>
+            <code>any()</code> checks the current
+            inventory after the batch:
+        </p>
+
+        <pre>any(
+    product["stock"] == 0
+    for product in self.products.values()
+)</pre>
+
+        <p>
+            The result becomes <code>True</code> when at
+            least one product currently has no stock
+            remaining.
+        </p>
+
+        <p>
+            If the inventory is empty,
+            <code>any([])</code> is
+            <code>False</code>.
+        </p>
+
+        <h3>
+            10. Yield Available Products Safely
+        </h3>
+
+        <p>
+            <code>iter_available_products()</code>
+            contains <code>yield</code>, so it is a
+            generator function.
+        </p>
+
+        <p>
+            It reads directly from the current
+            <code>self.products</code> state:
+        </p>
+
+        <pre>for product in self.products.values():</pre>
+
+        <p>
+            and produces only products whose current
+            stock is greater than zero.
+        </p>
+
+        <p>
+            Because dictionaries preserve insertion
+            order, the products are yielded in their
+            original inventory order.
+        </p>
+
+        <p>
+            Each product is returned with:
+        </p>
+
+        <pre>yield product.copy()</pre>
+
+        <p>
+            so the caller receives an independent
+            dictionary.
+        </p>
+
+        <p>
+            Modifying that yielded dictionary therefore
+            cannot modify the inventory itself.
+        </p>
+
+        <h3>
+            Complexity
+        </h3>
+
+        <p>
+            Let <code>p</code> be the number of products
+            and <code>i</code> the total number of item
+            entries processed in the current batch.
+        </p>
+
+        <p>
+            Dictionary and set lookups are
+            <code>O(1)</code> on average.
+        </p>
+
+        <p>
+            Validation and aggregation are approximately
+            linear in the number of processed items.
+        </p>
+
+        <p>
+            Creating the final product ranking requires:
+        </p>
+
+        <pre>O(p log p)</pre>
+
+        <p>
+            because every product participates in the
+            sort.
+        </p>
+
+        <p>
+            The internal inventory uses
+            <code>O(p)</code> space, while the
+            temporary structures used during order
+            processing depend on the number of products
+            and items involved in the current batch.
+        </p>
+    `,
 
     checker:
 `
